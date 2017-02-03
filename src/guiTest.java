@@ -20,11 +20,13 @@ public class guiTest {
     //region Events
     //endregion
 
+    //region Main
     public static void main(String[] args) {
         JFrame frame = new JFrame("Test");
         frame.setContentPane(new guiTest().jPanelTest);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
+    //endregion
 }
