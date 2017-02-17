@@ -5,11 +5,13 @@ public class GUI {
     //region PrivateVariables
     private JTabbedPane tabbedPaneTabs;
     private JPanel jPanelMainPanel;
-    private TopViewRunway2DVisualization topViewRunway2DVisualization1;
     private JPanel jPanelMenu;
     private JPanel jPanel2DVisualization;
-    private JPanel jPanel2DTopViewVisualization;
-    private JPanel jPanel2DSideViewVisualization;
+    private TopViewRunway2DVisualization topViewRunway2DVisualization;
+    private JButton button1;
+    private TopViewRunway2DVisualization topViewRunway2DVisualization1;
+    private JPanel jPanelSideViewRunway2DVisualization;
+    private JPanel jPanelTopViewRunway2DVisualization;
     //endregion
 
     //region PublicVariables
@@ -36,5 +38,6 @@ public class GUI {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
+
     //endregion
 }
