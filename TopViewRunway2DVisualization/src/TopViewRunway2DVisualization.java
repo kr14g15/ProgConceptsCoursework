@@ -34,14 +34,14 @@ public class TopViewRunway2DVisualization extends JFXPanel {
         Scene scene =  new  Scene(root, 500, 250, Color.DARKBLUE);
         Canvas canvas = new Canvas(scene.getWidth(),scene.getHeight());
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        drawBackgorund(gc, canvas);
+        drawBackground(gc, canvas);
         drawRunway(gc,canvas);
 
         root.getChildren().add(canvas);
         return (scene);
     }
 
-    private void drawBackgorund(GraphicsContext gc, Canvas canvas) {
+    private void drawBackground(GraphicsContext gc, Canvas canvas) {
         gc.setFill(Color.GREEN);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
