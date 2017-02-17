@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class GUI {
     //region PrivateVariables
@@ -25,10 +26,14 @@ public class GUI {
 
     //region Main
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Test");
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double doubleScreenWidth = screenSize.getWidth();
+        double doubleScreenHeight = screenSize.getHeight();
+
+        JFrame frame = new JFrame("Runway Re-declaration Tool");
+        frame.setSize((int)(doubleScreenWidth * 0.7), (int)(doubleScreenHeight * 0.7));
         frame.setContentPane(new GUI().jPanelMainPanel);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.pack();
         frame.setVisible(true);
     }
     //endregion
