@@ -47,7 +47,7 @@ public class TopViewRunway2DVisualization extends JFXPanel {
     }
 
     private void drawRunway(GraphicsContext gc, Canvas canvas) {
-        Text text = new Text("Runway");
+        Text text = new Text("Runway 100m");
         double runwayWidth = canvas.getWidth()*0.75;
         double runwayHeight = canvas.getHeight()*0.25;
 
