@@ -3,9 +3,9 @@ import java.awt.*;
 
 public class GUI {
     //region PrivateVariables
-    private JTabbedPane tabbedPaneTabs;
+    private JTabbedPane paneUKMap;
     private JPanel jPanelMainPanel;
-    private JPanel jPanelMaps;
+    private JPanel jPanelDisplay;
     private JPanel jPanelOptions;
     private JComboBox cboRunwayList;
     private JLabel jLabelRunwayList;
@@ -16,6 +16,12 @@ public class GUI {
     private JTextField textField4;
     private JTextField textField5;
     private JTextField textField6;
+    private JPanel jPanelUKMap;
+    private JComboBox cboAirportList;
+    private JLabel lblAirportList;
+    private JPanel jPanelMainDisplay;
+    private JPanel jPanelLeftSideDisplay;
+    private JPanel jPanelRightSideDisplay;
     //endregion
 
     //region PublicVariables
