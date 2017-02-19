@@ -5,13 +5,17 @@ public class GUI {
     //region PrivateVariables
     private JTabbedPane tabbedPaneTabs;
     private JPanel jPanelMainPanel;
-    private JPanel jPanelMenu;
-    private JPanel jPanel2DVisualization;
-    private TopViewRunway2DVisualization topViewRunway2DVisualization;
-    private JButton button1;
-    private TopViewRunway2DVisualization topViewRunway2DVisualization1;
-    private JPanel jPanelSideViewRunway2DVisualization;
-    private JPanel jPanelTopViewRunway2DVisualization;
+    private JPanel jPanelMaps;
+    private JPanel jPanelOptions;
+    private JComboBox cboRunwayList;
+    private JLabel jLabelRunwayList;
+    private JTabbedPane paneOptions;
+    private JTextField textField1;
+    private JTextField textField2;
+    private JTextField textField3;
+    private JTextField textField4;
+    private JTextField textField5;
+    private JTextField textField6;
     //endregion
 
     //region PublicVariables
