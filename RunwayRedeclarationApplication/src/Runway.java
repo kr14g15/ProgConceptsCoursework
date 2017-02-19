@@ -1,21 +1,27 @@
 public class Runway {
     //region PrivateVariables
-    private String sName;
-    private int intDegree;
-    private int intTORA;
-    private int intTODA;
-    private int intASDA;
-    private int intLDA;
+    private String sName = "09L";
+    private int intDegree = 9;
+    private int intTORA = 3660;                          //Take-off Run
+    private int intASDA = 3660;                          //TORA + Stopway
+    private int intTODA = 3660;                          //TORA + Stopway + Clearway
 
-    private int intThreshold;
-    private int intClearway;
-    private int intStopway;
-    private int intRESA;
-    private int intStripEnd;
-    private int intBlastProtection;
-    private int intALS;
-    private int intTOCS;
-    private int intRunwayStrip;
+    private int intLDA = 3660;                           //Landing distance
+    private int intStripHeight = 30;
+    private int intThreshold;                            //TORA - LDA
+    private int intStopway;                              //ASDA - TORA
+    private int intClearway;                             //TODA - TORA
+
+    private int intStripEnd = 60;                        //area between the end of the runway	and	the	end	of the runway strip
+    private int intVisualStrip = 75;
+    private int intCGA = 105;
+    private int intInstrumentStrip = 150;
+
+    private int intRESA = 240;
+    private int intBlastProtection = 400;                //area behind an aircraft
+    private int intALS;                                  //area between top of obstacle and runway(min angle of descent)
+    private int intTOCS;                                 //area between top of obstacle and runway(min angle of ascent)
+    private int intRunwayStrip;                          //runway + stopways
     //endregion
 
     //region PublicVariables
@@ -31,64 +37,82 @@ public class Runway {
     //endregion
 
     //region Getters
-    public String getsName() {
+
+    public String getName() {
         return sName;
     }
 
-    public int getIntDegree() {
+    public int getDegree() {
         return intDegree;
     }
 
-    public int getIntTORA() {
+    public int getTORA() {
         return intTORA;
     }
 
-    public int getIntTODA() {
-        return intTODA;
-    }
-
-    public int getIntASDA() {
+    public int getASDA() {
         return intASDA;
     }
 
-    public int getIntLDA() {
+    public int getTODA() {
+        return intTODA;
+    }
+
+    public int getLDA() {
         return intLDA;
     }
 
-    public int getIntThreshold() {
+    public int getStripHeight() {
+        return intStripHeight;
+    }
+
+    public int getThreshold() {
         return intThreshold;
     }
 
-    public int getIntClearway() {
-        return intClearway;
-    }
-
-    public int getIntStopway() {
+    public int getStopway() {
         return intStopway;
     }
 
-    public int getIntRESA() {
-        return intRESA;
+    public int getClearway() {
+        return intClearway;
     }
 
-    public int getIntStripEnd() {
+    public int getStripEnd() {
         return intStripEnd;
     }
 
-    public int getIntBlastProtection() {
+    public int getVisualStrip() {
+        return intVisualStrip;
+    }
+
+    public int getCGA() {
+        return intCGA;
+    }
+
+    public int getInstrumentStrip() {
+        return intInstrumentStrip;
+    }
+
+    public int getRESA() {
+        return intRESA;
+    }
+
+    public int getBlastProtection() {
         return intBlastProtection;
     }
 
-    public int getIntALS() {
+    public int getALS() {
         return intALS;
     }
 
-    public int getIntTOCS() {
+    public int getTOCS() {
         return intTOCS;
     }
 
-    public int getIntRunwayStrip() {
+    public int getRunwayStrip() {
         return intRunwayStrip;
     }
+
     //endregion
 }
