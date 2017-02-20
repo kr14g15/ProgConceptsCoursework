@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
@@ -63,16 +64,9 @@
                                        </GridPane.margin></Label>
                                  </children>
                               </GridPane>
+                              <BorderPane id="borderPaneMainWindow" fx:id="borderPaneMainWindow" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                               <Pane maxWidth="1.7976931348623157E308" GridPane.rowIndex="2" />
                               <Pane maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <GridPane id="paneMainDisplay" fx:id="paneMainDisplay" GridPane.columnSpan="2" GridPane.rowIndex="1">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                              </GridPane>
                            </children>
                            <GridPane.margin>
                               <Insets />

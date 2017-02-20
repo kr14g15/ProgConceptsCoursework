@@ -1,7 +1,9 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -15,6 +17,7 @@ public class Main extends Application {
         double doubleScreenWidth = screenSize.getWidth();
         double doubleScreenHeight = screenSize.getHeight();
         primaryStage.setTitle("Runway Re-declaration Tool");
+
         primaryStage.setScene(new Scene(root, doubleScreenWidth*0.75, doubleScreenHeight*0.75));
         primaryStage.show();
     }

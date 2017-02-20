@@ -1,16 +1,11 @@
-import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
-import javafx.scene.layout.Pane;
-
-import javax.swing.*;
+import javafx.scene.layout.BorderPane;
 
 public class Controller {
     @FXML
-    Pane paneMainDisplay;
+    BorderPane borderPaneMainWindow;
     @FXML
     public void initialize() {
-        final SwingNode node = new SwingNode();
-        node.setContent(new TopViewRunway2DVisualization());
-        paneMainDisplay.getChildren().add(node);
+        borderPaneMainWindow.setCenter(new TopViewRunway2DVisualization());
     }
 }
