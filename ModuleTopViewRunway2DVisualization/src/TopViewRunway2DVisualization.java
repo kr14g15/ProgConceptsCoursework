@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.Text;
 
+import java.awt.*;
+
 public class TopViewRunway2DVisualization extends JFXPanel {
     //region PublicVariables
     //endregion
@@ -63,19 +65,21 @@ public class TopViewRunway2DVisualization extends JFXPanel {
         scene.widthProperty().addListener(observable -> redraw());
         scene.heightProperty().addListener(observable -> redraw());
 
+        this.setLayout(new BorderLayout());
+
+        drawBackground(gc);
+        drawInstrumentStrip(gc);
+        drawCGA(gc);
+        drawRunwayStrip(gc);
+
         root.getChildren().add(canvas);
 
         this.setScene(scene);
     }
 
     private void redraw() {
-        intCanvasWidth = this.getParent().getWidth();
-        intCanvasHeight = this.getParent().getHeight();
-
-        drawBackground(gc);
-        drawInstrumentStrip(gc);
-        drawCGA(gc);
-        drawRunwayStrip(gc);
+       intCanvasWidth = this.getParent().getWidth();
+       intCanvasHeight = this.getParent().getHeight();
     }
 
     private void drawBackground(GraphicsContext gc) {
