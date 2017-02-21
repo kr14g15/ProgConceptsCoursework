@@ -1,27 +1,36 @@
 public class Runway {
     //region PrivateVariables
     private String sName = "09L";
-    private int intDegree = 9;
-    private int intTORA = 3660;                          //Take-off Run
-    private int intASDA = 3660;                          //TORA + Stopway
-    private int intTODA = 3660;                          //TORA + Stopway + Clearway
+    private double doubleDegree = 9;
+    private double doubleTORA = 3660;                          //Take-off Run
+    private double doubleASDA = 3660;                          //TORA + Stopway
+    private double doubleTODA = 3660;                          //TORA + Stopway + Clearway
 
-    private int intLDA = 3660;                           //Landing distance
-    private int intStripHeight = 30;
-    private int intThreshold;                            //TORA - LDA
-    private int intStopway;                              //ASDA - TORA
-    private int intClearway;                             //TODA - TORA
+    private double doubleLDA = 3660;                           //Landing distance
 
-    private int intStripEnd = 60;                        //area between the end of the runway	and	the	end	of the runway strip
-    private int intVisualStrip = 75;
-    private int intCGA = 105;
-    private int intInstrumentStrip = 150;
+    private double doubleStripWidth = 30;
+    private double doubleStopway;                              //ASDA - TORA
+    private double doubleClearway;                             //TODA - TORA
 
-    private int intRESA = 240;
-    private int intBlastProtection = 400;                //area behind an aircraft
-    private int intALS;                                  //area between top of obstacle and runway(min angle of descent)
-    private int intTOCS;                                 //area between top of obstacle and runway(min angle of ascent)
-    private int intRunwayStrip;                          //runway + stopways
+    private double doubleThresholdStripLength = 200;           //TORA - LDA
+    private double doubleThresholdStripWidth = 2;
+    private double doubleThresholdStripeNumber = 8;
+
+    private double doubleStripesLength = 200;           //TORA - LDA
+    private double doubleStripesWidth = 2;
+    private double doubleStripesDifference = 50;
+
+
+    private double doubleStripEnd = 60;                        //area between the end of the runway	and	the	end	of the runway strip
+    private double doubleVisualStrip = 75;
+    private double doubleCGA = 105;
+    private double doubleInstrumentStrip = 150;
+
+    private double doubleRESA = 240;
+    private double doubleBlastProtection = 400;                //area behind an aircraft
+    private double doubleALS;                                  //area between top of obstacle and runway(min angle of descent)
+    private double doubleTOCS;                                 //area between top of obstacle and runway(min angle of ascent)
+    private double doubleRunwayStrip;                          //runway + stopways
     //endregion
 
     //region PublicVariables
@@ -42,76 +51,96 @@ public class Runway {
         return sName;
     }
 
-    public int getDegree() {
-        return intDegree;
+    public double getDegree() {
+        return doubleDegree;
     }
 
-    public int getTORA() {
-        return intTORA;
+    public double getTORA() {
+        return doubleTORA;
     }
 
-    public int getASDA() {
-        return intASDA;
+    public double getASDA() {
+        return doubleASDA;
     }
 
-    public int getTODA() {
-        return intTODA;
+    public double getTODA() {
+        return doubleTODA;
     }
 
-    public int getLDA() {
-        return intLDA;
+    public double getLDA() {
+        return doubleLDA;
     }
 
-    public int getStripHeight() {
-        return intStripHeight;
+    public double getStripWidth() {
+        return doubleStripWidth;
     }
 
-    public int getThreshold() {
-        return intThreshold;
+    public double getThresholdStripLength() {
+        return doubleThresholdStripLength;
     }
 
-    public int getStopway() {
-        return intStopway;
+    public double getThresholdStripWidth() {
+        return doubleThresholdStripWidth;
     }
 
-    public int getClearway() {
-        return intClearway;
+    public double getThresholdStripNumber() {
+        return doubleThresholdStripeNumber;
     }
 
-    public int getStripEnd() {
-        return intStripEnd;
+    public double getStripesLength() {
+        return doubleStripesLength;
     }
 
-    public int getVisualStrip() {
-        return intVisualStrip;
+    public double getStripesWidth() {
+        return doubleStripesWidth;
     }
 
-    public int getCGA() {
-        return intCGA;
+    public double getStripesDifference() {
+        return doubleStripesDifference;
     }
 
-    public int getInstrumentStrip() {
-        return intInstrumentStrip;
+    public double getStopway() {
+        return doubleStopway;
     }
 
-    public int getRESA() {
-        return intRESA;
+    public double getClearway() {
+        return doubleClearway;
     }
 
-    public int getBlastProtection() {
-        return intBlastProtection;
+    public double getStripEnd() {
+        return doubleStripEnd;
     }
 
-    public int getALS() {
-        return intALS;
+    public double getVisualStrip() {
+        return doubleVisualStrip;
     }
 
-    public int getTOCS() {
-        return intTOCS;
+    public double getCGA() {
+        return doubleCGA;
     }
 
-    public int getRunwayStrip() {
-        return intRunwayStrip;
+    public double getInstrumentStrip() {
+        return doubleInstrumentStrip;
+    }
+
+    public double getRESA() {
+        return doubleRESA;
+    }
+
+    public double getBlastProtection() {
+        return doubleBlastProtection;
+    }
+
+    public double getALS() {
+        return doubleALS;
+    }
+
+    public double getTOCS() {
+        return doubleTOCS;
+    }
+
+    public double getRunwayStrip() {
+        return doubleRunwayStrip;
     }
 
     //endregion
