@@ -2,7 +2,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import javafx.scene.text.*;
+
+import java.awt.*;
 
 public class TopViewRunway2DVisualization extends Pane {
     //region PrivateVariables
@@ -41,6 +43,16 @@ public class TopViewRunway2DVisualization extends Pane {
     private double doubleRightThresholdY;
     private double doubleRightThresholdLength;
     private double doubleRightThresholdWidth;
+
+    private double doubleRightRunwayNumberX;
+    private double doubleRightRunwayNumberY;
+    private double doubleRightRunwayNumberLength;
+    private double doubleRightRunwayNumberWidth;
+
+    private double doubleLeftRunwayNumberX;
+    private double doubleLeftRunwayNumberY;
+    private double doubleLeftRunwayNumberLength;
+    private double doubleLeftRunwayNumberWidth;
 
     private double doubleStripesX;
     private double doubleStripesY;
@@ -96,6 +108,8 @@ public class TopViewRunway2DVisualization extends Pane {
             drawRunwayStrip(gc);
             drawLeftThresholds(gc);
             drawRightThresholds(gc);
+            drawLeftRunwayNumber(gc);
+            drawRightRunwayNumber(gc);
             drawStripes(gc);
 
             double doubleTextHeight = (new Text()).getLayoutBounds().getHeight();
@@ -188,9 +202,68 @@ public class TopViewRunway2DVisualization extends Pane {
             }
         }
 
+        private void drawRightRunwayNumber(GraphicsContext gc) {
+            gc.save();
+            gc.setFill(Color.WHITE);
+            gc.setFont(new javafx.scene.text.Font(20));
+
+            int newDegree = 36 - runway.getDegree();
+
+            Text direction = new Text((runway.getDirection() == 'L')? "R" : "L");
+            Text degree = new Text((newDegree < 10)? "0" + String.valueOf(newDegree) : String.valueOf(newDegree));
+
+            double doubleDirectionLength = direction.getLayoutBounds().getWidth();
+            double doubleDirectionHeight = direction.getLayoutBounds().getHeight();
+
+            double doubleDegreeLength = degree.getLayoutBounds().getWidth();
+            double doubleDegreeHeight = degree.getLayoutBounds().getHeight();
+
+            doubleRightRunwayNumberLength = normalize(doubleDirectionHeight + doubleDegreeHeight, doubleCanvasWidth, doubleAirportLength);
+            doubleRightRunwayNumberX = doubleRightThresholdX - doubleRightRunwayNumberLength;
+            doubleRightRunwayNumberY = doubleLeftThresholdY;
+            doubleRightRunwayNumberWidth = 0;
+
+            gc.translate(normalize(doubleRightRunwayNumberX, doubleAirportLength, doubleCanvasWidth),
+                    normalize(doubleRightRunwayNumberY , doubleAirportWidth, doubleCanvasHeight) - doubleDirectionLength/2) ;
+            gc.rotate(-90);
+
+            gc.fillText(direction.getText(), -doubleDirectionLength, doubleDirectionHeight);
+            gc.fillText(degree.getText(), -doubleDegreeLength, doubleDirectionHeight + doubleDegreeHeight);
+
+            gc.restore();
+        }
+
+        private void drawLeftRunwayNumber(GraphicsContext gc) {
+            gc.save();
+            gc.setFill(Color.WHITE);
+            gc.setFont(new javafx.scene.text.Font(20));
+
+            Text direction = new Text(String.valueOf(runway.getDirection()));
+            Text degree = new Text((runway.getDegree() < 10)? "0" + String.valueOf(runway.getDegree()) : String.valueOf(runway.getDegree()));
+
+            double doubleDirectionLength = direction.getLayoutBounds().getWidth();
+            double doubleDirectionHeight = direction.getLayoutBounds().getHeight();
+
+            double doubleDegreeLength = degree.getLayoutBounds().getWidth();
+            double doubleDegreeHeight = degree.getLayoutBounds().getHeight();
+
+            doubleLeftRunwayNumberX = doubleLeftThresholdX + doubleLeftThresholdLength;
+            doubleLeftRunwayNumberY = doubleLeftThresholdY;
+            doubleLeftRunwayNumberLength = normalize(doubleDirectionHeight + doubleDegreeHeight, doubleCanvasWidth, doubleAirportLength);
+            doubleLeftRunwayNumberWidth = 0;
+
+            gc.translate(normalize(doubleLeftRunwayNumberX, doubleAirportLength, doubleCanvasWidth),
+                    normalize(doubleLeftRunwayNumberY , doubleAirportWidth, doubleCanvasHeight) - doubleDirectionLength/2) ;
+            gc.rotate(90);
+            gc.fillText(direction.getText(), 0,0);
+            gc.fillText(degree.getText(), -doubleDegreeLength/2,-doubleDirectionHeight);
+
+            gc.restore();
+        }
+
         private void drawStripes(GraphicsContext gc) {
             gc.setFill(Color.WHITE);
-            doubleStripesX = doubleRunwayStripX + doubleLeftThresholdLength;
+            doubleStripesX = doubleLeftRunwayNumberX +  doubleLeftRunwayNumberLength;
             doubleStripesY = doubleRunwayStripY - runway.getStripesWidth()/2;
             doubleStripesLength = runway.getStripesLength();
             doubleStripesWidth = runway.getStripesWidth();
@@ -205,8 +278,11 @@ public class TopViewRunway2DVisualization extends Pane {
                         normalize(doubleStripesLength, doubleAirportLength, doubleCanvasWidth),
                         normalize(doubleStripesWidth, doubleAirportWidth, doubleCanvasHeight));
                 i++;
-            }while(doubleStripesX + (i+1)*runway.getStripesDifference() + (i)*runway.getStripesLength() < doubleRunwayStripX + doubleRunwayStripLength - doubleRightThresholdLength);
+            }while(doubleStripesX + (i+1)*runway.getStripesDifference() + (i+1)*runway.getStripesLength() < doubleRightRunwayNumberX);
         }
+
+
+
 
         private void drawLinedText(GraphicsContext gc, String text, double x1, double y1, double length) {
             gc.setFill(Color.BLACK);

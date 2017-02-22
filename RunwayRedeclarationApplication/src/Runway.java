@@ -1,7 +1,12 @@
 public class Runway {
     //region PrivateVariables
-    private String sName = "09L";
-    private double doubleDegree = 9;
+    private char  charDirection = 'L';
+    private int intDegree = 9;
+    private double doubleSkyHeight = 300;
+    private double doubleGroundHeight = 300;
+    private double doubleAirportHeight = 30;
+
+
     private double doubleTORA = 3660;                          //Take-off Run
     private double doubleASDA = 3660;                          //TORA + Stopway
     private double doubleTODA = 3660;                          //TORA + Stopway + Clearway
@@ -16,10 +21,9 @@ public class Runway {
     private double doubleThresholdStripWidth = 2;
     private double doubleThresholdStripeNumber = 8;
 
-    private double doubleStripesLength = 200;           //TORA - LDA
+    private double doubleStripesLength = 100;                   //TORA - LDA
     private double doubleStripesWidth = 2;
     private double doubleStripesDifference = 50;
-
 
     private double doubleStripEnd = 60;                        //area between the end of the runway	and	the	end	of the runway strip
     private double doubleVisualStrip = 75;
@@ -31,6 +35,8 @@ public class Runway {
     private double doubleALS;                                  //area between top of obstacle and runway(min angle of descent)
     private double doubleTOCS;                                 //area between top of obstacle and runway(min angle of ascent)
     private double doubleRunwayStrip;                          //runway + stopways
+
+
     //endregion
 
     //region PublicVariables
@@ -47,12 +53,20 @@ public class Runway {
 
     //region Getters
 
-    public String getName() {
-        return sName;
+    public char getDirection() {
+        return charDirection;
     }
 
-    public double getDegree() {
-        return doubleDegree;
+    public double getSkyHeight() {
+        return doubleSkyHeight;
+    }
+
+    public double getGroundHeight() {
+        return doubleGroundHeight;
+    }
+
+    public int getDegree() {
+        return intDegree;
     }
 
     public double getTORA() {
@@ -141,6 +155,10 @@ public class Runway {
 
     public double getRunwayStrip() {
         return doubleRunwayStrip;
+    }
+
+    public double getAirportHeight() {
+        return doubleAirportHeight;
     }
 
     //endregion
