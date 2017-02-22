@@ -10,6 +10,5 @@ public class Controller {
     public void initialize() {
         borderPaneMainWindow.setCenter(new TopViewRunway2DVisualization());
         borderPaneLeftWindow.setCenter(new SideViewRunway2DVisualization());
-
     }
 }
