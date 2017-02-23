@@ -1,10 +1,19 @@
+import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UKMapAirportSelection2DVisualization extends Pane {
     //region PrivateVariables
@@ -14,21 +23,79 @@ public class UKMapAirportSelection2DVisualization extends Pane {
     private double doubleXOffset = 0;
     private double doubleYOffset = 0;
 
-    private double doubleUKWidth = 1000;
-    private double doubleUKHeight = 1000;
+    private double scale;
 
-    Image imgUKMap;
+    private double doubleUKWidth = 437;
+    private double doubleUKHeight = 967;
+
+    private double doubleUKMapX;
+    private double doubleUKMapY;
+
+    private double doubleAirportWidth = 5;
+    private double doubleAirportHeight = 5;
+
+    private double doubleImageXToRealWorldX;
+    private double doubleImageYToRealWorldY;
+
+    private boolean checkMousePosition = false;
+
+    private Image imgUKMap;
+    private ObservableList<Airport> airportList;
     //endregion
 
     private ResizableCanvas canvas;
 
-    UKMapAirportSelection2DVisualization() {
-        imgUKMap = new Image(getClass().getResourceAsStream("UK.png"));
-        canvas = new ResizableCanvas();
-        canvas.widthProperty().bind(widthProperty());
-        canvas.heightProperty().bind(heightProperty());
+    UKMapAirportSelection2DVisualization(ObservableList<Airport> airportList) {
+        this.imgUKMap = new Image(getClass().getResourceAsStream("UK.png"));
+        this.canvas = new ResizableCanvas();
+        this.airportList = airportList;
+
+        this.canvas.widthProperty().bind(widthProperty());
+        this.canvas.heightProperty().bind(heightProperty());
+
+        addHandlers();
 
         getChildren().add(canvas);
+    }
+
+    private void addHandlers() {
+        this.setOnMouseMoved(event -> {
+            if(checkMousePosition) {
+                double x = event.getX() - doubleUKMapX;
+                double y = event.getY();
+                if (x >= 0 && x <= scale * imgUKMap.getWidth() && y <= scale * imgUKMap.getHeight()) {
+                    doubleImageXToRealWorldX = canvas.normalize(x, scale * imgUKMap.getWidth(), doubleUKWidth);
+                    doubleImageYToRealWorldY = canvas.normalize(y, scale * imgUKMap.getHeight(), doubleUKHeight);
+                    this.fireEvent(new UKMapAirportSelectionEvent(UKMapAirportSelectionEvent.POSITION_CHANGED, new Point2D(doubleImageXToRealWorldX, doubleImageYToRealWorldY)));
+                }
+            }
+        });
+
+        this.setOnMouseClicked(event -> {
+            if(checkMousePosition) {
+                this.fireEvent(new UKMapAirportSelectionEvent(UKMapAirportSelectionEvent.POSITION_SELECTED, new Point2D(doubleImageXToRealWorldX, doubleImageYToRealWorldY)));
+            }
+        });
+
+    }
+    public final void setOnPositionChanged(EventHandler<? super UKMapAirportSelectionEvent> value) {
+        this.addEventHandler(UKMapAirportSelectionEvent.POSITION_CHANGED, value);
+    }
+
+    public final void setOnPositionSelected(EventHandler<? super UKMapAirportSelectionEvent> value) {
+        this.addEventHandler(UKMapAirportSelectionEvent.POSITION_SELECTED, value);
+    }
+
+    public void refresh(){
+        canvas.draw();
+    }
+
+    public void lookForAirportPosition() {
+        checkMousePosition = true;
+    }
+
+    public void stopLookingForAirportPosition() {
+        checkMousePosition = false;
     }
 
     class ResizableCanvas extends Canvas {
@@ -53,17 +120,23 @@ public class UKMapAirportSelection2DVisualization extends Pane {
         public double prefHeight(double width) {
             return getHeight();
         }
+
+
         //endregion
 
         //region PrivateMethods
+
         private void draw() {
             doubleCanvasWidth = this.getWidth();
             doubleCanvasHeight = this.getHeight();
             GraphicsContext gc = getGraphicsContext2D();
             gc.clearRect(0, 0, getWidth(), getHeight());
 
+            scale = Math.min(doubleCanvasWidth / imgUKMap.getWidth(), doubleCanvasHeight / imgUKMap.getHeight());
+
             drawBackground(gc);
             drawImage(gc);
+            drawAirports(gc);
         }
 
         private void drawBackground(GraphicsContext gc) {
@@ -72,18 +145,27 @@ public class UKMapAirportSelection2DVisualization extends Pane {
             //gc.fillRect(0, 0, doubleCanvasWidth, doubleCanvasHeight);
         }
         private void drawImage(GraphicsContext gc) {
-            double scale = Math.min(doubleCanvasWidth/imgUKMap.getWidth(), doubleCanvasHeight/imgUKMap.getHeight());
+            doubleUKMapX = (doubleCanvasWidth - scale * imgUKMap.getWidth())/2;
+            doubleUKMapY = 0;
             gc.drawImage(imgUKMap,
-                    doubleCanvasWidth/2 - (scale * imgUKMap.getWidth())/2,
-                    0,
+                    doubleUKMapX,
+                    doubleUKMapY,
                     scale * imgUKMap.getWidth(),
                     scale * imgUKMap.getHeight());
+        }
+        private void drawAirports(GraphicsContext gc) {
+            gc.setFill(Color.BLUE);
+            for(Airport airport:airportList) {
+                gc.fillRect(doubleUKMapX - scale * doubleAirportWidth / 2 + normalize(airport.getUKMapPosition().getX(), doubleUKWidth, scale * imgUKMap.getWidth()),
+                        -scale * doubleAirportHeight/2 + normalize(airport.getUKMapPosition().getY(), doubleUKHeight, scale * imgUKMap.getHeight()),
+                        scale * doubleAirportWidth,
+                        scale * doubleAirportHeight);
+            }
         }
         private double normalize(double value,double from, double to){
             return value*to/from;
         }
         //endregion
-
     }
 
     //endregion
