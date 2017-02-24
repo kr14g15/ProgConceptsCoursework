@@ -47,8 +47,8 @@
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                       </columnConstraints>
                                       <rowConstraints>
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
                                           <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                                          <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                       <children>
@@ -58,7 +58,7 @@
                                               </GridPane.margin></Button>
                                           <BorderPane id="borderPaneSmallAirportImage" fx:id="borderPaneSmallAirportImage" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="2">
                                              <center>
-                                                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="No Image. Click here to add." textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+                                                <Label fx:id="lblAirportImage" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="250.0" prefWidth="300.0" text="No Image. Click here to add." textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
                                                    <font>
                                                       <Font size="41.0" />
                                                    </font>

@@ -10,9 +10,10 @@ public class Airport{
     //endregion
 
     //region publicMethods
-    public Airport(String name, Point2D position){
+    public Airport(String name, Point2D position, Image image){
         this.strName = name;
         this.pointUKMapPosition = position;
+        this.image = image;
     }
 
     public String getName() {
