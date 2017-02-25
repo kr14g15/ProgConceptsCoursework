@@ -117,7 +117,7 @@
                                                    </content></Tab>
                                                 <Tab text="Edit">
                                                    <content>
-                                                        <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                                        <GridPane fx:id="gridEditAirport" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                                             <columnConstraints>
                                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -171,7 +171,7 @@
                                                    </content></Tab>
                                                 <Tab text="Remove">
                                                     <content>
-                                                        <GridPane>
+                                                        <GridPane fx:id="gridRemoveAirport">
                                                             <columnConstraints>
                                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -220,37 +220,48 @@
                                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                               <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
                                               <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <ListView fx:id="listViewRunwayList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="2">
+                                                <ListView fx:id="listViewRunwayList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </GridPane.margin></ListView>
-                                                <Button alignment="TOP_CENTER" centerShape="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="View Visualisation" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <Button alignment="TOP_CENTER" centerShape="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="View Visualisation" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                    <GridPane.margin>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </GridPane.margin>
                                                 </Button>
-                                                <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Import Runway" GridPane.rowIndex="2">
+                                                <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Import Runway" GridPane.rowIndex="3">
                                                    <GridPane.margin>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </GridPane.margin>
                                                 </Button>
-                                                <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Export Runway" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Export Runway" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                    <GridPane.margin>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </GridPane.margin>
                                                 </Button>
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Selected Airport">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </GridPane.margin>
+                                                </Label>
+                                                <TextField fx:id="txtSelectedAirport" disable="true" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </GridPane.margin>
+                                                </TextField>
                                              </children>
                                           </GridPane>
                                           <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="281.0" prefWidth="300.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                             <tabs>
                                               <Tab text="Add">
                                                    <content>
-                                                      <GridPane>
+                                                      <GridPane fx:id="gridAddRunway">
                                                         <columnConstraints>
                                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -576,7 +587,7 @@
                                                    </content></Tab>
                                                 <Tab text="Edit">
                                                     <content>
-                                                        <GridPane>
+                                                        <GridPane fx:id="gridEditRunway">
                                                             <columnConstraints>
                                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -902,7 +913,7 @@
                                                     </content></Tab>
                                                 <Tab text="Remove">
                                                     <content>
-                                                        <GridPane>
+                                                        <GridPane fx:id="gridRemoveRunway">
                                                             <columnConstraints>
                                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -913,21 +924,16 @@
                                                                 <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
                                                             </rowConstraints>
                                                             <children>
-                                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Delete this Runway" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Delete this Runway" GridPane.columnIndex="1">
                                                                     <GridPane.margin>
                                                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                                     </GridPane.margin>
                                                                 </Button>
-                                                            <ComboBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
+                                                            <ComboBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                                                <GridPane.margin>
                                                                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                                </GridPane.margin>
                                                             </ComboBox>
-                                                            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Name:">
-                                                               <GridPane.margin>
-                                                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                               </GridPane.margin>
-                                                            </Label>
                                                             </children>
                                                         </GridPane>
                                                     </content></Tab>
