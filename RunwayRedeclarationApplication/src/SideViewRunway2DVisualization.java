@@ -27,7 +27,6 @@ public class SideViewRunway2DVisualization extends Pane {
     //endregion
 
     //region publicMethods
-
     SideViewRunway2DVisualization() {
         canvas = new ResizableCanvas();
         canvas.widthProperty().bind(widthProperty());

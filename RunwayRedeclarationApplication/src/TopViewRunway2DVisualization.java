@@ -7,6 +7,7 @@ import javafx.scene.text.*;
 import java.awt.*;
 
 public class TopViewRunway2DVisualization extends Pane {
+
     //region PrivateVariables
     private Runway runway;
     private ResizableCanvas canvas;

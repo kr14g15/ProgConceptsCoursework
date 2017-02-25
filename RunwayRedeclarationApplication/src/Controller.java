@@ -447,7 +447,7 @@ public class Controller {
     }
 
     private void selectRunway(Runway runway){
-        selectedRunway =  runway;
+        selectedRunway = runway;
         if(selectedRunway != null) {
             setAllComponentsInGrid(gridEditRunway, true);
             setAllComponentsInGrid(gridRemoveRunway, true);

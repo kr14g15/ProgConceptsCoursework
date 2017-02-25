@@ -29,6 +29,7 @@ public class UKMapAirportSelectionEvent extends Event {
     public Point2D getPosition(){
         return position;
     }
+
     public Airport getAirport() {return airport;}
 
 }

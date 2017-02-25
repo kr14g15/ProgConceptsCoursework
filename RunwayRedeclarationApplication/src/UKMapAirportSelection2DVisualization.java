@@ -195,7 +195,4 @@ public class UKMapAirportSelection2DVisualization extends Pane {
     }
 
     //endregion
-
-    //region Events
-    //endregion
 }

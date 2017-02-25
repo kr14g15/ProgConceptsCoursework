@@ -1,7 +1,7 @@
 public class Runway {
     //region PrivateVariables
     private char  charDirection;
-    private int intDegree;
+    private int   intDegree;
 
     private double doubleTORA;                          //Take-off Run
     private double doubleASDA;                          //TORA + Stopway

@@ -11,7 +11,7 @@ import java.awt.*;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("GUI.fxml"));
+        Parent root  = FXMLLoader.load(getClass().getResource("GUI.fxml"));
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double doubleScreenWidth = screenSize.getWidth();
