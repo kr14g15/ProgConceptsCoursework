@@ -1,3 +1,4 @@
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -18,6 +19,7 @@ public class Airport{
         this.strName = name;
         this.pointUKMapPosition = position;
         this.image = image;
+        this.listRunways = FXCollections.observableArrayList();
     }
 
     public String getName() {

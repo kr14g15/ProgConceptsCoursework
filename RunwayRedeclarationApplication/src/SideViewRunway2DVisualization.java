@@ -36,10 +36,15 @@ public class SideViewRunway2DVisualization extends Pane {
         getChildren().add(canvas);
     }
 
+    public void refresh(){
+        canvas.draw();
+    }
+
     public void setRunway(Runway runway){
         this.runway = runway;
     }
     //endregion
+
 
     class ResizableCanvas extends Canvas {
 

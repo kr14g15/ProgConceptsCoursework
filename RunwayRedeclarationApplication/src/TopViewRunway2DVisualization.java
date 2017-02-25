@@ -73,6 +73,10 @@ public class TopViewRunway2DVisualization extends Pane {
 
         getChildren().add(canvas);
     }
+
+    public void refresh(){
+        canvas.draw();
+    }
     //endregion
 
     class ResizableCanvas extends Canvas {
