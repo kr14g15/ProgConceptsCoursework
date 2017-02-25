@@ -76,6 +76,7 @@ public class UKMapAirportSelection2DVisualization extends Pane {
                 this.fireEvent(new UKMapAirportSelectionEvent(UKMapAirportSelectionEvent.POSITION_SELECTED, new Point2D(doubleImageXToRealWorldX, doubleImageYToRealWorldY)));
             }else{
                 double x1,x2,y1,y2;
+                boolean airportSelected = false;
                 refresh();
                 for(Airport airport:airportList){
                     x1 = airport.getUKMapPosition().getX()-canvas.normalize(scale * doubleAirportWidth/2, imgUKMap.getWidth()*scale, doubleUKWidth);
@@ -87,9 +88,11 @@ public class UKMapAirportSelection2DVisualization extends Pane {
                     if(doubleImageXToRealWorldX >= x1 && doubleImageXToRealWorldX <= x2 && doubleImageYToRealWorldY >= y1 && doubleImageYToRealWorldY <=y2){
                         canvas.drawAirport(airport, Color.RED);
                         this.fireEvent(new UKMapAirportSelectionEvent(UKMapAirportSelectionEvent.AIRPORT_SELECTED, airport));
+                        airportSelected = true;
                         break;
                     }
                 }
+                if(!airportSelected) this.fireEvent(new UKMapAirportSelectionEvent(UKMapAirportSelectionEvent.AIRPORT_DESELECTED));
             }
         });
 
@@ -104,6 +107,10 @@ public class UKMapAirportSelection2DVisualization extends Pane {
 
     public final void setOnAirportSelected(EventHandler<? super UKMapAirportSelectionEvent> value) {
         this.addEventHandler(UKMapAirportSelectionEvent.AIRPORT_SELECTED, value);
+    }
+
+    public final void setOnAirportDeSelected(EventHandler<? super UKMapAirportSelectionEvent> value) {
+        this.addEventHandler(UKMapAirportSelectionEvent.AIRPORT_DESELECTED, value);
     }
 
     public void refresh(){

@@ -9,6 +9,7 @@ import java.awt.*;
 public class TopViewRunway2DVisualization extends Pane {
     //region PrivateVariables
     private Runway runway;
+    private ResizableCanvas canvas;
 
     private double doubleCanvasWidth = 100;
     private double doubleCanvasHeight = 200;
@@ -60,16 +61,19 @@ public class TopViewRunway2DVisualization extends Pane {
     private double doubleStripesWidth;
     //endregion
 
-    private ResizableCanvas canvas;
+    //region publicMethods
+    public void setRunway(Runway runway){
+        this.runway = runway;
+    }
 
     TopViewRunway2DVisualization() {
-        runway = new Runway();
         canvas = new ResizableCanvas();
         canvas.widthProperty().bind(widthProperty());
         canvas.heightProperty().bind(heightProperty());
 
         getChildren().add(canvas);
     }
+    //endregion
 
     class ResizableCanvas extends Canvas {
 
@@ -103,26 +107,28 @@ public class TopViewRunway2DVisualization extends Pane {
             gc.clearRect(0, 0, getWidth(), getHeight());
 
             drawBackground(gc);
-            drawInstrumentStrip(gc);
-            drawCGA(gc);
-            drawRunwayStrip(gc);
-            drawLeftThresholds(gc);
-            drawRightThresholds(gc);
-            drawLeftRunwayNumber(gc);
-            drawRightRunwayNumber(gc);
-            drawStripes(gc);
+            if(runway != null) {
+                doubleAirportLength = 2 * runway.getBlastProtection() + 2* runway.getStripEnd() + runway.getTORA();
+                doubleAirportWidth = 2 * runway.getInstrumentStrip();
 
-            double doubleTextHeight = (new Text()).getLayoutBounds().getHeight();
-            drawLinedText(gc, "TORA "+runway.getTORA(), doubleRunwayStripX, doubleRunwayStripY + doubleRunwayStripWidth/2 + doubleTextHeight/2, doubleRunwayStripLength);
-            drawLinedText(gc, "TODA "+runway.getTODA(), doubleRunwayStripX, doubleRunwayStripY + doubleRunwayStripWidth/2 + 2*doubleTextHeight/2, doubleRunwayStripLength);
-            drawLinedText(gc, "ASDA "+runway.getASDA(), doubleRunwayStripX, doubleRunwayStripY + doubleRunwayStripWidth/2 + 3* doubleTextHeight/2, doubleRunwayStripLength);
+                drawInstrumentStrip(gc);
+                drawCGA(gc);
+                drawRunwayStrip(gc);
+                drawLeftThresholds(gc);
+                drawRightThresholds(gc);
+                drawLeftRunwayNumber(gc);
+                drawRightRunwayNumber(gc);
+                drawStripes(gc);
+
+                double doubleTextHeight = (new Text()).getLayoutBounds().getHeight();
+                drawLinedText(gc, "TORA " + runway.getTORA(), doubleRunwayStripX, doubleRunwayStripY + doubleRunwayStripWidth / 2 + doubleTextHeight / 2, doubleRunwayStripLength);
+                drawLinedText(gc, "TODA " + runway.getTODA(), doubleRunwayStripX, doubleRunwayStripY + doubleRunwayStripWidth / 2 + 2 * doubleTextHeight / 2, doubleRunwayStripLength);
+                drawLinedText(gc, "ASDA " + runway.getASDA(), doubleRunwayStripX, doubleRunwayStripY + doubleRunwayStripWidth / 2 + 3 * doubleTextHeight / 2, doubleRunwayStripLength);
+            }
         }
 
         private void drawBackground(GraphicsContext gc) {
             gc.setFill(Color.rgb(34,139,34));
-            doubleAirportLength = 2 * runway.getBlastProtection() + 2* runway.getStripEnd() + runway.getTORA();
-            doubleAirportWidth = 2 * runway.getInstrumentStrip();
-
             gc.fillRect(0, 0, doubleCanvasWidth, doubleCanvasHeight);
         }
 
@@ -158,7 +164,7 @@ public class TopViewRunway2DVisualization extends Pane {
             doubleRunwayStripX = doubleCGAX + runway.getStripEnd();
             doubleRunwayStripY = doubleCGAY + runway.getVisualStrip();
             doubleRunwayStripLength = runway.getTORA();
-            doubleRunwayStripWidth = runway.getStripWidth();
+            doubleRunwayStripWidth = runway.getRunwayStripWidth();
 
             gc.fillRect(normalize(doubleRunwayStripX, doubleAirportLength, doubleCanvasWidth),
                     normalize(doubleRunwayStripY - doubleRunwayStripWidth/2, doubleAirportWidth, doubleCanvasHeight),
@@ -321,9 +327,4 @@ public class TopViewRunway2DVisualization extends Pane {
         //endregion
 
     }
-
-    //endregion
-
-    //region Events
-    //endregion
 }

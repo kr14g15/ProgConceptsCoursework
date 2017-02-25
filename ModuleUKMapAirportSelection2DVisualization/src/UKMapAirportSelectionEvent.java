@@ -10,6 +10,7 @@ public class UKMapAirportSelectionEvent extends Event {
     static final EventType<UKMapAirportSelectionEvent> POSITION_SELECTED = new EventType(ANY, "POSITION_SELECTED");
     static final EventType<UKMapAirportSelectionEvent> POSITION_CHANGED = new EventType(ANY, "POSITION_CHANGED");
     static final EventType<UKMapAirportSelectionEvent> AIRPORT_SELECTED = new EventType(ANY, "AIRPORT_SELECTED");
+    static final EventType<UKMapAirportSelectionEvent> AIRPORT_DESELECTED = new EventType(ANY, "AIRPORT_DESELECTED");
 
     public UKMapAirportSelectionEvent(EventType<UKMapAirportSelectionEvent> eventType, Airport airport) {
         super(eventType);
@@ -19,6 +20,10 @@ public class UKMapAirportSelectionEvent extends Event {
     UKMapAirportSelectionEvent(EventType<UKMapAirportSelectionEvent> eventType, Point2D position) {
         super(eventType);
         this.position = position;
+    }
+
+    UKMapAirportSelectionEvent(EventType<UKMapAirportSelectionEvent> eventType) {
+        super(eventType);
     }
 
     public Point2D getPosition(){

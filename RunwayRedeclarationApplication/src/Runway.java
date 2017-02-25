@@ -1,42 +1,39 @@
 public class Runway {
     //region PrivateVariables
-    private char  charDirection = 'L';
-    private int intDegree = 9;
-    private double doubleSkyHeight = 300;
-    private double doubleGroundHeight = 300;
-    private double doubleAirportHeight = 30;
+    private char  charDirection;
+    private int intDegree;
 
+    private double doubleTORA;                          //Take-off Run
+    private double doubleASDA;                          //TORA + Stopway
+    private double doubleTODA;                          //TORA + Stopway + Clearway
+    private double doubleLDA;                           //Landing distance
+    private double doubleRunwayStripWidth;
 
-    private double doubleTORA = 3660;                          //Take-off Run
-    private double doubleASDA = 3660;                          //TORA + Stopway
-    private double doubleTODA = 3660;                          //TORA + Stopway + Clearway
-
-    private double doubleLDA = 3660;                           //Landing distance
-
-    private double doubleStripWidth = 30;
     private double doubleStopway;                              //ASDA - TORA
     private double doubleClearway;                             //TODA - TORA
 
-    private double doubleThresholdStripLength = 200;           //TORA - LDA
-    private double doubleThresholdStripWidth = 2;
-    private double doubleThresholdStripeNumber = 8;
+    private double doubleThresholdStripLength;           //TORA - LDA
+    private double doubleThresholdStripWidth;
+    private double doubleThresholdStripeNumber;
 
-    private double doubleStripesLength = 100;                   //TORA - LDA
-    private double doubleStripesWidth = 2;
-    private double doubleStripesDifference = 50;
+    private double doubleStripesLength;                   //TORA - LDA
+    private double doubleStripesWidth;
+    private double doubleStripesDifference;
 
-    private double doubleStripEnd = 60;                        //area between the end of the runway	and	the	end	of the runway strip
-    private double doubleVisualStrip = 75;
-    private double doubleCGA = 105;
-    private double doubleInstrumentStrip = 150;
+    private double doubleStripEnd;                        //area between the end of the runway	and	the	end	of the runway strip
+    private double doubleVisualStrip;
+    private double doubleCGA;
+    private double doubleInstrumentStrip;
 
-    private double doubleRESA = 240;
-    private double doubleBlastProtection = 400;                //area behind an aircraft
+    private double doubleRESA;
+    private double doubleBlastProtection;                //area behind an aircraft
     private double doubleALS;                                  //area between top of obstacle and runway(min angle of descent)
     private double doubleTOCS;                                 //area between top of obstacle and runway(min angle of ascent)
     private double doubleRunwayStrip;                          //runway + stopways
 
-
+    private double doubleSkyHeight;
+    private double doubleGroundHeight;
+    private double doubleAirportHeight;
     //endregion
 
     //region PublicVariables
@@ -85,8 +82,8 @@ public class Runway {
         return doubleLDA;
     }
 
-    public double getStripWidth() {
-        return doubleStripWidth;
+    public double getRunwayStripWidth() {
+        return doubleRunwayStripWidth;
     }
 
     public double getThresholdStripLength() {
@@ -159,6 +156,114 @@ public class Runway {
 
     public double getAirportHeight() {
         return doubleAirportHeight;
+    }
+
+    public void setDirection(char charDirection) {
+        this.charDirection = charDirection;
+    }
+
+    public void setDegree(int intDegree) {
+        this.intDegree = intDegree;
+    }
+
+    public void setTORA(double doubleTORA) {
+        this.doubleTORA = doubleTORA;
+    }
+
+    public void setASDA(double doubleASDA) {
+        this.doubleASDA = doubleASDA;
+    }
+
+    public void setTODA(double doubleTODA) {
+        this.doubleTODA = doubleTODA;
+    }
+
+    public void setLDA(double doubleLDA) {
+        this.doubleLDA = doubleLDA;
+    }
+
+    public void setRunwayStripWidth(double doubleRunwayStripWidth) {
+        this.doubleRunwayStripWidth = doubleRunwayStripWidth;
+    }
+
+    public void setStopway(double doubleStopway) {
+        this.doubleStopway = doubleStopway;
+    }
+
+    public void setClearway(double doubleClearway) {
+        this.doubleClearway = doubleClearway;
+    }
+
+    public void setThresholdStripLength(double doubleThresholdStripLength) {
+        this.doubleThresholdStripLength = doubleThresholdStripLength;
+    }
+
+    public void setThresholdStripWidth(double doubleThresholdStripWidth) {
+        this.doubleThresholdStripWidth = doubleThresholdStripWidth;
+    }
+
+    public void setThresholdStripeNumber(double doubleThresholdStripeNumber) {
+        this.doubleThresholdStripeNumber = doubleThresholdStripeNumber;
+    }
+
+    public void setHorizontalStripesLength(double doubleStripesLength) {
+        this.doubleStripesLength = doubleStripesLength;
+    }
+
+    public void setHorizontalStripesWidth(double doubleStripesWidth) {
+        this.doubleStripesWidth = doubleStripesWidth;
+    }
+
+    public void setHorizontalStripesDifference(double doubleStripesDifference) {
+        this.doubleStripesDifference = doubleStripesDifference;
+    }
+
+    public void setStripEnd(double doubleStripEnd) {
+        this.doubleStripEnd = doubleStripEnd;
+    }
+
+    public void setVisualStrip(double doubleVisualStrip) {
+        this.doubleVisualStrip = doubleVisualStrip;
+    }
+
+    public void setCGA(double doubleCGA) {
+        this.doubleCGA = doubleCGA;
+    }
+
+    public void setInstrumentStrip(double doubleInstrumentStrip) {
+        this.doubleInstrumentStrip = doubleInstrumentStrip;
+    }
+
+    public void setRESA(double doubleRESA) {
+        this.doubleRESA = doubleRESA;
+    }
+
+    public void setBlastProtection(double doubleBlastProtection) {
+        this.doubleBlastProtection = doubleBlastProtection;
+    }
+
+    public void setALS(double doubleALS) {
+        this.doubleALS = doubleALS;
+    }
+
+    public void setTOCS(double doubleTOCS) {
+        this.doubleTOCS = doubleTOCS;
+    }
+
+    public void setRunwayStrip(double doubleRunwayStrip) {
+        this.doubleRunwayStrip = doubleRunwayStrip;
+    }
+
+    public void setSkyHeight(double doubleSkyHeight) {
+        this.doubleSkyHeight = doubleSkyHeight;
+    }
+
+    public void setGroundHeight(double doubleGroundHeight) {
+        this.doubleGroundHeight = doubleGroundHeight;
+    }
+
+    public void setAirportHeight(double doubleAirportHeight) {
+        this.doubleAirportHeight = doubleAirportHeight;
     }
 
     //endregion

@@ -1,5 +1,8 @@
+import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+
+import java.util.List;
 
 public class Airport{
 
@@ -7,6 +10,7 @@ public class Airport{
     private String strName;
     private Point2D pointUKMapPosition;
     private Image image;
+    private ObservableList<Runway> listRunways;
     //endregion
 
     //region publicMethods
@@ -38,6 +42,10 @@ public class Airport{
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public ObservableList<Runway> getRunwayList() {
+        return listRunways;
     }
 
     //endregion
