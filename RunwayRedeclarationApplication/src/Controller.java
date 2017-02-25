@@ -1,5 +1,3 @@
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -13,8 +11,6 @@ import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.xml.soap.Text;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -95,8 +91,8 @@ public class Controller {
     public void initialize() {
         airportList = FXCollections.observableArrayList();
         cboAirportList.setItems(airportList);
-        imageViewAirportImage.fitWidthProperty().bind(borderPaneAirportImage.widthProperty());
-        imageViewAirportImage.fitHeightProperty().bind(borderPaneAirportImage.heightProperty());
+        //imageViewAirportImage.fitWidthProperty().bind(borderPaneAirportImage.widthProperty());
+        //imageViewAirportImage.fitHeightProperty().bind(borderPaneAirportImage.heightProperty());
 
         topViewRunway2DVisualization = new TopViewRunway2DVisualization();
         sideViewRunway2DVisualization = new SideViewRunway2DVisualization();
