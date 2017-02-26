@@ -142,6 +142,10 @@ public class Controller {
 
     //endregion
 
+    //region removeRunway
+    @FXML private Button btnRemoveSelectedRunway;
+    //endregion
+
     //region publicMethods
     @FXML
     public void initialize() {
@@ -257,8 +261,9 @@ public class Controller {
                     protected void updateItem(Runway t, boolean bln) {
                         super.updateItem(t, bln);
                         if (t != null) {
-                            setText(t.getDirection() + ""+t.getDegree());
-                        }
+                            setText(t.getDirection() + "" + t.getDegree());
+                        }else
+                            setText(null);
                     }
                 };
             }
@@ -272,7 +277,8 @@ public class Controller {
                         super.updateItem(t, bln);
                         if (t != null) {
                             setText(t.getDirection() + "" + t.getDegree());
-                        }
+                        }else
+                            setText(null);
                     }
                 };
             }
@@ -288,6 +294,7 @@ public class Controller {
                 selectedAirport.setImage(currentAirportImage);
                 refreshAirportListComboBox();
                 ukMapAirportSelection2DVisualization.refresh();
+                selectAirport(null);
             }
         });
 
@@ -297,6 +304,12 @@ public class Controller {
             imageViewAirportImage.setImage(null);
             refreshAirportListComboBox();
             ukMapAirportSelection2DVisualization.refresh();
+        });
+
+        btnRemoveSelectedRunway.setOnAction(event -> {
+            selectedAirport.getRunwayList().remove(selectedRunway);
+            selectedRunway = null;
+            refreshRunwayListView();
         });
 
         imageViewAirportImage.setOnMouseClicked(event -> {
@@ -415,7 +428,8 @@ public class Controller {
     private void refreshRunwayListView(){
         listViewRunwayList.getSelectionModel().clearSelection();
         runwayListProperty.set(null);
-        runwayListProperty.set(selectedAirport.getRunwayList());
+        if(selectedAirport != null)
+            runwayListProperty.set(selectedAirport.getRunwayList());
     }
 
     private void selectAirport(Airport airport){
@@ -443,6 +457,8 @@ public class Controller {
             setAllComponentsInGrid(gridAddRunway, false);
             setAllComponentsInGrid(gridEditRunway, false);
             setAllComponentsInGrid(gridRemoveRunway, false);
+
+            refreshRunwayListView();
         }
     }
 

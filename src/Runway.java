@@ -266,5 +266,9 @@ public class Runway {
         this.doubleAirportHeight = doubleAirportHeight;
     }
 
+    @Override
+    public String toString() {
+        return charDirection+""+intDegree;
+    }
     //endregion
 }
