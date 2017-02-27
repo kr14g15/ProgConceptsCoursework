@@ -4,8 +4,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 
-import java.awt.*;
-
 public class TopViewRunway2DVisualization extends Pane {
 
     //region PrivateVariables
@@ -31,6 +29,7 @@ public class TopViewRunway2DVisualization extends Pane {
     private double doubleCGALength;
     private double doubleCGAWidth;
 
+    private double intThresholdStripNumber;
     private double doubleRunwayStripX;
     private double doubleRunwayStripY;
     private double doubleRunwayStripLength;
@@ -38,8 +37,8 @@ public class TopViewRunway2DVisualization extends Pane {
 
     private double doubleLeftThresholdX;
     private double doubleLeftThresholdY;
-    private double doubleLeftThresholdLength;
-    private double doubleLeftThresholdWidth;
+    private double doubleLeftThresholdMarkingsStripLength;
+    private double doubleLeftThresholdMarkingsStripWidth;
 
     private double doubleRightThresholdX;
     private double doubleRightThresholdY;
@@ -115,12 +114,19 @@ public class TopViewRunway2DVisualization extends Pane {
             if(runway != null) {
                 doubleAirportLength = 2 * runway.getBlastProtection() + 2* runway.getStripEnd() + runway.getTORA();
                 doubleAirportWidth = 2 * runway.getInstrumentStrip();
+                doubleRunwayStripWidth = runway.getRunwayStripWidth();
+
+                if(doubleRunwayStripWidth <= 18.3) intThresholdStripNumber = 4;
+                else if(doubleRunwayStripWidth <= 22.9) intThresholdStripNumber = 6;
+                else if(doubleRunwayStripWidth <= 30.5) intThresholdStripNumber = 8;
+                else if(doubleRunwayStripWidth <= 45.7) intThresholdStripNumber = 12;
+                else intThresholdStripNumber = 16;
 
                 drawInstrumentStrip(gc);
                 drawCGA(gc);
                 drawRunwayStrip(gc);
-                drawLeftThresholds(gc);
-                drawRightThresholds(gc);
+                drawLeftThresholdsMarkings(gc);
+                drawRightThresholdsMarkings(gc);
                 drawLeftRunwayNumber(gc);
                 drawRightRunwayNumber(gc);
                 drawStripes(gc);
@@ -185,39 +191,39 @@ public class TopViewRunway2DVisualization extends Pane {
             gc.restore();
         }
 
-        private void drawLeftThresholds(GraphicsContext gc) {
+        private void drawLeftThresholdsMarkings(GraphicsContext gc) {
             gc.save();
             gc.setFill(Color.WHITE);
-            doubleLeftThresholdX = doubleRunwayStripX;
+            doubleLeftThresholdX = doubleRunwayStripX + runway.getStartToThresholdMarkingsLength();
             doubleLeftThresholdY = doubleRunwayStripY;
-            doubleLeftThresholdLength = runway.getThresholdStripLength();
-            doubleLeftThresholdWidth = runway.getThresholdStripWidth();
+            doubleLeftThresholdMarkingsStripLength = runway.getThresholdMarkingsStripLength();
+            doubleLeftThresholdMarkingsStripWidth = runway.getThresholdMarkingsStripWidth();
 
-            for(int i = 0; i < runway.getThresholdStripNumber(); i++){
+            for(int i = 0; i < intThresholdStripNumber; i++){
                 gc.fillRect(normalize(doubleLeftThresholdX, doubleAirportLength, doubleCanvasWidth),
                         normalize(doubleLeftThresholdY - doubleRunwayStripWidth/2 +
-                                        ((doubleRunwayStripWidth/runway.getThresholdStripNumber() - doubleLeftThresholdWidth))/2 +
-                                        (i*(doubleRunwayStripWidth/runway.getThresholdStripNumber())),
+                                        ((doubleRunwayStripWidth/intThresholdStripNumber - doubleLeftThresholdMarkingsStripWidth))/2 +
+                                        (i*(doubleRunwayStripWidth/intThresholdStripNumber)),
                                 doubleAirportWidth, doubleCanvasHeight),
-                        normalize(doubleLeftThresholdLength, doubleAirportLength, doubleCanvasWidth),
-                        normalize(doubleLeftThresholdWidth, doubleAirportWidth, doubleCanvasHeight));
+                        normalize(doubleLeftThresholdMarkingsStripLength, doubleAirportLength, doubleCanvasWidth),
+                        normalize(doubleLeftThresholdMarkingsStripWidth, doubleAirportWidth, doubleCanvasHeight));
             }
             gc.restore();
         }
 
-        private void drawRightThresholds(GraphicsContext gc) {
+        private void drawRightThresholdsMarkings(GraphicsContext gc) {
             gc.save();
             gc.setFill(Color.WHITE);
-            doubleRightThresholdX = doubleRunwayStripX + doubleRunwayStripLength - doubleRightThresholdLength;
+            doubleRightThresholdX = doubleRunwayStripX + doubleRunwayStripLength - doubleRightThresholdLength - runway.getStartToThresholdMarkingsLength();
             doubleRightThresholdY = doubleRunwayStripY;
-            doubleRightThresholdLength = runway.getThresholdStripLength();
-            doubleRightThresholdWidth = runway.getThresholdStripWidth();
+            doubleRightThresholdLength = runway.getThresholdMarkingsStripLength();
+            doubleRightThresholdWidth = runway.getThresholdMarkingsStripWidth();
 
-            for(int i = 0; i < runway.getThresholdStripNumber(); i++){
+            for(int i = 0; i < intThresholdStripNumber; i++){
                 gc.fillRect(normalize(doubleRightThresholdX, doubleAirportLength, doubleCanvasWidth),
                         normalize(doubleRightThresholdY - doubleRunwayStripWidth/2 +
-                                        ((doubleRunwayStripWidth/runway.getThresholdStripNumber() - doubleRightThresholdWidth))/2 +
-                                        (i*(doubleRunwayStripWidth/runway.getThresholdStripNumber())),
+                                        ((doubleRunwayStripWidth/intThresholdStripNumber - doubleRightThresholdWidth))/2 +
+                                        (i*(doubleRunwayStripWidth/intThresholdStripNumber)),
                                 doubleAirportWidth, doubleCanvasHeight),
                         normalize(doubleRightThresholdLength, doubleAirportLength, doubleCanvasWidth),
                         normalize(doubleRightThresholdWidth, doubleAirportWidth, doubleCanvasHeight));
@@ -241,17 +247,17 @@ public class TopViewRunway2DVisualization extends Pane {
             double doubleDegreeLength = degree.getLayoutBounds().getWidth();
             double doubleDegreeHeight = degree.getLayoutBounds().getHeight();
 
-            doubleRightRunwayNumberLength = normalize(doubleDirectionHeight + doubleDegreeHeight, doubleCanvasWidth, doubleAirportLength);
-            doubleRightRunwayNumberX = doubleRightThresholdX - doubleRightRunwayNumberLength;
+            doubleRightRunwayNumberLength = normalize(doubleDirectionHeight + doubleDegreeHeight, doubleCanvasWidth, doubleAirportLength) + runway.getLetterToNumberLength();
+            doubleRightRunwayNumberX = doubleRightThresholdX - doubleRightRunwayNumberLength - runway.getThresholdMarkingsToLetterLength();
             doubleRightRunwayNumberY = doubleLeftThresholdY;
-            doubleRightRunwayNumberWidth = 0;
+            doubleRightRunwayNumberWidth = runway.getCharacterWidth();
 
             gc.translate(normalize(doubleRightRunwayNumberX, doubleAirportLength, doubleCanvasWidth),
                     normalize(doubleRightRunwayNumberY , doubleAirportWidth, doubleCanvasHeight) - doubleDirectionLength/2) ;
             gc.rotate(-90);
 
-            gc.fillText(direction.getText(), -doubleDirectionLength, doubleDirectionHeight);
-            gc.fillText(degree.getText(), -doubleDegreeLength, doubleDirectionHeight + doubleDegreeHeight);
+            gc.fillText(degree.getText(), -doubleDegreeLength, doubleDegreeHeight);
+            gc.fillText(direction.getText(), -doubleDirectionLength, doubleDirectionHeight + doubleDegreeHeight  + normalize(runway.getLetterToNumberLength(), doubleAirportLength, doubleCanvasWidth));
 
             gc.restore();
         }
@@ -270,16 +276,16 @@ public class TopViewRunway2DVisualization extends Pane {
             double doubleDegreeLength = degree.getLayoutBounds().getWidth();
             double doubleDegreeHeight = degree.getLayoutBounds().getHeight();
 
-            doubleLeftRunwayNumberX = doubleLeftThresholdX + doubleLeftThresholdLength;
+            doubleLeftRunwayNumberX = doubleLeftThresholdX + doubleLeftThresholdMarkingsStripLength + runway.getThresholdMarkingsToLetterLength();
             doubleLeftRunwayNumberY = doubleLeftThresholdY;
-            doubleLeftRunwayNumberLength = normalize(doubleDirectionHeight + doubleDegreeHeight, doubleCanvasWidth, doubleAirportLength);
+            doubleLeftRunwayNumberLength = normalize(doubleDirectionHeight + doubleDegreeHeight, doubleCanvasWidth, doubleAirportLength) + runway.getLetterToNumberLength();
             doubleLeftRunwayNumberWidth = 0;
 
             gc.translate(normalize(doubleLeftRunwayNumberX, doubleAirportLength, doubleCanvasWidth),
                     normalize(doubleLeftRunwayNumberY , doubleAirportWidth, doubleCanvasHeight) - doubleDirectionLength/2) ;
             gc.rotate(90);
             gc.fillText(direction.getText(), 0,0);
-            gc.fillText(degree.getText(), -doubleDegreeLength/2,-doubleDirectionHeight);
+            gc.fillText(degree.getText(), -doubleDegreeLength/2,- doubleDirectionHeight - normalize(runway.getLetterToNumberLength(), doubleAirportLength, doubleCanvasWidth));
 
             gc.restore();
         }
@@ -287,7 +293,7 @@ public class TopViewRunway2DVisualization extends Pane {
         private void drawStripes(GraphicsContext gc) {
             gc.save();
             gc.setFill(Color.WHITE);
-            doubleStripesX = doubleLeftRunwayNumberX +  doubleLeftRunwayNumberLength;
+            doubleStripesX = doubleLeftRunwayNumberX +  doubleLeftRunwayNumberLength + runway.getNumberToHorizontalStripeLength();
             doubleStripesY = doubleRunwayStripY - runway.getStripesWidth()/2;
             doubleStripesLength = runway.getStripesLength();
             doubleStripesWidth = runway.getStripesWidth();
@@ -302,7 +308,7 @@ public class TopViewRunway2DVisualization extends Pane {
                         normalize(doubleStripesLength, doubleAirportLength, doubleCanvasWidth),
                         normalize(doubleStripesWidth, doubleAirportWidth, doubleCanvasHeight));
                 i++;
-            }while(doubleStripesX + (i+1)*runway.getStripesDifference() + (i+1)*runway.getStripesLength() < doubleRightRunwayNumberX);
+            }while(doubleStripesX + (i+1)*runway.getStripesDifference() + (i+1)*runway.getStripesLength() + runway.getNumberToHorizontalStripeLength() < doubleRightRunwayNumberX);
             gc.restore();
         }
 

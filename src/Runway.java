@@ -9,12 +9,20 @@ public class Runway {
     private double doubleLDA;                           //Landing distance
     private double doubleRunwayStripWidth;
 
+    private double doubleStartToThresholdMarkingsLength;
+    private double doubleThresholdMarkingsStripLength;
+    private double doubleThresholdMarkingsStripWidth;
+    private double doubleThresholdMarkingsToLetterLength;
+    private double doubleCharacterLength;
+    private double doubleCharacterWidth;
+    private double doubleLetterToNumberLength;
+    private double doubleNumberToHorizontalStripeLength;
+
     private double doubleStopway;                              //ASDA - TORA
     private double doubleClearway;                             //TODA - TORA
 
     private double doubleThresholdStripLength;           //TORA - LDA
     private double doubleThresholdStripWidth;
-    private double doubleThresholdStripeNumber;
 
     private double doubleStripesLength;                   //TORA - LDA
     private double doubleStripesWidth;
@@ -94,9 +102,6 @@ public class Runway {
         return doubleThresholdStripWidth;
     }
 
-    public double getThresholdStripNumber() {
-        return doubleThresholdStripeNumber;
-    }
 
     public double getStripesLength() {
         return doubleStripesLength;
@@ -202,9 +207,6 @@ public class Runway {
         this.doubleThresholdStripWidth = doubleThresholdStripWidth;
     }
 
-    public void setThresholdStripeNumber(double doubleThresholdStripeNumber) {
-        this.doubleThresholdStripeNumber = doubleThresholdStripeNumber;
-    }
 
     public void setHorizontalStripesLength(double doubleStripesLength) {
         this.doubleStripesLength = doubleStripesLength;
@@ -264,6 +266,70 @@ public class Runway {
 
     public void setAirportHeight(double doubleAirportHeight) {
         this.doubleAirportHeight = doubleAirportHeight;
+    }
+
+    public double getStartToThresholdMarkingsLength() {
+        return doubleStartToThresholdMarkingsLength;
+    }
+
+    public void setStartToThresholdMarkingsLength(double startToThresholdMarkingsLength) {
+        this.doubleStartToThresholdMarkingsLength = startToThresholdMarkingsLength;
+    }
+
+    public double getThresholdMarkingsStripLength() {
+        return doubleThresholdMarkingsStripLength;
+    }
+
+    public double getThresholdMarkingsStripWidth() {
+        return doubleThresholdMarkingsStripWidth;
+    }
+
+    public double getThresholdMarkingsToLetterLength() {
+        return doubleThresholdMarkingsToLetterLength;
+    }
+
+    public double getCharacterLength() {
+        return doubleCharacterLength;
+    }
+
+    public double getCharacterWidth() {
+        return doubleCharacterWidth;
+    }
+
+    public double getLetterToNumberLength() {
+        return doubleLetterToNumberLength;
+    }
+
+    public double getNumberToHorizontalStripeLength() {
+        return doubleNumberToHorizontalStripeLength;
+    }
+
+    public void setThresholdMarkingsStripLength(double doubleThresholdMarkingsStripLength) {
+        this.doubleThresholdMarkingsStripLength = doubleThresholdMarkingsStripLength;
+    }
+
+    public void setThresholdMarkingsStripWidth(double doubleThresholdMarkingsStripWidth) {
+        this.doubleThresholdMarkingsStripWidth = doubleThresholdMarkingsStripWidth;
+    }
+
+    public void setThresholdMarkingsToLetterLength(double doubleThresholdMarkingsToLetterLength) {
+        this.doubleThresholdMarkingsToLetterLength = doubleThresholdMarkingsToLetterLength;
+    }
+
+    public void setCharacterLength(double doubleCharacterLength) {
+        this.doubleCharacterLength = doubleCharacterLength;
+    }
+
+    public void setCharacterWidth(double doubleCharacterWidth) {
+        this.doubleCharacterWidth = doubleCharacterWidth;
+    }
+
+    public void setLetterToNumberLength(double doubleLetterToNumberLength) {
+        this.doubleLetterToNumberLength = doubleLetterToNumberLength;
+    }
+
+    public void setNumberToHorizontalStripeLength(double doubleNumberToHorizontalStripeLength) {
+        this.doubleNumberToHorizontalStripeLength = doubleNumberToHorizontalStripeLength;
     }
 
     @Override

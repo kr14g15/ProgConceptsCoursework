@@ -92,7 +92,15 @@ public class Controller {
 
     @FXML private TextField txtAddThresholdStripLength;
     @FXML private TextField txtAddThresholdStripWidth;
-    @FXML private TextField txtAddThresholdStripNumber;
+
+    @FXML private TextField txtAddStartToThresholdMarkingsLength;
+    @FXML private TextField txtAddThresholdMarkingsStripLength;
+    @FXML private TextField txtAddThresholdMarkingsStripWidth;
+    @FXML private TextField txtAddThresholdMarkingsToLetterLength;
+    @FXML private TextField txtAddLetterToNumberLength;
+    @FXML private TextField txtAddNumberToHorizontalStripeLength;
+    @FXML private TextField txtAddCharacterLength;
+    @FXML private TextField txtAddCharacterWidth;
 
     @FXML private TextField txtAddHorizontalStripesLength;
     @FXML private TextField txtAddHorizontalStripesWidth;
@@ -125,7 +133,15 @@ public class Controller {
 
     @FXML private TextField txtEditThresholdStripLength;
     @FXML private TextField txtEditThresholdStripWidth;
-    @FXML private TextField txtEditThresholdStripNumber;
+
+    @FXML private TextField txtEditStartToThresholdMarkingsLength;
+    @FXML private TextField txtEditThresholdMarkingsStripLength;
+    @FXML private TextField txtEditThresholdMarkingsStripWidth;
+    @FXML private TextField txtEditThresholdMarkingsToLetterLength;
+    @FXML private TextField txtEditLetterToNumberLength;
+    @FXML private TextField txtEditNumberToHorizontalStripeLength;
+    @FXML private TextField txtEditCharacterLength;
+    @FXML private TextField txtEditCharacterWidth;
 
     @FXML private TextField txtEditHorizontalStripesLength;
     @FXML private TextField txtEditHorizontalStripesWidth;
@@ -336,9 +352,17 @@ public class Controller {
             runway.setLDA(Double.parseDouble(txtAddLDA.getText()));
             runway.setRunwayStripWidth(Double.parseDouble(txtAddRunwayStripWidth.getText()));
 
-            runway.setThresholdStripLength(Double.parseDouble(txtAddThresholdStripLength.getText()));
-            runway.setThresholdStripWidth(Double.parseDouble(txtAddThresholdStripWidth.getText()));
-            runway.setThresholdStripeNumber(Double.parseDouble(txtAddThresholdStripNumber.getText()));
+            //runway.setThresholdStripLength(Double.parseDouble(txtAddThresholdStripLength.getText()));
+            //runway.setThresholdStripWidth(Double.parseDouble(txtAddThresholdStripWidth.getText()));
+
+            runway.setStartToThresholdMarkingsLength(Double.parseDouble(txtAddStartToThresholdMarkingsLength.getText()));
+            runway.setThresholdMarkingsStripLength(Double.parseDouble(txtAddThresholdMarkingsStripLength.getText()));
+            runway.setThresholdMarkingsStripWidth(Double.parseDouble(txtAddThresholdMarkingsStripWidth.getText()));
+            runway.setThresholdMarkingsToLetterLength(Double.parseDouble(txtAddThresholdMarkingsToLetterLength.getText()));
+            runway.setLetterToNumberLength(Double.parseDouble(txtAddLetterToNumberLength.getText()));
+            runway.setNumberToHorizontalStripeLength(Double.parseDouble(txtAddNumberToHorizontalStripeLength.getText()));
+            runway.setCharacterLength(Double.parseDouble(txtAddCharacterLength.getText()));
+            runway.setCharacterWidth(Double.parseDouble(txtAddCharacterWidth.getText()));
 
             runway.setHorizontalStripesLength(Double.parseDouble(txtAddHorizontalStripesLength.getText()));
             runway.setHorizontalStripesWidth(Double.parseDouble(txtAddHorizontalStripesWidth.getText()));
@@ -365,9 +389,17 @@ public class Controller {
             selectedRunway.setLDA(Double.parseDouble(txtEditLDA.getText()));
             selectedRunway.setRunwayStripWidth(Double.parseDouble(txtEditRunwayStripWidth.getText()));
 
-            selectedRunway.setThresholdStripLength(Double.parseDouble(txtEditThresholdStripLength.getText()));
-            selectedRunway.setThresholdStripWidth(Double.parseDouble(txtEditThresholdStripWidth.getText()));
-            selectedRunway.setThresholdStripeNumber(Double.parseDouble(txtEditThresholdStripNumber.getText()));
+            //selectedRunway.setThresholdStripLength(Double.parseDouble(txtEditThresholdStripLength.getText()));
+            //selectedRunway.setThresholdStripWidth(Double.parseDouble(txtEditThresholdStripWidth.getText()));
+
+            selectedRunway.setStartToThresholdMarkingsLength(Double.parseDouble(txtAddStartToThresholdMarkingsLength.getText()));
+            selectedRunway.setThresholdMarkingsStripLength(Double.parseDouble(txtAddThresholdMarkingsStripLength.getText()));
+            selectedRunway.setThresholdMarkingsStripWidth(Double.parseDouble(txtAddThresholdMarkingsStripWidth.getText()));
+            selectedRunway.setThresholdMarkingsToLetterLength(Double.parseDouble(txtAddThresholdMarkingsToLetterLength.getText()));
+            selectedRunway.setLetterToNumberLength(Double.parseDouble(txtAddLetterToNumberLength.getText()));
+            selectedRunway.setNumberToHorizontalStripeLength(Double.parseDouble(txtAddNumberToHorizontalStripeLength.getText()));
+            selectedRunway.setCharacterLength(Double.parseDouble(txtEditCharacterLength.getText()));
+            selectedRunway.setCharacterWidth(Double.parseDouble(txtEditCharacterWidth.getText()));
 
             selectedRunway.setHorizontalStripesLength(Double.parseDouble(txtEditHorizontalStripesLength.getText()));
             selectedRunway.setHorizontalStripesWidth(Double.parseDouble(txtEditHorizontalStripesWidth.getText()));
@@ -475,9 +507,17 @@ public class Controller {
             txtEditLDA.setText(String.valueOf(runway.getLDA()));
             txtEditRunwayStripWidth.setText(String.valueOf(runway.getRunwayStripWidth()));
 
-            txtEditThresholdStripLength.setText(String.valueOf(runway.getThresholdStripLength()));
-            txtEditThresholdStripWidth.setText(String.valueOf(runway.getThresholdStripWidth()));
-            txtEditThresholdStripNumber.setText(String.valueOf(runway.getThresholdStripNumber()));
+            //txtEditThresholdStripLength.setText(String.valueOf(runway.getThresholdStripLength()));
+            //txtEditThresholdStripWidth.setText(String.valueOf(runway.getThresholdStripWidth()));
+
+            txtEditStartToThresholdMarkingsLength.setText(String.valueOf(runway.getStartToThresholdMarkingsLength()));
+            txtEditThresholdMarkingsStripLength.setText(String.valueOf(runway.getThresholdMarkingsStripLength()));
+            txtEditThresholdMarkingsStripWidth.setText(String.valueOf(runway.getThresholdMarkingsStripWidth()));
+            txtEditThresholdMarkingsToLetterLength.setText(String.valueOf(runway.getThresholdMarkingsToLetterLength()));
+            txtEditLetterToNumberLength.setText(String.valueOf(runway.getLetterToNumberLength()));
+            txtEditNumberToHorizontalStripeLength.setText(String.valueOf(runway.getNumberToHorizontalStripeLength()));
+            txtEditCharacterLength.setText(String.valueOf(runway.getCharacterLength()));
+            txtEditCharacterWidth.setText(String.valueOf(runway.getCharacterWidth()));
 
             txtEditHorizontalStripesLength.setText(String.valueOf(runway.getStripesLength()));
             txtEditHorizontalStripesWidth.setText(String.valueOf(runway.getStripesWidth()));
