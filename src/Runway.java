@@ -1,4 +1,6 @@
-public class Runway {
+import java.io.Serializable;
+
+public class Runway implements Serializable {
     //region PrivateVariables
     private char  charDirection;
     private int   intDegree;

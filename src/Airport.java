@@ -3,15 +3,17 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Airport{
+public class Airport implements Serializable {
 
     //region privateVariables
     private String strName;
     private Point2D pointUKMapPosition;
     private Image image;
-    private ObservableList<Runway> listRunways;
+    private List<Runway> listRunways;
     //endregion
 
     //region publicMethods
@@ -19,7 +21,7 @@ public class Airport{
         this.strName = name;
         this.pointUKMapPosition = position;
         this.image = image;
-        this.listRunways = FXCollections.observableArrayList();
+        this.listRunways = new ArrayList<>();
     }
 
     public String getName() {
@@ -46,7 +48,7 @@ public class Airport{
         this.image = image;
     }
 
-    public ObservableList<Runway> getRunwayList() {
+    public List<Runway> getRunwayList() {
         return listRunways;
     }
 

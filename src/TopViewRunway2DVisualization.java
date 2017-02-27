@@ -301,19 +301,16 @@ public class TopViewRunway2DVisualization extends Pane {
             int i = 0;
             do {
                 gc.fillRect(normalize(doubleStripesX +
-                                (i + 1) * runway.getStripesDifference() +
+                                (i) * runway.getStripesDifference() +
                                 (i) * runway.getStripesLength()
                         , doubleAirportLength, doubleCanvasWidth),
                         normalize(doubleStripesY, doubleAirportWidth, doubleCanvasHeight),
                         normalize(doubleStripesLength, doubleAirportLength, doubleCanvasWidth),
                         normalize(doubleStripesWidth, doubleAirportWidth, doubleCanvasHeight));
                 i++;
-            }while(doubleStripesX + (i+1)*runway.getStripesDifference() + (i+1)*runway.getStripesLength() + runway.getNumberToHorizontalStripeLength() < doubleRightRunwayNumberX);
+            }while(doubleStripesX + (i)*runway.getStripesDifference() + (i+1)*runway.getStripesLength() + runway.getNumberToHorizontalStripeLength() < doubleRightRunwayNumberX);
             gc.restore();
         }
-
-
-
 
         private void drawLinedText(GraphicsContext gc, String text, double x1, double y1, double length) {
             gc.save();

@@ -507,7 +507,7 @@
                                                                   </GridPane>
                                                                </content>
                                                             </TitledPane>
-                                                            <TitledPane expanded="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Outside Runway Strip" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                                                            <TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Outside Runway Strip" GridPane.columnSpan="2" GridPane.rowIndex="4">
                                                                <content>
                                                                   <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                                                     <columnConstraints>
@@ -787,7 +787,7 @@
                                                                         </GridPane>
                                                                     </content>
                                                                 </TitledPane>
-                                                                <TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Letters And Numbers" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                                                                <TitledPane expanded="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Letters And Numbers" GridPane.columnSpan="2" GridPane.rowIndex="2">
                                                                     <content>
                                                                         <GridPane>
                                                                             <columnConstraints>
@@ -893,7 +893,7 @@
                                                                         </GridPane>
                                                                     </content>
                                                                 </TitledPane>
-                                                                <TitledPane expanded="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Outside Runway Strip" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                                                                <TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Outside Runway Strip" GridPane.columnSpan="2" GridPane.rowIndex="4">
                                                                     <content>
                                                                         <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                                                             <columnConstraints>
@@ -1061,7 +1061,7 @@
                         </TabPane>
                         <GridPane>
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
                           </columnConstraints>
                           <rowConstraints>
@@ -1232,6 +1232,53 @@
                   </GridPane>
                </content>
             </Tab>
+          <Tab text="Settings">
+                <content>
+                    <GridPane>
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                     <children>
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Load settings from file">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Save current settings" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Color scheme" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Button fx:id="btnLoadSettings" mnemonicParsing="false" text="Load" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <Button fx:id="btnSaveSettings" mnemonicParsing="false" text="Save" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <ComboBox fx:id="cboColorScheme" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin>
+                        </ComboBox>
+                     </children>
+                    </GridPane>
+                </content></Tab>
         </tabs>
       </TabPane>
    </children>

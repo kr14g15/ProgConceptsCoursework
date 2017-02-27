@@ -48,7 +48,6 @@ public class Controller {
     //endregion
 
     //region airportEditing
-
     @FXML private TextField txtEditedAirportName;
     @FXML private TextField txtEditedAirportXPosition;
     @FXML private TextField txtEditedAirportYPosition;
@@ -110,6 +109,7 @@ public class Controller {
     @FXML private TextField txtAddCGA;
     @FXML private TextField txtAddInstrumentStrip;
     @FXML private TextField txtAddBlastProtection;
+    @FXML private TextField txtAddRESA;
 
     @FXML private TextField txtAddSkyHeight;
     @FXML private TextField txtAddGroundHeight;
@@ -151,11 +151,18 @@ public class Controller {
     @FXML private TextField txtEditCGA;
     @FXML private TextField txtEditInstrumentStrip;
     @FXML private TextField txtEditBlastProtection;
+    @FXML private TextField txtEditRESA;
 
     @FXML private TextField txtEditSkyHeight;
     @FXML private TextField txtEditGroundHeight;
     @FXML private TextField txtEditAirportHeight;
 
+    //endregion
+
+    //region settings
+    @FXML private Button btnLoadSettings;
+    @FXML private Button btnSaveSettings;
+    @FXML private ComboBox cboColorScheme;
     //endregion
 
     //region removeRunway
@@ -342,6 +349,22 @@ public class Controller {
             }
         });
 
+        btnSaveSettings.setOnAction(event -> {
+            File file = imageAirportChooser.showSaveDialog(null);
+            if (file != null) {
+                FileSerializer fileSerializer = new FileSerializer();
+                fileSerializer.serializeAirportList(file.getName(), airportList);
+            }
+        });
+
+        btnLoadSettings.setOnAction(event -> {
+            File file = imageAirportChooser.showOpenDialog(null);
+            if (file != null) {
+                FileSerializer fileSerializer = new FileSerializer();
+                airportList = fileSerializer.deSerializeAirportList(file.getName());
+            }
+        });
+
         btnAddRunway.setOnAction(event -> {
             Runway runway = new Runway();
             runway.setDirection(txtAddDirection.getText().charAt(0));
@@ -372,12 +395,18 @@ public class Controller {
             runway.setCGA(Double.parseDouble(txtAddCGA.getText()));
             runway.setInstrumentStrip(Double.parseDouble(txtAddInstrumentStrip.getText()));
             runway.setBlastProtection(Double.parseDouble(txtAddBlastProtection.getText()));
+            runway.setRESA(Double.parseDouble(txtAddRESA.getText()));
 
             runway.setSkyHeight(Double.parseDouble(txtAddSkyHeight.getText()));
             runway.setGroundHeight(Double.parseDouble(txtAddGroundHeight.getText()));
             runway.setAirportHeight(Double.parseDouble(txtAddAirportHeight.getText()));
 
+
             selectedAirport.getRunwayList().add(runway);
+            selectAirport(selectedAirport);
+            refreshRunwayListView();
+            refreshAirportListComboBox();
+            refreshRunwayListComboBox();
         });
 
         btnEditRunway.setOnAction(event -> {
@@ -392,12 +421,12 @@ public class Controller {
             //selectedRunway.setThresholdStripLength(Double.parseDouble(txtEditThresholdStripLength.getText()));
             //selectedRunway.setThresholdStripWidth(Double.parseDouble(txtEditThresholdStripWidth.getText()));
 
-            selectedRunway.setStartToThresholdMarkingsLength(Double.parseDouble(txtAddStartToThresholdMarkingsLength.getText()));
-            selectedRunway.setThresholdMarkingsStripLength(Double.parseDouble(txtAddThresholdMarkingsStripLength.getText()));
-            selectedRunway.setThresholdMarkingsStripWidth(Double.parseDouble(txtAddThresholdMarkingsStripWidth.getText()));
-            selectedRunway.setThresholdMarkingsToLetterLength(Double.parseDouble(txtAddThresholdMarkingsToLetterLength.getText()));
-            selectedRunway.setLetterToNumberLength(Double.parseDouble(txtAddLetterToNumberLength.getText()));
-            selectedRunway.setNumberToHorizontalStripeLength(Double.parseDouble(txtAddNumberToHorizontalStripeLength.getText()));
+            selectedRunway.setStartToThresholdMarkingsLength(Double.parseDouble(txtEditStartToThresholdMarkingsLength.getText()));
+            selectedRunway.setThresholdMarkingsStripLength(Double.parseDouble(txtEditThresholdMarkingsStripLength.getText()));
+            selectedRunway.setThresholdMarkingsStripWidth(Double.parseDouble(txtEditThresholdMarkingsStripWidth.getText()));
+            selectedRunway.setThresholdMarkingsToLetterLength(Double.parseDouble(txtEditThresholdMarkingsToLetterLength.getText()));
+            selectedRunway.setLetterToNumberLength(Double.parseDouble(txtEditLetterToNumberLength.getText()));
+            selectedRunway.setNumberToHorizontalStripeLength(Double.parseDouble(txtEditNumberToHorizontalStripeLength.getText()));
             selectedRunway.setCharacterLength(Double.parseDouble(txtEditCharacterLength.getText()));
             selectedRunway.setCharacterWidth(Double.parseDouble(txtEditCharacterWidth.getText()));
 
@@ -409,12 +438,16 @@ public class Controller {
             selectedRunway.setCGA(Double.parseDouble(txtEditCGA.getText()));
             selectedRunway.setInstrumentStrip(Double.parseDouble(txtEditInstrumentStrip.getText()));
             selectedRunway.setBlastProtection(Double.parseDouble(txtEditBlastProtection.getText()));
+            selectedRunway.setBlastProtection(Double.parseDouble(txtEditRESA.getText()));
 
             selectedRunway.setSkyHeight(Double.parseDouble(txtEditSkyHeight.getText()));
             selectedRunway.setGroundHeight(Double.parseDouble(txtEditGroundHeight.getText()));
             selectedRunway.setAirportHeight(Double.parseDouble(txtEditAirportHeight.getText()));
 
+            selectAirport(selectedAirport);
             refreshRunwayListView();
+            refreshAirportListComboBox();
+            refreshRunwayListComboBox();
         });
 
     }
@@ -454,14 +487,20 @@ public class Controller {
     private void refreshAirportListComboBox(){
         cboAirportList.getSelectionModel().clearSelection();
         cboAirportList.setItems(null);
-        cboAirportList.setItems(airportList);
+        cboAirportList.setItems(FXCollections.observableArrayList(airportList));
+    }
+
+    private void refreshRunwayListComboBox(){
+        cboRunwayList.getSelectionModel().clearSelection();
+        cboRunwayList.setItems(null);
+        cboRunwayList.setItems(FXCollections.observableArrayList(selectedAirport.getRunwayList()));
     }
 
     private void refreshRunwayListView(){
         listViewRunwayList.getSelectionModel().clearSelection();
         runwayListProperty.set(null);
         if(selectedAirport != null)
-            runwayListProperty.set(selectedAirport.getRunwayList());
+            runwayListProperty.set(FXCollections.observableArrayList(selectedAirport.getRunwayList()));
     }
 
     private void selectAirport(Airport airport){
@@ -474,9 +513,9 @@ public class Controller {
             txtEditedAirportXPosition.setText(String.valueOf(airport.getUKMapPosition().getX()));
             txtEditedAirportYPosition.setText(String.valueOf(airport.getUKMapPosition().getY()));
             imageViewAirportImage.setImage(airport.getImage());
-            cboRunwayList.setItems(airport.getRunwayList());
+            cboRunwayList.setItems(FXCollections.observableArrayList(airport.getRunwayList()));
             ukMapAirportSelection2DVisualization.selectAirport(airport);
-            runwayListProperty.set(selectedAirport.getRunwayList());
+            runwayListProperty.set(FXCollections.observableArrayList(selectedAirport.getRunwayList()));
             txtSelectedAirport.setText(airport.getName());
             loadDefaultValues();
         }else{
