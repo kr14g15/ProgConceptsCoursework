@@ -224,6 +224,7 @@ public class Controller {
             ukMapAirportSelection2DVisualization.lookForAirportPosition();
             editMode = false;
         });
+
         btnMarkAirportPositionForEditing.setOnAction(event -> {
             ukMapAirportSelection2DVisualization.lookForAirportPosition();
             editMode = true;
@@ -269,7 +270,6 @@ public class Controller {
         listViewRunwayList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             selectRunway(newValue);
         });
-
         cboAirportList.setCellFactory(new Callback<ListView<Airport>, ListCell<Airport>>(){
             @Override
             public ListCell<Airport> call(ListView<Airport> p) {
