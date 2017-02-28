@@ -334,6 +334,7 @@ public class Controller {
             imageViewAirportImage.setImage(null);
             refreshAirportListComboBox();
             ukMapAirportSelection2DVisualization.refresh();
+            currentAirportImage = null;
         });
 
         btnRemoveSelectedRunway.setOnAction(event -> {
