@@ -22,8 +22,9 @@ public class Runway implements Serializable {
     private double doubleLetterToNumberLength;
     private double doubleNumberToHorizontalStripeLength;
 
-    private double doubleStopway;                              //ASDA - TORA
-    private double doubleClearway;                             //TODA - TORA
+    private double doubleStopwayLength;                              //ASDA - TORA
+    private double doubleClearwayLength;                             //TODA - TORA     //TODA - TORA
+    private double doubleClearwayWidth;                             //TODA - TORA     //TODA - TORA
 
     private double doubleThresholdStripLength;           //TORA - LDA
     private double doubleThresholdStripWidth;
@@ -122,13 +123,18 @@ public class Runway implements Serializable {
         return doubleStripesDifference;
     }
 
-    public double getStopway() {
-        return doubleStopway;
+    public double getStopwayLength() {
+        return doubleStopwayLength;
     }
 
-    public double getClearway() {
-        return doubleClearway;
+    public double getClearwayLength() {
+        return doubleClearwayLength;
     }
+
+    public double getClearwayWidth() {
+        return doubleClearwayWidth;
+    }
+
 
     public double getStripEnd() {
         return doubleStripEnd;
@@ -194,13 +200,18 @@ public class Runway implements Serializable {
         this.doubleRunwayStripWidth = doubleRunwayStripWidth;
     }
 
-    public void setStopway(double doubleStopway) {
-        this.doubleStopway = doubleStopway;
+    public void setStopwayLength(double doubleStopway) {
+        this.doubleStopwayLength = doubleStopway;
     }
 
-    public void setClearway(double doubleClearway) {
-        this.doubleClearway = doubleClearway;
+    public void setClearwayLength(double doubleClearway) {
+        this.doubleClearwayLength = doubleClearway;
     }
+
+    public void setClearwayWidth(double doubleClearway) {
+        this.doubleClearwayWidth = doubleClearway;
+    }
+
 
     public void setThresholdStripLength(double doubleThresholdStripLength) {
         this.doubleThresholdStripLength = doubleThresholdStripLength;

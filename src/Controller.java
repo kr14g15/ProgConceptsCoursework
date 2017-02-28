@@ -82,10 +82,10 @@ public class Controller {
     @FXML private Button btnAddRunway;
     @FXML private TextField txtAddDirection;
     @FXML private TextField txtAddDegree;
-    @FXML private TextField txtAddTORA;
-    @FXML private TextField txtAddTODA;
-    @FXML private TextField txtAddASDA;
-    @FXML private TextField txtAddLDA;
+    @FXML private TextField txtAddStopwayLength;
+    @FXML private TextField txtAddClearwayLength;
+    @FXML private TextField txtAddClearwayWidth;
+
     @FXML private TextField txtAddRunwayStripWidth;
     @FXML private TextField txtAddRunwayStripLength;
 
@@ -395,10 +395,10 @@ public class Controller {
             Runway runway = new Runway();
             runway.setDirection(txtAddDirection.getText().charAt(0));
             runway.setDegree(Integer.parseInt(txtAddDegree.getText()));
-            runway.setTORA(Double.parseDouble(txtAddTORA.getText()));
-            runway.setTODA(Double.parseDouble(txtAddTODA.getText()));
-            runway.setASDA(Double.parseDouble(txtAddASDA.getText()));
-            runway.setLDA(Double.parseDouble(txtAddLDA.getText()));
+            runway.setStopwayLength(Double.parseDouble(txtAddStopwayLength.getText()));
+            runway.setClearwayLength(Double.parseDouble(txtAddClearwayLength.getText()));
+            runway.setClearwayWidth(Double.parseDouble(txtAddClearwayWidth.getText()));
+
             runway.setRunwayStripWidth(Double.parseDouble(txtAddRunwayStripWidth.getText()));
             runway.setRunwayStripLength(Double.parseDouble(txtAddRunwayStripLength.getText()));
             runway.setDisplacedThresholdLength(Double.parseDouble(txtAddDisplacedThresholdLength.getText()));

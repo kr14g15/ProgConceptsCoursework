@@ -82,7 +82,7 @@ public class SideViewRunway2DVisualization extends Pane {
         gc.clearRect(0, 0, getWidth(), getHeight());
 
         if(runway != null) {
-            doubleAirportLength = 2 * runway.getBlastProtection() + 2 * runway.getStripEnd() + runway.getTORA();
+            doubleAirportLength = 2 * runway.getBlastProtection() + 2 * runway.getStripEnd() + runway.getRunwayStripLength();
             doubleAirportHeight = runway.getAirportHeight();
             doubleSkyAndGround = runway.getSkyHeight() + runway.getGroundHeight();
             drawSky(gc);
@@ -113,7 +113,7 @@ public class SideViewRunway2DVisualization extends Pane {
         gc.setFill(colorScheme.RunwayStripColor);
         doubleRunwayX =  runway.getBlastProtection();
         doubleRunwayY = runway.getSkyHeight();
-        doubleRunwayLength = 2*runway.getStripEnd() + runway.getTORA();
+        doubleRunwayLength = 2*runway.getStripEnd() + runway.getRunwayStripLength();
         doubleRunwayHeight = runway.getAirportHeight();
 
         gc.fillRect(normalize(doubleRunwayX, doubleAirportLength, doubleCanvasWidth),

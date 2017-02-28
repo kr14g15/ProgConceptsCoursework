@@ -282,7 +282,7 @@
                                                                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                                </GridPane.margin>
                                                             </Button>
-                                                            <TitledPane expanded="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Runway Strip" GridPane.columnSpan="2">
+                                                            <TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Runway Strip" GridPane.columnSpan="2">
                                                              <content>
                                                                   <GridPane>
                                                                     <columnConstraints>
@@ -296,7 +296,6 @@
                                                                         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
                                                                         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
                                                                         <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
                                                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                                     </rowConstraints>
@@ -309,15 +308,11 @@
                                                                            <GridPane.margin>
                                                                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                                                            </GridPane.margin></TextField>
-                                                                        <TextField fx:id="txtAddTORA" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="3600" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                                        <TextField fx:id="txtAddStopwayLength" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="100" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                                            <GridPane.margin>
                                                                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                                                            </GridPane.margin></TextField>
-                                                                        <TextField fx:id="txtAddTODA" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="3600" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                                                           <GridPane.margin>
-                                                                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                                                           </GridPane.margin></TextField>
-                                                                        <TextField fx:id="txtAddASDA" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="3600" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                                        <TextField fx:id="txtAddClearwayLength" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="200" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                                            <GridPane.margin>
                                                                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                                                            </GridPane.margin></TextField>
@@ -329,42 +324,35 @@
                                                                            <GridPane.margin>
                                                                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                                                            </GridPane.margin></Label>
-                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="TORA" GridPane.rowIndex="2">
+                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Stopway" GridPane.rowIndex="2">
                                                                            <GridPane.margin>
                                                                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                                                            </GridPane.margin></Label>
-                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="TODA" GridPane.rowIndex="3">
+                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Clearway Length" GridPane.rowIndex="3">
                                                                            <GridPane.margin>
                                                                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                                                            </GridPane.margin></Label>
-                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="ASDA" GridPane.rowIndex="4">
-                                                                           <GridPane.margin>
-                                                                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                                                           </GridPane.margin></Label>
-                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="LDA" GridPane.rowIndex="6">
-                                                                           <GridPane.margin>
-                                                                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                                                           </GridPane.margin></Label>
-                                                                        <TextField fx:id="txtAddLDA" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="3600" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                                                           <GridPane.margin>
-                                                                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                                                           </GridPane.margin></TextField>
-                                                                        <Label text="Strip Width" GridPane.rowIndex="7" />
-                                                                        <TextField fx:id="txtAddRunwayStripWidth" text="30" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                                        <Label text="Strip Width" GridPane.rowIndex="6" />
+                                                                        <TextField fx:id="txtAddRunwayStripWidth" text="30" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                                                            <GridPane.margin>
                                                                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                                                            </GridPane.margin>
+                                                                           <padding>
+                                                                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                                                                           </padding>
                                                                         </TextField>
-                                                                        <Label text="Strip Length" GridPane.rowIndex="8" />
-                                                                        <TextField fx:id="txtAddRunwayStripLength" text="3600" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                                                        <Label text="Strip Length" GridPane.rowIndex="7" />
+                                                                        <TextField fx:id="txtAddRunwayStripLength" text="3600" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                                                            <GridPane.margin>
                                                                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                                                            </GridPane.margin></TextField>
+                                                                        <Label text="Clearway Width" GridPane.rowIndex="4" />
+                                                                        <TextField fx:id="txtAddClearwayWidth" text="60" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                                      </children>
                                                                   </GridPane>
                                                                </content>
                                                             </TitledPane>
-                                                            <TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Threshold" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                            <TitledPane expanded="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Threshold" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                                <content>
                                                                   <GridPane prefHeight="0.0" prefWidth="300.0">
                                                                     <columnConstraints>
@@ -1216,7 +1204,20 @@
                                        </padding>
                                     </GridPane>
                                  </content></Tab>
-                              <Tab closable="false" text="Obstacles" />
+                              <Tab closable="false" text="Obstacles">
+                                 <content>
+                                    <GridPane>
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                    </GridPane>
+                                 </content></Tab>
                             <Tab closable="false" text="Calculations" />
                               <Tab closable="false" text="Print">
                                  <content>
