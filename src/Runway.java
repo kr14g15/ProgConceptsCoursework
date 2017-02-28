@@ -10,11 +10,13 @@ public class Runway implements Serializable {
     private double doubleTODA;                          //TORA + Stopway + Clearway
     private double doubleLDA;                           //Landing distance
     private double doubleRunwayStripWidth;
+    private double doubleRunwayStripLength;                          //runway + stopways
 
     private double doubleStartToThresholdMarkingsLength;
     private double doubleThresholdMarkingsStripLength;
     private double doubleThresholdMarkingsStripWidth;
     private double doubleThresholdMarkingsToLetterLength;
+    private double doubleDisplacedThresholdLength;
     private double doubleCharacterLength;
     private double doubleCharacterWidth;
     private double doubleLetterToNumberLength;
@@ -31,19 +33,22 @@ public class Runway implements Serializable {
     private double doubleStripesDifference;
 
     private double doubleStripEnd;                        //area between the end of the runway	and	the	end	of the runway strip
-    private double doubleVisualStrip;
-    private double doubleCGA;
+    private double doubleSmallVisualStripWidth;
+    private double doubleLargeVisualStripWidth;
+    private double doubleRunwayToSmallVisualStripLength;
+    private double doubleRunwayToLargeVisualStripLength;
     private double doubleInstrumentStrip;
 
     private double doubleRESA;
     private double doubleBlastProtection;                //area behind an aircraft
     private double doubleALS;                                  //area between top of obstacle and runway(min angle of descent)
     private double doubleTOCS;                                 //area between top of obstacle and runway(min angle of ascent)
-    private double doubleRunwayStrip;                          //runway + stopways
 
     private double doubleSkyHeight;
     private double doubleGroundHeight;
     private double doubleAirportHeight;
+
+
     //endregion
 
     //region PublicVariables
@@ -129,12 +134,12 @@ public class Runway implements Serializable {
         return doubleStripEnd;
     }
 
-    public double getVisualStrip() {
-        return doubleVisualStrip;
+    public double getSmallVisualStripWidth() {
+        return doubleSmallVisualStripWidth;
     }
 
-    public double getCGA() {
-        return doubleCGA;
+    public double getLargeVisualStripWidth() {
+        return doubleLargeVisualStripWidth;
     }
 
     public double getInstrumentStrip() {
@@ -155,10 +160,6 @@ public class Runway implements Serializable {
 
     public double getTOCS() {
         return doubleTOCS;
-    }
-
-    public double getRunwayStrip() {
-        return doubleRunwayStrip;
     }
 
     public double getAirportHeight() {
@@ -226,12 +227,12 @@ public class Runway implements Serializable {
         this.doubleStripEnd = doubleStripEnd;
     }
 
-    public void setVisualStrip(double doubleVisualStrip) {
-        this.doubleVisualStrip = doubleVisualStrip;
+    public void setSmallVisualStripWidth(double doubleVisualStrip) {
+        this.doubleSmallVisualStripWidth = doubleVisualStrip;
     }
 
-    public void setCGA(double doubleCGA) {
-        this.doubleCGA = doubleCGA;
+    public void setLargeVisualStripWidth(double doubleVisualStrip) {
+        this.doubleLargeVisualStripWidth = doubleVisualStrip;
     }
 
     public void setInstrumentStrip(double doubleInstrumentStrip) {
@@ -252,10 +253,6 @@ public class Runway implements Serializable {
 
     public void setTOCS(double doubleTOCS) {
         this.doubleTOCS = doubleTOCS;
-    }
-
-    public void setRunwayStrip(double doubleRunwayStrip) {
-        this.doubleRunwayStrip = doubleRunwayStrip;
     }
 
     public void setSkyHeight(double doubleSkyHeight) {
@@ -334,9 +331,42 @@ public class Runway implements Serializable {
         this.doubleNumberToHorizontalStripeLength = doubleNumberToHorizontalStripeLength;
     }
 
+    public double getRunwayToSmallVisualStripLength() {
+        return doubleRunwayToSmallVisualStripLength;
+    }
+
+    public double getRunwayToILargeVisualStripLength() {
+        return doubleRunwayToLargeVisualStripLength;
+    }
+
     @Override
     public String toString() {
         return charDirection+""+intDegree;
     }
+
+    public void setRunwayToSmallVisualStripLength(double runwayToVisualStripLength) {
+        this.doubleRunwayToSmallVisualStripLength = runwayToVisualStripLength;
+    }
+
+    public void setRunwayToLargeVisualStripLength(double runwayToInstrumentStripLength) {
+        this.doubleRunwayToLargeVisualStripLength = runwayToInstrumentStripLength;
+    }
+
+    public void setRunwayStripLength(double runwayStripLength) {
+        this.doubleRunwayStripLength = runwayStripLength;
+    }
+
+    public double getRunwayStripLength() {
+        return doubleRunwayStripLength;
+    }
+
+    public double getDisplacedThresholdLength() {
+        return doubleDisplacedThresholdLength;
+    }
+
+    public void setDisplacedThresholdLength(double displacedThreshold) {
+        this.doubleDisplacedThresholdLength = displacedThreshold;
+    }
+
     //endregion
 }

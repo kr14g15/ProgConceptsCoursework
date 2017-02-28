@@ -87,9 +87,11 @@ public class Controller {
     @FXML private TextField txtAddASDA;
     @FXML private TextField txtAddLDA;
     @FXML private TextField txtAddRunwayStripWidth;
+    @FXML private TextField txtAddRunwayStripLength;
 
     @FXML private TextField txtAddThresholdStripLength;
     @FXML private TextField txtAddThresholdStripWidth;
+    @FXML private TextField txtAddDisplacedThresholdLength;
 
     @FXML private TextField txtAddStartToThresholdMarkingsLength;
     @FXML private TextField txtAddThresholdMarkingsStripLength;
@@ -104,11 +106,13 @@ public class Controller {
     @FXML private TextField txtAddHorizontalStripesWidth;
     @FXML private TextField txtAddHorizontalStripesDifference;
     @FXML private TextField txtAddStripEnd;
-    @FXML private TextField txtAddVisualStrip;
-    @FXML private TextField txtAddCGA;
+    @FXML private TextField txtAddSmallVisualStripWidth;
+    @FXML private TextField txtAddLargeVisualStripWidth;
     @FXML private TextField txtAddInstrumentStrip;
     @FXML private TextField txtAddBlastProtection;
     @FXML private TextField txtAddRESA;
+    @FXML private TextField txtAddRunwayToSmallVisualStripLength;
+    @FXML private TextField txtAddRunwayToLargeVisualStripLength;
 
     @FXML private TextField txtAddSkyHeight;
     @FXML private TextField txtAddGroundHeight;
@@ -396,6 +400,8 @@ public class Controller {
             runway.setASDA(Double.parseDouble(txtAddASDA.getText()));
             runway.setLDA(Double.parseDouble(txtAddLDA.getText()));
             runway.setRunwayStripWidth(Double.parseDouble(txtAddRunwayStripWidth.getText()));
+            runway.setRunwayStripLength(Double.parseDouble(txtAddRunwayStripLength.getText()));
+            runway.setDisplacedThresholdLength(Double.parseDouble(txtAddDisplacedThresholdLength.getText()));
 
             //runway.setThresholdStripLength(Double.parseDouble(txtAddThresholdStripLength.getText()));
             //runway.setThresholdStripWidth(Double.parseDouble(txtAddThresholdStripWidth.getText()));
@@ -409,20 +415,22 @@ public class Controller {
             runway.setCharacterLength(Double.parseDouble(txtAddCharacterLength.getText()));
             runway.setCharacterWidth(Double.parseDouble(txtAddCharacterWidth.getText()));
 
+
             runway.setHorizontalStripesLength(Double.parseDouble(txtAddHorizontalStripesLength.getText()));
             runway.setHorizontalStripesWidth(Double.parseDouble(txtAddHorizontalStripesWidth.getText()));
             runway.setHorizontalStripesDifference(Double.parseDouble(txtAddHorizontalStripesDifference.getText()));
             runway.setStripEnd(Double.parseDouble(txtAddStripEnd.getText()));
-            runway.setVisualStrip(Double.parseDouble(txtAddVisualStrip.getText()));
-            runway.setCGA(Double.parseDouble(txtAddCGA.getText()));
+            runway.setSmallVisualStripWidth(Double.parseDouble(txtAddSmallVisualStripWidth.getText()));
+            runway.setLargeVisualStripWidth(Double.parseDouble(txtAddLargeVisualStripWidth.getText()));
             runway.setInstrumentStrip(Double.parseDouble(txtAddInstrumentStrip.getText()));
             runway.setBlastProtection(Double.parseDouble(txtAddBlastProtection.getText()));
             runway.setRESA(Double.parseDouble(txtAddRESA.getText()));
+            runway.setRunwayToSmallVisualStripLength(Double.parseDouble(txtAddRunwayToSmallVisualStripLength.getText()));
+            runway.setRunwayToLargeVisualStripLength(Double.parseDouble(txtAddRunwayToLargeVisualStripLength.getText()));
 
             runway.setSkyHeight(Double.parseDouble(txtAddSkyHeight.getText()));
             runway.setGroundHeight(Double.parseDouble(txtAddGroundHeight.getText()));
             runway.setAirportHeight(Double.parseDouble(txtAddAirportHeight.getText()));
-
 
             selectedAirport.getRunwayList().add(runway);
             selectAirport(selectedAirport);
@@ -456,8 +464,8 @@ public class Controller {
             selectedRunway.setHorizontalStripesWidth(Double.parseDouble(txtEditHorizontalStripesWidth.getText()));
             selectedRunway.setHorizontalStripesDifference(Double.parseDouble(txtEditHorizontalStripesDifference.getText()));
             selectedRunway.setStripEnd(Double.parseDouble(txtEditStripEnd.getText()));
-            selectedRunway.setVisualStrip(Double.parseDouble(txtEditVisualStrip.getText()));
-            selectedRunway.setCGA(Double.parseDouble(txtEditCGA.getText()));
+            selectedRunway.setSmallVisualStripWidth(Double.parseDouble(txtEditVisualStrip.getText()));
+            selectedRunway.setLargeVisualStripWidth(Double.parseDouble(txtEditCGA.getText()));
             selectedRunway.setInstrumentStrip(Double.parseDouble(txtEditInstrumentStrip.getText()));
             selectedRunway.setBlastProtection(Double.parseDouble(txtEditBlastProtection.getText()));
             selectedRunway.setBlastProtection(Double.parseDouble(txtEditRESA.getText()));
@@ -584,8 +592,8 @@ public class Controller {
             txtEditHorizontalStripesWidth.setText(String.valueOf(runway.getStripesWidth()));
             txtEditHorizontalStripesDifference.setText(String.valueOf(runway.getStripesDifference()));
             txtEditStripEnd.setText(String.valueOf(runway.getStripEnd()));
-            txtEditVisualStrip.setText(String.valueOf(runway.getVisualStrip()));
-            txtEditCGA.setText(String.valueOf(runway.getCGA()));
+            txtEditVisualStrip.setText(String.valueOf(runway.getSmallVisualStripWidth()));
+            txtEditCGA.setText(String.valueOf(runway.getLargeVisualStripWidth()));
             txtEditInstrumentStrip.setText(String.valueOf(runway.getInstrumentStrip()));
             txtEditBlastProtection.setText(String.valueOf(runway.getBlastProtection()));
             txtEditRESA.setText(String.valueOf(runway.getRESA()));
