@@ -59,6 +59,8 @@ public class TopViewRunway2DVisualization extends Pane {
     private double doubleStripesY;
     private double doubleStripesLength;
     private double doubleStripesWidth;
+
+    private ColorScheme colorScheme;
     //endregion
 
     //region publicMethods
@@ -67,6 +69,7 @@ public class TopViewRunway2DVisualization extends Pane {
     }
 
     TopViewRunway2DVisualization() {
+        colorScheme = ColorScheme.DEFAULT;
         canvas = new ResizableCanvas();
         canvas.widthProperty().bind(widthProperty());
         canvas.heightProperty().bind(heightProperty());
@@ -76,6 +79,10 @@ public class TopViewRunway2DVisualization extends Pane {
 
     public void refresh(){
         canvas.draw();
+    }
+
+    public void setColorScheme(ColorScheme colorScheme) {
+        this.colorScheme = colorScheme;
     }
     //endregion
 
@@ -140,14 +147,14 @@ public class TopViewRunway2DVisualization extends Pane {
 
         private void drawBackground(GraphicsContext gc) {
             gc.save();
-            gc.setFill(Color.rgb(34,139,34));
+            gc.setFill(colorScheme.BackgroundColor);
             gc.fillRect(0, 0, doubleCanvasWidth, doubleCanvasHeight);
             gc.restore();
         }
 
         private void drawInstrumentStrip(GraphicsContext gc) {
             gc.save();
-            gc.setFill(Color.rgb(60,179,113));
+            gc.setFill(colorScheme.CAAColor);
             doubleInstrumentStripX = runway.getBlastProtection();
             doubleInstrumentStripY = 0;
             doubleInstrumentStripLength = 2*runway.getStripEnd() + runway.getTORA();
@@ -162,7 +169,7 @@ public class TopViewRunway2DVisualization extends Pane {
 
         private void drawCGA(GraphicsContext gc) {
             gc.save();
-            gc.setFill(Color.rgb(144,238,144));
+            gc.setFill(colorScheme.CAAColor);
             doubleCGAX = doubleInstrumentStripX;
             doubleCGAY = doubleInstrumentStripY+runway.getInstrumentStrip()-runway.getVisualStrip();
             doubleCGALength = 2*runway.getStripEnd() + runway.getTORA();
@@ -178,7 +185,7 @@ public class TopViewRunway2DVisualization extends Pane {
         private void drawRunwayStrip(GraphicsContext gc) {
             gc.save();
             Text text = new Text("Runway 100m");
-            gc.setFill(Color.GRAY);
+            gc.setFill(colorScheme.RunwayStripColor);
             doubleRunwayStripX = doubleCGAX + runway.getStripEnd();
             doubleRunwayStripY = doubleCGAY + runway.getVisualStrip();
             doubleRunwayStripLength = runway.getTORA();
@@ -193,7 +200,7 @@ public class TopViewRunway2DVisualization extends Pane {
 
         private void drawLeftThresholdsMarkings(GraphicsContext gc) {
             gc.save();
-            gc.setFill(Color.WHITE);
+            gc.setFill(colorScheme.StripesColor);
             doubleLeftThresholdX = doubleRunwayStripX + runway.getStartToThresholdMarkingsLength();
             doubleLeftThresholdY = doubleRunwayStripY;
             doubleLeftThresholdMarkingsStripLength = runway.getThresholdMarkingsStripLength();
@@ -213,7 +220,7 @@ public class TopViewRunway2DVisualization extends Pane {
 
         private void drawRightThresholdsMarkings(GraphicsContext gc) {
             gc.save();
-            gc.setFill(Color.WHITE);
+            gc.setFill(colorScheme.StripesColor);
             doubleRightThresholdX = doubleRunwayStripX + doubleRunwayStripLength - doubleRightThresholdLength - runway.getStartToThresholdMarkingsLength();
             doubleRightThresholdY = doubleRunwayStripY;
             doubleRightThresholdLength = runway.getThresholdMarkingsStripLength();
@@ -233,7 +240,7 @@ public class TopViewRunway2DVisualization extends Pane {
 
         private void drawRightRunwayNumber(GraphicsContext gc) {
             gc.save();
-            gc.setFill(Color.WHITE);
+            gc.setFill(colorScheme.StripesColor);
             gc.setFont(new javafx.scene.text.Font(20));
 
             int newDegree = 36 - runway.getDegree();
@@ -264,7 +271,7 @@ public class TopViewRunway2DVisualization extends Pane {
 
         private void drawLeftRunwayNumber(GraphicsContext gc) {
             gc.save();
-            gc.setFill(Color.WHITE);
+            gc.setFill(colorScheme.StripesColor);
             gc.setFont(new javafx.scene.text.Font(20));
 
             Text direction = new Text(String.valueOf(runway.getDirection()));
@@ -292,7 +299,7 @@ public class TopViewRunway2DVisualization extends Pane {
 
         private void drawStripes(GraphicsContext gc) {
             gc.save();
-            gc.setFill(Color.WHITE);
+            gc.setFill(colorScheme.StripesColor);
             doubleStripesX = doubleLeftRunwayNumberX +  doubleLeftRunwayNumberLength + runway.getNumberToHorizontalStripeLength();
             doubleStripesY = doubleRunwayStripY - runway.getStripesWidth()/2;
             doubleStripesLength = runway.getStripesLength();
@@ -314,7 +321,7 @@ public class TopViewRunway2DVisualization extends Pane {
 
         private void drawLinedText(GraphicsContext gc, String text, double x1, double y1, double length) {
             gc.save();
-            gc.setFill(Color.BLACK);
+            gc.setFill(colorScheme.CharactersColor);
             Text txt = new Text(text);
             double doubleTextLength = txt.getLayoutBounds().getWidth();
             double doubleTextHeight = txt.getLayoutBounds().getHeight();

@@ -6,13 +6,14 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Array;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileSerializer {
-    public void serializeAirportList(String fileName, ObservableList<Airport> airportList) {
+    public void serializeAirportList(Path path, ObservableList<Airport> airportList) {
 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path.toFile()))) {
             ArrayList<Airport> airports = new ArrayList<Airport>(airportList);
             oos.writeObject(airports);
             oos.close();
@@ -23,10 +24,10 @@ public class FileSerializer {
 
     }
 
-    public ObservableList<Airport> deSerializeAirportList(String fileName) {
+    public ObservableList<Airport> deSerializeAirportList(Path path) {
 
         List<Airport> airportList = new ArrayList<>();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path.toFile()))) {
             airportList = (List<Airport>) ois.readObject();
         } catch (Exception ex) {
             ex.printStackTrace();

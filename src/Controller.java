@@ -1,3 +1,4 @@
+import com.sun.javafx.scene.control.skin.ColorPalette;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
@@ -6,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -20,8 +20,7 @@ import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.Menu;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -162,7 +161,9 @@ public class Controller {
     //region settings
     @FXML private Button btnLoadSettings;
     @FXML private Button btnSaveSettings;
+    @FXML private Button btnApplyColorScheme;
     @FXML private ComboBox cboColorScheme;
+    private ColorScheme colorScheme;
     //endregion
 
     //region removeRunway
@@ -176,6 +177,8 @@ public class Controller {
         textFieldTodefaultValue = new HashMap<>();
         cboAirportList.setItems(airportList);
         listViewRunwayList.itemsProperty().bind(runwayListProperty);
+        colorScheme = ColorScheme.DEFAULT;
+        cboColorScheme.setItems(FXCollections.observableArrayList(ColorScheme.values()));
 
         saveDefaultValues(gridAddRunway);
         setAllComponentsInGrid(gridEditAirport, false);
@@ -206,7 +209,7 @@ public class Controller {
             String name = txtNewAirportName.getText();
             double xPosition = Double.parseDouble(txtNewAirportXPosition.getText());
             double yPosition = Double.parseDouble(txtNewAirportYPosition.getText());
-            airportList.add(new Airport(name, new Point2D(xPosition, yPosition), currentAirportImage));
+            airportList.add(new Airport(name, new Point2D.Double(xPosition, yPosition), currentAirportImage));
             ukMapAirportSelection2DVisualization.refresh();
             txtNewAirportName.clear();
             txtNewAirportXPosition.clear();
@@ -313,7 +316,7 @@ public class Controller {
             double yPosition = Double.parseDouble(txtEditedAirportYPosition.getText());
             if(selectedAirport != null) {
                 selectedAirport.setName(name);
-                selectedAirport.setUKMapPosition(new Point2D(xPosition, yPosition));
+                selectedAirport.setUKMapPosition(new Point2D.Double(xPosition, yPosition));
                 selectedAirport.setImage(currentAirportImage);
                 refreshAirportListComboBox();
                 ukMapAirportSelection2DVisualization.refresh();
@@ -353,7 +356,7 @@ public class Controller {
             File file = imageAirportChooser.showSaveDialog(null);
             if (file != null) {
                 FileSerializer fileSerializer = new FileSerializer();
-                fileSerializer.serializeAirportList(file.getName(), airportList);
+                fileSerializer.serializeAirportList(file.toPath(), airportList);
             }
         });
 
@@ -361,9 +364,28 @@ public class Controller {
             File file = imageAirportChooser.showOpenDialog(null);
             if (file != null) {
                 FileSerializer fileSerializer = new FileSerializer();
-                airportList = fileSerializer.deSerializeAirportList(file.getName());
+                airportList = fileSerializer.deSerializeAirportList(file.toPath());
+                ukMapAirportSelection2DVisualization.setAirportList(airportList);
+                refreshAirportListComboBox();
+                ukMapAirportSelection2DVisualization.refresh();
             }
         });
+
+        btnApplyColorScheme.setOnAction(event -> {
+            topViewRunway2DVisualization.setColorScheme((ColorScheme) cboColorScheme.getSelectionModel().getSelectedItem());
+            sideViewRunway2DVisualization.setColorScheme((ColorScheme) cboColorScheme.getSelectionModel().getSelectedItem());
+
+            topViewRunway2DVisualization.refresh();
+            sideViewRunway2DVisualization.refresh();
+        });
+
+        borderPaneLeftWindow.setOnMouseClicked(event -> {
+            Node mainNodeContent = borderPaneMainWindow.getCenter();
+            Node leftNodeContent = borderPaneLeftWindow.getCenter();
+            borderPaneMainWindow.setCenter(leftNodeContent);
+            borderPaneLeftWindow.setCenter(mainNodeContent);
+        });
+
 
         btnAddRunway.setOnAction(event -> {
             Runway runway = new Runway();
@@ -566,6 +588,7 @@ public class Controller {
             txtEditCGA.setText(String.valueOf(runway.getCGA()));
             txtEditInstrumentStrip.setText(String.valueOf(runway.getInstrumentStrip()));
             txtEditBlastProtection.setText(String.valueOf(runway.getBlastProtection()));
+            txtEditRESA.setText(String.valueOf(runway.getRESA()));
 
             txtEditSkyHeight.setText(String.valueOf(runway.getSkyHeight()));
             txtEditGroundHeight.setText(String.valueOf(runway.getGroundHeight()));

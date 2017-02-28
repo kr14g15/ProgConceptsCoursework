@@ -121,6 +121,10 @@ public class UKMapAirportSelection2DVisualization extends Pane {
         canvas.drawAirport(airport, Color.RED);
     }
 
+    public void setAirportList(ObservableList<Airport> airportList) {
+        this.airportList = airportList;
+    }
+
     class ResizableCanvas extends Canvas {
         GraphicsContext  gc;
 

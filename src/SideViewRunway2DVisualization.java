@@ -24,10 +24,12 @@ public class SideViewRunway2DVisualization extends Pane {
     private double doubleRunwayY;
     private double doubleRunwayLength;
     private double doubleRunwayHeight;
+    private ColorScheme colorScheme;
     //endregion
 
     //region publicMethods
     SideViewRunway2DVisualization() {
+        colorScheme = ColorScheme.DEFAULT;
         canvas = new ResizableCanvas();
         canvas.widthProperty().bind(widthProperty());
         canvas.heightProperty().bind(heightProperty());
@@ -44,7 +46,9 @@ public class SideViewRunway2DVisualization extends Pane {
     }
     //endregion
 
-
+    public void setColorScheme(ColorScheme colorScheme) {
+        this.colorScheme = colorScheme;
+    }
     class ResizableCanvas extends Canvas {
 
     ResizableCanvas() {
@@ -93,12 +97,12 @@ public class SideViewRunway2DVisualization extends Pane {
     }
 
     private void drawSky(GraphicsContext gc) {
-        gc.setFill(Color.rgb(178,178,254));
+        gc.setFill(colorScheme.SkyColor);
         gc.fillRect(0, 0, doubleCanvasWidth, normalize(runway.getSkyHeight(), doubleSkyAndGround, doubleCanvasHeight));
     }
 
     private void drawGround(GraphicsContext gc) {
-        gc.setFill(Color.rgb(222,184,135));
+        gc.setFill(colorScheme.GroundColor);
         gc.fillRect(0,
                 normalize(runway.getSkyHeight(), doubleSkyAndGround, doubleCanvasHeight),
                 doubleCanvasWidth,
@@ -106,7 +110,7 @@ public class SideViewRunway2DVisualization extends Pane {
     }
 
     private void drawRunwayStrip(GraphicsContext gc) {
-        gc.setFill(Color.GRAY);
+        gc.setFill(colorScheme.RunwayStripColor);
         doubleRunwayX =  runway.getBlastProtection();
         doubleRunwayY = runway.getSkyHeight();
         doubleRunwayLength = 2*runway.getStripEnd() + runway.getTORA();
