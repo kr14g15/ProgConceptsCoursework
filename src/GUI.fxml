@@ -1143,7 +1143,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>
                                  <cursor>
-                                    <Cursor fx:constant="N_RESIZE" />
+                                    <Cursor fx:constant="HAND" />
                                  </cursor></BorderPane>
                               <Pane maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                            </children>
