@@ -19,6 +19,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,8 +67,8 @@ public class Controller {
     @FXML private Button btnViewVisualizationAirport;
     private ObservableList<Airport> airportList;
     private Airport selectedAirport;
-    private Image imageCurrentAirportImage;
-    private Image imageNotFoundImage;
+    private SerializableImage imageCurrentAirportImage;
+    private SerializableImage imageNotFoundImage;
     //endregion
 
     //region runwaySelection
@@ -185,7 +186,8 @@ public class Controller {
         listViewRunwayList.itemsProperty().bind(runwayListProperty);
         colorScheme = ColorScheme.DEFAULT;
         cboColorScheme.setItems(FXCollections.observableArrayList(ColorScheme.values()));
-        imageNotFoundImage = SwingFXUtils.toFXImage(SwingFXUtils.fromFXImage(imageViewAirportImage.getImage(), null), null);
+        imageNotFoundImage = new SerializableImage();
+        imageNotFoundImage.setImage(SwingFXUtils.toFXImage(SwingFXUtils.fromFXImage(imageViewAirportImage.getImage(), null), null));
         imageCurrentAirportImage = imageNotFoundImage;
 
         saveDefaultValues(gridAddRunway);
@@ -358,7 +360,7 @@ public class Controller {
         btnRemoveSelectedAirport.setOnAction(event -> {
             airportList.remove(selectedAirport);
             selectedAirport = null;
-            imageViewAirportImage.setImage(imageNotFoundImage);
+            imageViewAirportImage.setImage(imageNotFoundImage.getImage());
             refreshAirportListComboBox();
             ukMapAirportSelection2DVisualization.refresh();
             imageCurrentAirportImage = imageNotFoundImage;
@@ -376,8 +378,8 @@ public class Controller {
                 BufferedImage bufferedImage = null;
                 try {
                     bufferedImage = ImageIO.read(file);
-                    imageCurrentAirportImage = SwingFXUtils.toFXImage(bufferedImage, null);
-                    imageViewAirportImage.setImage(imageCurrentAirportImage);
+                    imageCurrentAirportImage.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
+                    imageViewAirportImage.setImage(imageCurrentAirportImage.getImage());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -636,7 +638,7 @@ public class Controller {
             txtEditedAirportName.setText(airport.getName());
             txtEditedAirportXPosition.setText(String.valueOf(airport.getUKMapPosition().getX()));
             txtEditedAirportYPosition.setText(String.valueOf(airport.getUKMapPosition().getY()));
-            imageViewAirportImage.setImage(airport.getImage());
+            imageViewAirportImage.setImage(airport.getImage().getImage());
             cboRunwayList.setItems(FXCollections.observableArrayList(airport.getRunwayList()));
             ukMapAirportSelection2DVisualization.selectAirport(airport);
             runwayListProperty.set(FXCollections.observableArrayList(selectedAirport.getRunwayList()));
@@ -645,7 +647,7 @@ public class Controller {
             cboAirportList.getSelectionModel().select(airport);
         } else {
             cboAirportList.getSelectionModel().clearSelection();
-            imageViewAirportImage.setImage(imageNotFoundImage);
+            imageViewAirportImage.setImage(imageNotFoundImage.getImage());
             imageCurrentAirportImage = imageNotFoundImage;
             txtSelectedAirport.clear();
             setAllComponentsInGrid(gridEditAirport, false);

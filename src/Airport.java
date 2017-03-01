@@ -13,12 +13,12 @@ public class Airport implements Serializable {
     //region privateVariables
     private String strName;
     private Point2D.Double pointUKMapPosition;
-    private Image image;
+    private SerializableImage image;
     private List<Runway> listRunways;
     //endregion
 
     //region publicMethods
-    public Airport(String name, Point2D.Double position, Image image){
+    public Airport(String name, Point2D.Double position, SerializableImage image){
         this.strName = name;
         this.pointUKMapPosition = position;
         this.image = image;
@@ -33,7 +33,7 @@ public class Airport implements Serializable {
         return pointUKMapPosition;
     }
 
-    public Image getImage() {
+    public SerializableImage getImage() {
         return image;
     }
 
@@ -45,7 +45,7 @@ public class Airport implements Serializable {
         this.pointUKMapPosition = pointUKMapPosition;
     }
 
-    public void setImage(Image image) {
+    public void setImage(SerializableImage image) {
         this.image = image;
     }
 
