@@ -56,7 +56,6 @@ public class Airport implements Serializable {
     //endregion
 
     //region publicEvents
-
     @Override
     public String toString() {
         return strName;

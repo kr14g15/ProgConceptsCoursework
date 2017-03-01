@@ -6,9 +6,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -18,20 +15,6 @@ import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.w3c.*;
-
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -40,14 +23,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Controller {
+
     //region displays
     @FXML private TabPane tabPaneMainTabs;
     @FXML private Tab tabMenu;
     @FXML private BorderPane borderPaneMainWindow;
     @FXML private BorderPane borderPaneLeftWindow;
     @FXML private BorderPane borderPaneUKMap;
-
     private TopViewRunway2DVisualization topViewRunway2DVisualization;
+    protected ListProperty<Runway> runwayListProperty = new SimpleListProperty<>();
+    Map<TextField, String> textFieldTodefaultValue;
     private SideViewRunway2DVisualization sideViewRunway2DVisualization;
     private UKMapAirportSelection2DVisualization ukMapAirportSelection2DVisualization;
     //endregion
@@ -76,27 +61,23 @@ public class Controller {
     @FXML private ImageView imageViewAirportImage;
     @FXML private BorderPane borderPaneAirportImage;
     @FXML private TextField txtSelectedAirport;
+    @FXML private FileChooser imageAirportChooser = new FileChooser();
+    private boolean editMode = false;
     @FXML private Button btnViewVisualizationAirport;
-
     private ObservableList<Airport> airportList;
     private Airport selectedAirport;
     private Image imageCurrentAirportImage;
     private Image imageNotFoundImage;
-    private FileChooser imageAirportChooser = new FileChooser();
-    private boolean editMode = false;
     //endregion
 
     //region runwaySelection
     @FXML private ComboBox<Runway> cboRunwayList;
     @FXML private Button btnViewVisualizationRunway;
-    protected ListProperty<Runway> runwayListProperty = new SimpleListProperty<>();
     private Runway selectedRunway;
-    @FXML private Button btnImportRunway;
-    @FXML private Button btnExportRunway;
-
     //endregion
 
     //region addRunway
+    @FXML private Tab tabAddRunway;
     @FXML private ListView<Runway> listViewRunwayList;
     @FXML private GridPane gridAddRunway;
     @FXML private Button btnAddRunway;
@@ -110,11 +91,9 @@ public class Controller {
     @FXML private TextField txtAddLeftClearwayWidth;
     @FXML private TextField txtAddRightClearwayLength;
     @FXML private TextField txtAddRightClearwayWidth;
-
     @FXML private TextField txtAddRunwayStripWidth;
     @FXML private TextField txtAddRunwayStripLength;
     @FXML private TextField txtAddDisplacedThresholdLength;
-
     @FXML private TextField txtAddStartToThresholdMarkingsLength;
     @FXML private TextField txtAddThresholdMarkingsStripLength;
     @FXML private TextField txtAddThresholdMarkingsStripWidth;
@@ -123,7 +102,6 @@ public class Controller {
     @FXML private TextField txtAddNumberToStripeLength;
     @FXML private TextField txtAddCharacterLength;
     @FXML private TextField txtAddCharacterWidth;
-
     @FXML private TextField txtAddStripesLength;
     @FXML private TextField txtAddStripesWidth;
     @FXML private TextField txtAddStripesDifference;
@@ -135,15 +113,13 @@ public class Controller {
     @FXML private TextField txtAddRESA;
     @FXML private TextField txtAddRunwayToSmallVisualStripLength;
     @FXML private TextField txtAddRunwayToLargeVisualStripLength;
-
     @FXML private TextField txtAddSkyHeight;
     @FXML private TextField txtAddGroundHeight;
     @FXML private TextField txtAddAirportHeight;
-
-    Map<TextField, String> textFieldTodefaultValue;
     //endregion
 
     //region editRunway
+    @FXML private Tab tabEditRunway;
     @FXML private GridPane gridEditRunway;
     @FXML private GridPane gridRemoveRunway;
 
@@ -244,7 +220,7 @@ public class Controller {
                 txtNewAirportName.clear();
                 txtNewAirportXPosition.clear();
                 txtNewAirportYPosition.clear();
-            }catch (Exception e){
+            } catch (Exception e) {
                 incorrectInputMessage();
             }
         });
@@ -260,10 +236,10 @@ public class Controller {
         });
 
         ukMapAirportSelection2DVisualization.setOnPositionChanged(event -> {
-            if(!editMode) {
+            if (!editMode) {
                 txtNewAirportXPosition.setText(String.valueOf(event.getPosition().getX()));
                 txtNewAirportYPosition.setText(String.valueOf(event.getPosition().getY()));
-            }else{
+            } else {
                 txtEditedAirportXPosition.setText(String.valueOf(event.getPosition().getX()));
                 txtEditedAirportYPosition.setText(String.valueOf(event.getPosition().getY()));
             }
@@ -285,24 +261,26 @@ public class Controller {
 
         cboAirportList.setOnAction((event) -> {
             ukMapAirportSelection2DVisualization.refresh();
-            if(cboAirportList.getSelectionModel().getSelectedItem() != null) {
+            if (cboAirportList.getSelectionModel().getSelectedItem() != null) {
                 selectAirport(cboAirportList.getSelectionModel().getSelectedItem());
-            };
+            }
+            ;
         });
 
         cboRunwayList.setOnAction((event) -> {
-            if(cboRunwayList.getSelectionModel().getSelectedItem() != null) {
+            if (cboRunwayList.getSelectionModel().getSelectedItem() != null) {
                 selectRunway(cboRunwayList.getSelectionModel().getSelectedItem());
-            };
+            }
+            ;
         });
 
         listViewRunwayList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             selectRunway(newValue);
         });
-        cboAirportList.setCellFactory(new Callback<ListView<Airport>, ListCell<Airport>>(){
+        cboAirportList.setCellFactory(new Callback<ListView<Airport>, ListCell<Airport>>() {
             @Override
             public ListCell<Airport> call(ListView<Airport> p) {
-                return new ListCell<Airport>(){
+                return new ListCell<Airport>() {
                     protected void updateItem(Airport t, boolean bln) {
                         super.updateItem(t, bln);
                         if (t != null) {
@@ -333,30 +311,30 @@ public class Controller {
             }
         });
 
-        cboRunwayList.setCellFactory(new Callback<ListView<Runway>, ListCell<Runway>>(){
+        cboRunwayList.setCellFactory(new Callback<ListView<Runway>, ListCell<Runway>>() {
             @Override
             public ListCell<Runway> call(ListView<Runway> p) {
-                return new ListCell<Runway>(){
+                return new ListCell<Runway>() {
                     protected void updateItem(Runway t, boolean bln) {
                         super.updateItem(t, bln);
                         if (t != null) {
                             setText(t.getDirection() + "" + t.getDegree());
-                        }else
+                        } else
                             setText(null);
                     }
                 };
             }
         });
 
-        listViewRunwayList.setCellFactory(new Callback<ListView<Runway>, ListCell<Runway>>(){
+        listViewRunwayList.setCellFactory(new Callback<ListView<Runway>, ListCell<Runway>>() {
             @Override
             public ListCell<Runway> call(ListView<Runway> p) {
-                return new ListCell<Runway>(){
+                return new ListCell<Runway>() {
                     protected void updateItem(Runway t, boolean bln) {
                         super.updateItem(t, bln);
                         if (t != null) {
                             setText(t.getDirection() + "" + t.getDegree());
-                        }else
+                        } else
                             setText(null);
                     }
                 };
@@ -367,7 +345,7 @@ public class Controller {
             String name = txtEditedAirportName.getText();
             double xPosition = Double.parseDouble(txtEditedAirportXPosition.getText());
             double yPosition = Double.parseDouble(txtEditedAirportYPosition.getText());
-            if(selectedAirport != null) {
+            if (selectedAirport != null) {
                 selectedAirport.setName(name);
                 selectedAirport.setUKMapPosition(new Point2D.Double(xPosition, yPosition));
                 selectedAirport.setImage(imageCurrentAirportImage);
@@ -394,7 +372,7 @@ public class Controller {
 
         imageViewAirportImage.setOnMouseClicked(event -> {
             File file = imageAirportChooser.showOpenDialog(null);
-            if (file !=null) {
+            if (file != null) {
                 BufferedImage bufferedImage = null;
                 try {
                     bufferedImage = ImageIO.read(file);
@@ -439,346 +417,135 @@ public class Controller {
             borderPaneMainWindow.setCenter(leftNodeContent);
             borderPaneLeftWindow.setCenter(mainNodeContent);
         });
-        
-        btnExportRunway.setOnAction(event -> {
-        	try {
-        		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        		Document doc = dBuilder.newDocument();
-        		
-        		// root element
-        		Element airport = doc.createElement("airport");
-        		doc.appendChild(airport);
-        		
-        		Element runway = doc.createElement("runway");
-        		airport.appendChild(runway);
-        		
-        		// Runway strip
-        		Element direction = doc.createElement("direction");
-        		direction.appendChild(doc.createTextNode(String.valueOf(txtAddDirection.getText().charAt(0))));
-        		runway.appendChild(direction);
-        		
-        		Element degree = doc.createElement("degree");
-        		degree.appendChild(doc.createTextNode(txtAddDegree.getText()));
-        		runway.appendChild(degree);
-        		
-        		Element stopway = doc.createElement("stopway");
-        		stopway.appendChild(doc.createTextNode(txtAddStopwayLength.getText()));
-        		runway.appendChild(stopway);
-        		
-        		Element clearwaylength = doc.createElement("clearwaylength");
-        		clearwaylength.appendChild(doc.createTextNode(txtAddClearwayLength.getText()));
-        		runway.appendChild(clearwaylength);
-        		
-        		Element clearwaywidth = doc.createElement("clearwaywidth");
-        		clearwaywidth.appendChild(doc.createTextNode(txtAddClearwayWidth.getText()));
-        		runway.appendChild(clearwaywidth);
-        		
-        		Element stripwidth = doc.createElement("stripwidth");
-        		stripwidth.appendChild(doc.createTextNode(txtAddRunwayStripWidth.getText()));
-        		runway.appendChild(stripwidth);
-        		
-        		Element striplength = doc.createElement("striplength");
-        		striplength.appendChild(doc.createTextNode(txtAddRunwayStripLength.getText()));
-        		runway.appendChild(striplength);
-        		
-        		
-        		//Threshold
-        		Element starttothreshold = doc.createElement("starttothreshold");
-        		starttothreshold.appendChild(doc.createTextNode(txtAddStartToThresholdMarkingsLength.getText()));
-        		runway.appendChild(starttothreshold);
-        		
-        		Element thresholdstriplength = doc.createElement("thresholdstriplength");
-        		thresholdstriplength.appendChild(doc.createTextNode(txtAddThresholdMarkingsStripLength.getText()));
-        		runway.appendChild(thresholdstriplength);
-        		
-        		Element thresholdstripwidth = doc.createElement("thresholdstripwidth");
-        		thresholdstripwidth.appendChild(doc.createTextNode(txtAddThresholdMarkingsStripWidth.getText()));
-        		runway.appendChild(thresholdstripwidth);
-        		
-        		Element displacedthreshold = doc.createElement("displacedthreshold");
-        		displacedthreshold.appendChild(doc.createTextNode(txtAddDisplacedThresholdLength.getText()));
-        		runway.appendChild(displacedthreshold);
-        		
-        		
-        		//Letters and Numbers
-        		Element thresholdtoletter = doc.createElement("thresholdtoletter");
-        		thresholdtoletter.appendChild(doc.createTextNode(txtAddThresholdMarkingsToLetterLength.getText()));
-        		runway.appendChild(thresholdtoletter);
-        		
-        		Element lettertonumber = doc.createElement("lettertonumber");
-        		lettertonumber.appendChild(doc.createTextNode(txtAddLetterToNumberLength.getText()));
-        		runway.appendChild(lettertonumber);
-        		
-        		Element numbertostripe = doc.createElement("numbertostripe");
-        		numbertostripe.appendChild(doc.createTextNode(txtAddLetterToNumberLength.getText()));
-        		runway.appendChild(numbertostripe);
-        		
-        		Element characterlength = doc.createElement("characterlength");
-        		characterlength.appendChild(doc.createTextNode(txtAddCharacterLength.getText()));
-        		runway.appendChild(characterlength);
-        		
-        		Element characterwidth = doc.createElement("characterwidth");
-        		characterwidth.appendChild(doc.createTextNode(txtAddCharacterWidth.getText()));
-        		runway.appendChild(characterwidth);
-        		
-        		
-        		//Horizontal Stripes
-        		Element horizontallength = doc.createElement("horizontallength");
-        		horizontallength.appendChild(doc.createTextNode(txtAddHorizontalStripesLength.getText()));
-        		runway.appendChild(horizontallength);
-        		
-        		Element horizontalwidth = doc.createElement("horizontalwidth");
-        		horizontalwidth.appendChild(doc.createTextNode(txtAddHorizontalStripesWidth.getText()));
-        		runway.appendChild(horizontalwidth);
-        		
-        		Element horizontalstripedifference = doc.createElement("horizontalstripedifference");
-        		horizontalstripedifference.appendChild(doc.createTextNode(txtAddHorizontalStripesDifference.getText()));
-        		runway.appendChild(horizontalstripedifference);
-        		
-        		
-        		//Outside Runway Strip
-        		Element stripend = doc.createElement("stripend");
-        		stripend.appendChild(doc.createTextNode(txtAddStripEnd.getText()));
-        		runway.appendChild(stripend);
-        		
-        		Element smallvisualstrip = doc.createElement("smallvisualstrip");
-        		smallvisualstrip.appendChild(doc.createTextNode(txtAddSmallVisualStripWidth.getText()));
-        		runway.appendChild(smallvisualstrip);
-        		
-        		Element largevisualstrip = doc.createElement("largevisualstrip");
-        		largevisualstrip.appendChild(doc.createTextNode(txtAddLargeVisualStripWidth.getText()));
-        		runway.appendChild(largevisualstrip);
-        		
-        		Element instrumentstrip = doc.createElement("instrumentstrip");
-        		instrumentstrip.appendChild(doc.createTextNode(txtAddInstrumentStrip.getText()));
-        		runway.appendChild(instrumentstrip);
-        		
-        		Element blastprotection = doc.createElement("blastprotection");
-        		blastprotection.appendChild(doc.createTextNode(txtAddBlastProtection.getText()));
-        		runway.appendChild(blastprotection);
-        		
-        		Element resa = doc.createElement("resa");
-        		resa.appendChild(doc.createTextNode(txtAddRESA.getText()));
-        		runway.appendChild(resa);
-        		
-        		Element runwaytosmallvisualstriplength = doc.createElement("runwaytosmallvisualstriplength");
-        		runwaytosmallvisualstriplength.appendChild(doc.createTextNode(txtAddRunwayToSmallVisualStripLength.getText()));
-        		runway.appendChild(runwaytosmallvisualstriplength);
-        		
-        		Element runwaytolargevisualstriplength = doc.createElement("runwaytolargevisualstriplength");
-        		runwaytolargevisualstriplength.appendChild(doc.createTextNode(txtAddRunwayToLargeVisualStripLength.getText()));
-        		runway.appendChild(runwaytolargevisualstriplength);
-        		
-        		
-        		//Optional
-        		Element skyheight = doc.createElement("skyheight");
-        		skyheight.appendChild(doc.createTextNode(txtAddSkyHeight.getText()));
-        		runway.appendChild(skyheight);
-        		
-        		Element groundheight = doc.createElement("groundheight");
-        		groundheight.appendChild(doc.createTextNode(txtAddGroundHeight.getText()));
-        		runway.appendChild(groundheight);
-        		
-        		Element airportheight = doc.createElement("direction");
-        		airportheight.appendChild(doc.createTextNode(txtAddAirportHeight.getText()));
-        		runway.appendChild(airportheight);
-        		
-        		//write content into xml file
-        		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        		Transformer transformer = transformerFactory.newTransformer();
-        		DOMSource source = new DOMSource(doc);
-        		StreamResult result = new StreamResult(new File("runway" + String.valueOf(txtAddDirection.getText().charAt(0)) + txtAddDegree.getText() + ".xml"));
-        		transformer.transform(source, result);
-        		
-        		Alert alert = new Alert(AlertType.INFORMATION);
-        		alert.setTitle("File saved");
-        		alert.setHeaderText("File " + "runway" + String.valueOf(txtAddDirection.getText().charAt(0)) + txtAddDegree.getText() + ".xml has been saved.");
-        		alert.showAndWait();
-        		
-        		
-        	} catch (Exception e){
-        		e.printStackTrace();
-        	}
-        	
-        });
-        
-        btnImportRunway.setOnAction(event -> {
-        	try {
-        		
-    			FileChooser fileChooser = new FileChooser();
-    			fileChooser.setTitle("Select runway");
-    			FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("XML files(*.xml)", "*.xml");
-    			fileChooser.getExtensionFilters().add(filter);
-    			File fXmlFile = fileChooser.showOpenDialog(null);
-    			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-    			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-    			Document doc = dBuilder.parse(fXmlFile);
-    			
-    			doc.getDocumentElement().normalize();
-    			
-    			NodeList nList = doc.getElementsByTagName("runway");
-    			
-    			for(int i = 0; i < nList.getLength(); i++){
-    				org.w3c.dom.Node nNode = nList.item(i);
-    				if(nNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE){
-    					Element eElement = (Element) nNode;
-    					
-    					Runway runway = new Runway();
-    					runway.setDirection(eElement.getElementsByTagName("direction").item(0).getTextContent().charAt(i));
-    		            runway.setDegree(Integer.parseInt(eElement.getElementsByTagName("degree").item(i).getTextContent()));
-    		            runway.setStopwayLength(Double.parseDouble(eElement.getElementsByTagName("stopway").item(i).getTextContent()));
-    		            runway.setClearwayLength(Double.parseDouble(eElement.getElementsByTagName("clearwaylength").item(i).getTextContent()));
-    		            runway.setClearwayWidth(Double.parseDouble(eElement.getElementsByTagName("clearwaywidth").item(i).getTextContent()));
 
-    		            runway.setRunwayStripWidth(Double.parseDouble(eElement.getElementsByTagName("stripwidth").item(i).getTextContent()));
-    		            runway.setRunwayStripLength(Double.parseDouble(eElement.getElementsByTagName("striplength").item(i).getTextContent()));
-    		            runway.setDisplacedThresholdLength(Double.parseDouble(eElement.getElementsByTagName("displacedthreshold").item(i).getTextContent()));
-
-    		            runway.setStartToThresholdMarkingsLength(Double.parseDouble(eElement.getElementsByTagName("starttothreshold").item(i).getTextContent()));
-    		            runway.setThresholdMarkingsStripLength(Double.parseDouble(eElement.getElementsByTagName("thresholdstriplength").item(i).getTextContent()));
-    		            runway.setThresholdMarkingsStripWidth(Double.parseDouble(eElement.getElementsByTagName("thresholdstripwidth").item(i).getTextContent()));
-    		            runway.setThresholdMarkingsToLetterLength(Double.parseDouble(eElement.getElementsByTagName("thresholdtoletter").item(i).getTextContent()));
-    		            runway.setLetterToNumberLength(Double.parseDouble(eElement.getElementsByTagName("lettertonumber").item(i).getTextContent()));
-    		            runway.setNumberToHorizontalStripeLength(Double.parseDouble(eElement.getElementsByTagName("numbertostripe").item(i).getTextContent()));
-    		            runway.setCharacterLength(Double.parseDouble(eElement.getElementsByTagName("characterlength").item(i).getTextContent()));
-    		            runway.setCharacterWidth(Double.parseDouble(eElement.getElementsByTagName("characterwidth").item(i).getTextContent()));
-
-
-    		            runway.setHorizontalStripesLength(Double.parseDouble(eElement.getElementsByTagName("horizontallength").item(i).getTextContent()));
-    		            runway.setHorizontalStripesWidth(Double.parseDouble(eElement.getElementsByTagName("horizontalwidth").item(i).getTextContent()));
-    		            runway.setHorizontalStripesDifference(Double.parseDouble(eElement.getElementsByTagName("horizontalstripedifference").item(i).getTextContent()));
-    		            runway.setStripEnd(Double.parseDouble(eElement.getElementsByTagName("stripend").item(i).getTextContent()));
-    		            runway.setSmallVisualStripWidth(Double.parseDouble(eElement.getElementsByTagName("smallvisualstrip").item(i).getTextContent()));
-    		            runway.setLargeVisualStripWidth(Double.parseDouble(eElement.getElementsByTagName("largevisualstrip").item(i).getTextContent()));
-    		            runway.setInstrumentStrip(Double.parseDouble(eElement.getElementsByTagName("instrumentstrip").item(i).getTextContent()));
-    		            runway.setBlastProtection(Double.parseDouble(eElement.getElementsByTagName("blastprotection").item(i).getTextContent()));
-    		            runway.setRESA(Double.parseDouble(eElement.getElementsByTagName("resa").item(i).getTextContent()));
-    		            runway.setRunwayToSmallVisualStripLength(Double.parseDouble(eElement.getElementsByTagName("runwaytosmallvisualstriplength").item(i).getTextContent()));
-    		            runway.setRunwayToLargeVisualStripLength(Double.parseDouble(eElement.getElementsByTagName("runwaytolargevisualstriplength").item(i).getTextContent()));
-
-    		            runway.setSkyHeight(Double.parseDouble(eElement.getElementsByTagName("skyheight").item(i).getTextContent()));
-    		            runway.setGroundHeight(Double.parseDouble(eElement.getElementsByTagName("groundheight").item(i).getTextContent()));
-    		            runway.setAirportHeight(Double.parseDouble(eElement.getElementsByTagName("airportheight").item(i ).getTextContent()));
-
-    		            selectedAirport.getRunwayList().add(runway);
-    		            selectAirport(selectedAirport);
-    		            refreshRunwayListView();
-    		            refreshAirportListComboBox();
-    		            refreshRunwayListComboBox();
-    				}
-    					 
-    			}
-    			
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    		}
-        });
-
-        btnViewVisualizationAirport.setOnAction(event ->{
+        btnViewVisualizationAirport.setOnAction(event -> {
             tabPaneMainTabs.getSelectionModel().select(tabMenu);
         });
 
-        btnViewVisualizationRunway.setOnAction(event ->{
+        btnViewVisualizationRunway.setOnAction(event -> {
             tabPaneMainTabs.getSelectionModel().select(tabMenu);
         });
-        tabMenu.setOnSelectionChanged(event->{
+        tabMenu.setOnSelectionChanged(event -> {
             topViewRunway2DVisualization.refresh();
             sideViewRunway2DVisualization.refresh();
         });
 
         btnAddRunway.setOnAction(event -> {
-            Runway runway = new Runway();
-            runway.setDirection(txtAddDirection.getText().charAt(0));
-            runway.setDegree(Integer.parseInt(txtAddDegree.getText()));
-            runway.setLeftStopwayLength(Double.parseDouble(txtAddLeftStopwayLength.getText()));
-            runway.setRightStopwayLength(Double.parseDouble(txtAddRightStopwayLength.getText()));
+            try {
+                Runway runway = new Runway();
+                if (!checkIfCorrectValues(gridAddRunway)) incorrectInputMessage();
+                else {
+                    runway.setDirection(txtAddDirection.getText().charAt(0));
+                    runway.setDegree(Integer.parseInt(txtAddDegree.getText()));
+                    runway.setLeftStopwayLength(Double.parseDouble(txtAddLeftStopwayLength.getText()));
+                    runway.setRightStopwayLength(Double.parseDouble(txtAddRightStopwayLength.getText()));
 
-            runway.setLeftClearwayLength(Double.parseDouble(txtAddLeftClearwayLength.getText()));
-            runway.setLeftClearwayWidth(Double.parseDouble(txtAddLeftClearwayWidth.getText()));
-            runway.setRightClearwayLength(Double.parseDouble(txtAddRightClearwayLength.getText()));
-            runway.setRightClearwayWidth(Double.parseDouble(txtAddRightClearwayWidth.getText()));
+                    runway.setLeftClearwayLength(Double.parseDouble(txtAddLeftClearwayLength.getText()));
+                    runway.setLeftClearwayWidth(Double.parseDouble(txtAddLeftClearwayWidth.getText()));
+                    runway.setRightClearwayLength(Double.parseDouble(txtAddRightClearwayLength.getText()));
+                    runway.setRightClearwayWidth(Double.parseDouble(txtAddRightClearwayWidth.getText()));
 
-            runway.setRunwayStripWidth(Double.parseDouble(txtAddRunwayStripWidth.getText()));
-            runway.setRunwayStripLength(Double.parseDouble(txtAddRunwayStripLength.getText()));
-            runway.setDisplacedThresholdLength(Double.parseDouble(txtAddDisplacedThresholdLength.getText()));
+                    runway.setRunwayStripWidth(Double.parseDouble(txtAddRunwayStripWidth.getText()));
+                    runway.setRunwayStripLength(Double.parseDouble(txtAddRunwayStripLength.getText()));
+                    runway.setDisplacedThresholdLength(Double.parseDouble(txtAddDisplacedThresholdLength.getText()));
 
-            runway.setStartToThresholdMarkingsLength(Double.parseDouble(txtAddStartToThresholdMarkingsLength.getText()));
-            runway.setThresholdMarkingsStripLength(Double.parseDouble(txtAddThresholdMarkingsStripLength.getText()));
-            runway.setThresholdMarkingsStripWidth(Double.parseDouble(txtAddThresholdMarkingsStripWidth.getText()));
-            runway.setThresholdMarkingsToLetterLength(Double.parseDouble(txtAddThresholdMarkingsToLetterLength.getText()));
-            runway.setLetterToNumberLength(Double.parseDouble(txtAddLetterToNumberLength.getText()));
-            runway.setNumberToStripeLength(Double.parseDouble(txtAddNumberToStripeLength.getText()));
-            runway.setCharacterLength(Double.parseDouble(txtAddCharacterLength.getText()));
-            runway.setCharacterWidth(Double.parseDouble(txtAddCharacterWidth.getText()));
+                    runway.setStartToThresholdMarkingsLength(Double.parseDouble(txtAddStartToThresholdMarkingsLength.getText()));
+                    runway.setThresholdMarkingsStripLength(Double.parseDouble(txtAddThresholdMarkingsStripLength.getText()));
+                    runway.setThresholdMarkingsStripWidth(Double.parseDouble(txtAddThresholdMarkingsStripWidth.getText()));
+                    runway.setThresholdMarkingsToLetterLength(Double.parseDouble(txtAddThresholdMarkingsToLetterLength.getText()));
+                    runway.setLetterToNumberLength(Double.parseDouble(txtAddLetterToNumberLength.getText()));
+                    runway.setNumberToStripeLength(Double.parseDouble(txtAddNumberToStripeLength.getText()));
+                    runway.setCharacterLength(Double.parseDouble(txtAddCharacterLength.getText()));
+                    runway.setCharacterWidth(Double.parseDouble(txtAddCharacterWidth.getText()));
 
-            runway.setStripesLength(Double.parseDouble(txtAddStripesLength.getText()));
-            runway.setStripesWidth(Double.parseDouble(txtAddStripesWidth.getText()));
-            runway.setStripesDifference(Double.parseDouble(txtAddStripesDifference.getText()));
-            runway.setStripEnd(Double.parseDouble(txtAddStripEnd.getText()));
-            runway.setSmallVisualStripWidth(Double.parseDouble(txtAddSmallVisualStripWidth.getText()));
-            runway.setLargeVisualStripWidth(Double.parseDouble(txtAddLargeVisualStripWidth.getText()));
-            runway.setInstrumentStrip(Double.parseDouble(txtAddInstrumentStrip.getText()));
-            runway.setBlastProtection(Double.parseDouble(txtAddBlastProtection.getText()));
-            runway.setRESA(Double.parseDouble(txtAddRESA.getText()));
-            runway.setRunwayToSmallVisualStripLength(Double.parseDouble(txtAddRunwayToSmallVisualStripLength.getText()));
-            runway.setRunwayToLargeVisualStripLength(Double.parseDouble(txtAddRunwayToLargeVisualStripLength.getText()));
+                    runway.setStripesLength(Double.parseDouble(txtAddStripesLength.getText()));
+                    runway.setStripesWidth(Double.parseDouble(txtAddStripesWidth.getText()));
+                    runway.setStripesDifference(Double.parseDouble(txtAddStripesDifference.getText()));
+                    runway.setStripEnd(Double.parseDouble(txtAddStripEnd.getText()));
+                    runway.setSmallVisualStripWidth(Double.parseDouble(txtAddSmallVisualStripWidth.getText()));
+                    runway.setLargeVisualStripWidth(Double.parseDouble(txtAddLargeVisualStripWidth.getText()));
+                    runway.setInstrumentStrip(Double.parseDouble(txtAddInstrumentStrip.getText()));
+                    runway.setBlastProtection(Double.parseDouble(txtAddBlastProtection.getText()));
+                    runway.setRESA(Double.parseDouble(txtAddRESA.getText()));
+                    runway.setRunwayToSmallVisualStripLength(Double.parseDouble(txtAddRunwayToSmallVisualStripLength.getText()));
+                    runway.setRunwayToLargeVisualStripLength(Double.parseDouble(txtAddRunwayToLargeVisualStripLength.getText()));
 
-            runway.setSkyHeight(Double.parseDouble(txtAddSkyHeight.getText()));
-            runway.setGroundHeight(Double.parseDouble(txtAddGroundHeight.getText()));
-            runway.setAirportHeight(Double.parseDouble(txtAddAirportHeight.getText()));
+                    runway.setSkyHeight(Double.parseDouble(txtAddSkyHeight.getText()));
+                    runway.setGroundHeight(Double.parseDouble(txtAddGroundHeight.getText()));
+                    runway.setAirportHeight(Double.parseDouble(txtAddAirportHeight.getText()));
 
-            selectedAirport.getRunwayList().add(runway);
-            selectAirport(selectedAirport);
-            refreshRunwayListView();
-            refreshRunwayListComboBox();
+                    selectedAirport.getRunwayList().add(runway);
+                    selectAirport(selectedAirport);
+                    refreshRunwayListView();
+                    refreshRunwayListComboBox();
+                }
+            } catch (Exception e) {
+                incorrectInputMessage();
+            }
         });
 
         btnEditRunway.setOnAction(event -> {
-            selectedRunway.setDirection(txtEditDirection.getText().charAt(0));
-            selectedRunway.setDegree(Integer.parseInt(txtEditDegree.getText()));
-            selectedRunway.setLeftStopwayLength(Double.parseDouble(txtEditLeftStopwayLength.getText()));
-            selectedRunway.setRightStopwayLength(Double.parseDouble(txtEditRightStopwayLength.getText()));
+            try {
+                Runway runway = new Runway();
+                if (!checkIfCorrectValues(gridEditRunway)) incorrectInputMessage();
+                else {
+                    selectedRunway.setDirection(txtEditDirection.getText().charAt(0));
+                    selectedRunway.setDegree(Integer.parseInt(txtEditDegree.getText()));
+                    selectedRunway.setLeftStopwayLength(Double.parseDouble(txtEditLeftStopwayLength.getText()));
+                    selectedRunway.setRightStopwayLength(Double.parseDouble(txtEditRightStopwayLength.getText()));
 
-            selectedRunway.setLeftClearwayLength(Double.parseDouble(txtEditLeftClearwayLength.getText()));
-            selectedRunway.setLeftClearwayWidth(Double.parseDouble(txtEditLeftClearwayWidth.getText()));
-            selectedRunway.setRightClearwayLength(Double.parseDouble(txtEditRightClearwayLength.getText()));
-            selectedRunway.setRightClearwayWidth(Double.parseDouble(txtEditRightClearwayWidth.getText()));
+                    selectedRunway.setLeftClearwayLength(Double.parseDouble(txtEditLeftClearwayLength.getText()));
+                    selectedRunway.setLeftClearwayWidth(Double.parseDouble(txtEditLeftClearwayWidth.getText()));
+                    selectedRunway.setRightClearwayLength(Double.parseDouble(txtEditRightClearwayLength.getText()));
+                    selectedRunway.setRightClearwayWidth(Double.parseDouble(txtEditRightClearwayWidth.getText()));
 
-            selectedRunway.setRunwayStripWidth(Double.parseDouble(txtEditRunwayStripWidth.getText()));
-            selectedRunway.setRunwayStripLength(Double.parseDouble(txtEditRunwayStripLength.getText()));
-            selectedRunway.setDisplacedThresholdLength(Double.parseDouble(txtEditDisplacedThresholdLength.getText()));
+                    selectedRunway.setRunwayStripWidth(Double.parseDouble(txtEditRunwayStripWidth.getText()));
+                    selectedRunway.setRunwayStripLength(Double.parseDouble(txtEditRunwayStripLength.getText()));
+                    selectedRunway.setDisplacedThresholdLength(Double.parseDouble(txtEditDisplacedThresholdLength.getText()));
 
-            selectedRunway.setStartToThresholdMarkingsLength(Double.parseDouble(txtEditStartToThresholdMarkingsLength.getText()));
-            selectedRunway.setThresholdMarkingsStripLength(Double.parseDouble(txtEditThresholdMarkingsStripLength.getText()));
-            selectedRunway.setThresholdMarkingsStripWidth(Double.parseDouble(txtEditThresholdMarkingsStripWidth.getText()));
-            selectedRunway.setThresholdMarkingsToLetterLength(Double.parseDouble(txtEditThresholdMarkingsToLetterLength.getText()));
-            selectedRunway.setLetterToNumberLength(Double.parseDouble(txtEditLetterToNumberLength.getText()));
-            selectedRunway.setNumberToStripeLength(Double.parseDouble(txtEditNumberToStripeLength.getText()));
-            selectedRunway.setCharacterLength(Double.parseDouble(txtEditCharacterLength.getText()));
-            selectedRunway.setCharacterWidth(Double.parseDouble(txtEditCharacterWidth.getText()));
+                    selectedRunway.setStartToThresholdMarkingsLength(Double.parseDouble(txtEditStartToThresholdMarkingsLength.getText()));
+                    selectedRunway.setThresholdMarkingsStripLength(Double.parseDouble(txtEditThresholdMarkingsStripLength.getText()));
+                    selectedRunway.setThresholdMarkingsStripWidth(Double.parseDouble(txtEditThresholdMarkingsStripWidth.getText()));
+                    selectedRunway.setThresholdMarkingsToLetterLength(Double.parseDouble(txtEditThresholdMarkingsToLetterLength.getText()));
+                    selectedRunway.setLetterToNumberLength(Double.parseDouble(txtEditLetterToNumberLength.getText()));
+                    selectedRunway.setNumberToStripeLength(Double.parseDouble(txtEditNumberToStripeLength.getText()));
+                    selectedRunway.setCharacterLength(Double.parseDouble(txtEditCharacterLength.getText()));
+                    selectedRunway.setCharacterWidth(Double.parseDouble(txtEditCharacterWidth.getText()));
 
-            selectedRunway.setStripesLength(Double.parseDouble(txtEditStripesLength.getText()));
-            selectedRunway.setStripesWidth(Double.parseDouble(txtEditStripesWidth.getText()));
-            selectedRunway.setStripesDifference(Double.parseDouble(txtEditStripesDifference.getText()));
-            selectedRunway.setStripEnd(Double.parseDouble(txtEditStripEnd.getText()));
-            selectedRunway.setSmallVisualStripWidth(Double.parseDouble(txtEditSmallVisualStripWidth.getText()));
-            selectedRunway.setLargeVisualStripWidth(Double.parseDouble(txtEditLargeVisualStripWidth.getText()));
-            selectedRunway.setInstrumentStrip(Double.parseDouble(txtEditInstrumentStrip.getText()));
-            selectedRunway.setBlastProtection(Double.parseDouble(txtEditBlastProtection.getText()));
-            selectedRunway.setRESA(Double.parseDouble(txtEditRESA.getText()));
-            selectedRunway.setRunwayToSmallVisualStripLength(Double.parseDouble(txtEditRunwayToSmallVisualStripLength.getText()));
-            selectedRunway.setRunwayToLargeVisualStripLength(Double.parseDouble(txtEditRunwayToLargeVisualStripLength.getText()));
+                    selectedRunway.setStripesLength(Double.parseDouble(txtEditStripesLength.getText()));
+                    selectedRunway.setStripesWidth(Double.parseDouble(txtEditStripesWidth.getText()));
+                    selectedRunway.setStripesDifference(Double.parseDouble(txtEditStripesDifference.getText()));
+                    selectedRunway.setStripEnd(Double.parseDouble(txtEditStripEnd.getText()));
+                    selectedRunway.setSmallVisualStripWidth(Double.parseDouble(txtEditSmallVisualStripWidth.getText()));
+                    selectedRunway.setLargeVisualStripWidth(Double.parseDouble(txtEditLargeVisualStripWidth.getText()));
+                    selectedRunway.setInstrumentStrip(Double.parseDouble(txtEditInstrumentStrip.getText()));
+                    selectedRunway.setBlastProtection(Double.parseDouble(txtEditBlastProtection.getText()));
+                    selectedRunway.setRESA(Double.parseDouble(txtEditRESA.getText()));
+                    selectedRunway.setRunwayToSmallVisualStripLength(Double.parseDouble(txtEditRunwayToSmallVisualStripLength.getText()));
+                    selectedRunway.setRunwayToLargeVisualStripLength(Double.parseDouble(txtEditRunwayToLargeVisualStripLength.getText()));
 
-            selectedRunway.setSkyHeight(Double.parseDouble(txtEditSkyHeight.getText()));
-            selectedRunway.setGroundHeight(Double.parseDouble(txtEditGroundHeight.getText()));
-            selectedRunway.setAirportHeight(Double.parseDouble(txtEditAirportHeight.getText()));
+                    selectedRunway.setSkyHeight(Double.parseDouble(txtEditSkyHeight.getText()));
+                    selectedRunway.setGroundHeight(Double.parseDouble(txtEditGroundHeight.getText()));
+                    selectedRunway.setAirportHeight(Double.parseDouble(txtEditAirportHeight.getText()));
 
-            selectAirport(selectedAirport);
-            refreshRunwayListView();
-            refreshRunwayListComboBox();
+                    selectAirport(selectedAirport);
+                    refreshRunwayListView();
+                    refreshRunwayListComboBox();
+                }
+            } catch (Exception e) {
+                incorrectInputMessage();
+            }
         });
 
+    }
+
+    private static boolean isNumeric(String str) {
+        try {
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
     }
 
     private void incorrectInputMessage() {
@@ -789,15 +556,34 @@ public class Controller {
         alert.showAndWait();
     }
 
-    private void setAllComponentsInGrid(Pane parent, boolean enabled){
+    private boolean checkIfCorrectValues(Pane parent) {
+        boolean correctValue = true;
+        for (Node control : parent.getChildren()) {
+            if (control instanceof Pane) {
+                if (!checkIfCorrectValues((Pane) control)) return false;
+            } else if (control instanceof TextField) {
+                TextField textField = (TextField) control;
+                if (isNumeric(textField.getText()))
+                    if(Double.parseDouble(textField.getText()) >= 0) correctValue = true;
+                    else return false;
+                else correctValue = true;
+            } else if (control instanceof TitledPane) {
+                if (!checkIfCorrectValues((Pane) ((TitledPane) control).getContent())) return false;
+
+            }
+        }
+        return correctValue;
+    }
+
+    private void setAllComponentsInGrid(Pane parent, boolean enabled) {
         for (Node control : parent.getChildren()) {
             if (control instanceof Pane) {
                 setAllComponentsInGrid((Pane) control, enabled);
             } else if (control instanceof TextField) {
                 ((TextField) control).clear();
-            }else if (control instanceof ComboBox) {
+            } else if (control instanceof ComboBox) {
                 ((ComboBox) control).getSelectionModel().clearSelection();
-            }else if (control instanceof TitledPane) {
+            } else if (control instanceof TitledPane) {
                 setAllComponentsInGrid((Pane) ((TitledPane) control).getContent(), enabled);
             }
             control.setDisable(!enabled);
@@ -810,9 +596,10 @@ public class Controller {
                 saveDefaultValues((Pane) control);
             } else if (control instanceof TextField) {
                 textFieldTodefaultValue.put((TextField) control, ((TextField) control).getText());
-            }else if (control instanceof TitledPane) {
+            } else if (control instanceof TitledPane) {
                 saveDefaultValues((Pane) ((TitledPane) control).getContent());
-            }}
+            }
+        }
     }
 
     private void loadDefaultValues() {
@@ -821,28 +608,28 @@ public class Controller {
         }
     }
 
-    private void refreshAirportListComboBox(){
+    private void refreshAirportListComboBox() {
         cboAirportList.getSelectionModel().clearSelection();
         cboAirportList.setItems(null);
         cboAirportList.setItems(FXCollections.observableArrayList(airportList));
     }
 
-    private void refreshRunwayListComboBox(){
+    private void refreshRunwayListComboBox() {
         cboRunwayList.getSelectionModel().clearSelection();
         cboRunwayList.setItems(null);
         cboRunwayList.setItems(FXCollections.observableArrayList(selectedAirport.getRunwayList()));
     }
 
-    private void refreshRunwayListView(){
+    private void refreshRunwayListView() {
         listViewRunwayList.getSelectionModel().clearSelection();
         runwayListProperty.set(null);
-        if(selectedAirport != null)
+        if (selectedAirport != null)
             runwayListProperty.set(FXCollections.observableArrayList(selectedAirport.getRunwayList()));
     }
 
-    private void selectAirport(Airport airport){
+    private void selectAirport(Airport airport) {
         selectedAirport = airport;
-        if(airport != null) {
+        if (airport != null) {
             setAllComponentsInGrid(gridEditAirport, true);
             setAllComponentsInGrid(gridRemoveAirport, true);
             setAllComponentsInGrid(gridAddRunway, true);
@@ -856,7 +643,7 @@ public class Controller {
             txtSelectedAirport.setText(airport.getName());
             loadDefaultValues();
             cboAirportList.getSelectionModel().select(airport);
-        }else{
+        } else {
             cboAirportList.getSelectionModel().clearSelection();
             imageViewAirportImage.setImage(imageNotFoundImage);
             imageCurrentAirportImage = imageNotFoundImage;
@@ -872,9 +659,9 @@ public class Controller {
         }
     }
 
-    private void selectRunway(Runway runway){
+    private void selectRunway(Runway runway) {
         selectedRunway = runway;
-        if(selectedRunway != null) {
+        if (selectedRunway != null) {
             setAllComponentsInGrid(gridEditRunway, true);
             setAllComponentsInGrid(gridRemoveRunway, true);
             txtEditDirection.setText(String.valueOf(runway.getDirection()));
@@ -922,8 +709,7 @@ public class Controller {
             topViewRunway2DVisualization.refresh();
             sideViewRunway2DVisualization.refresh();
             cboRunwayList.getSelectionModel().select(runway);
-        }else
-        {
+        } else {
             setAllComponentsInGrid(gridEditRunway, false);
             setAllComponentsInGrid(gridRemoveRunway, false);
         }

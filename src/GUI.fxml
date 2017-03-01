@@ -261,7 +261,7 @@
                                           </GridPane>
                                           <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="281.0" prefWidth="300.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                             <tabs>
-                                              <Tab text="Add">
+                                              <Tab fx:id="tabAddRunway" text="Add">
                                                    <content>
                                                       <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                                          <content>
@@ -730,7 +730,7 @@
                                                                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                                                                  </GridPane.margin>
                                                                               </TextField>
-                                                                              <TextField fx:id="txtAddAirportHeight" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="30" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                                              <TextField fx:id="txtAddAirportHeight" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                                                  <GridPane.margin>
                                                                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                                                                  </GridPane.margin>
@@ -744,7 +744,7 @@
                                                          </content>
                                                       </ScrollPane>
                                                    </content></Tab>
-                                                <Tab text="Edit">
+                                                <Tab fx:id="tabEditRunway" text="Edit">
                                                     <content>
                                                         <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                                             <content>
