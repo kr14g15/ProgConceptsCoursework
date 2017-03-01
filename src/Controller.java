@@ -1,8 +1,5 @@
-import com.sun.javafx.scene.control.skin.ColorPalette;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -29,6 +26,8 @@ import java.util.Map;
 
 public class Controller {
     //region displays
+    @FXML private TabPane tabPaneMainTabs;
+    @FXML private Tab tabMenu;
     @FXML private BorderPane borderPaneMainWindow;
     @FXML private BorderPane borderPaneLeftWindow;
     @FXML private BorderPane borderPaneUKMap;
@@ -62,15 +61,19 @@ public class Controller {
     @FXML private ImageView imageViewAirportImage;
     @FXML private BorderPane borderPaneAirportImage;
     @FXML private TextField txtSelectedAirport;
+    @FXML private Button btnViewVisualizationAirport;
+
     private ObservableList<Airport> airportList;
     private Airport selectedAirport;
-    private Image currentAirportImage;
+    private Image imageCurrentAirportImage;
+    private Image imageNotFoundImage;
     private FileChooser imageAirportChooser = new FileChooser();
     private boolean editMode = false;
     //endregion
 
     //region runwaySelection
     @FXML private ComboBox<Runway> cboRunwayList;
+    @FXML private Button btnViewVisualizationRunway;
     protected ListProperty<Runway> runwayListProperty = new SimpleListProperty<>();
     private Runway selectedRunway;
 
@@ -80,17 +83,19 @@ public class Controller {
     @FXML private ListView<Runway> listViewRunwayList;
     @FXML private GridPane gridAddRunway;
     @FXML private Button btnAddRunway;
+    @FXML private Button btnImportRunway;
+    @FXML private Button btnExportRunway;
     @FXML private TextField txtAddDirection;
     @FXML private TextField txtAddDegree;
-    @FXML private TextField txtAddStopwayLength;
-    @FXML private TextField txtAddClearwayLength;
-    @FXML private TextField txtAddClearwayWidth;
+    @FXML private TextField txtAddLeftStopwayLength;
+    @FXML private TextField txtAddRightStopwayLength;
+    @FXML private TextField txtAddLeftClearwayLength;
+    @FXML private TextField txtAddLeftClearwayWidth;
+    @FXML private TextField txtAddRightClearwayLength;
+    @FXML private TextField txtAddRightClearwayWidth;
 
     @FXML private TextField txtAddRunwayStripWidth;
     @FXML private TextField txtAddRunwayStripLength;
-
-    @FXML private TextField txtAddThresholdStripLength;
-    @FXML private TextField txtAddThresholdStripWidth;
     @FXML private TextField txtAddDisplacedThresholdLength;
 
     @FXML private TextField txtAddStartToThresholdMarkingsLength;
@@ -98,13 +103,13 @@ public class Controller {
     @FXML private TextField txtAddThresholdMarkingsStripWidth;
     @FXML private TextField txtAddThresholdMarkingsToLetterLength;
     @FXML private TextField txtAddLetterToNumberLength;
-    @FXML private TextField txtAddNumberToHorizontalStripeLength;
+    @FXML private TextField txtAddNumberToStripeLength;
     @FXML private TextField txtAddCharacterLength;
     @FXML private TextField txtAddCharacterWidth;
 
-    @FXML private TextField txtAddHorizontalStripesLength;
-    @FXML private TextField txtAddHorizontalStripesWidth;
-    @FXML private TextField txtAddHorizontalStripesDifference;
+    @FXML private TextField txtAddStripesLength;
+    @FXML private TextField txtAddStripesWidth;
+    @FXML private TextField txtAddStripesDifference;
     @FXML private TextField txtAddStripEnd;
     @FXML private TextField txtAddSmallVisualStripWidth;
     @FXML private TextField txtAddLargeVisualStripWidth;
@@ -128,33 +133,37 @@ public class Controller {
     @FXML private Button btnEditRunway;
     @FXML private TextField txtEditDirection;
     @FXML private TextField txtEditDegree;
-    @FXML private TextField txtEditTORA;
-    @FXML private TextField txtEditTODA;
-    @FXML private TextField txtEditASDA;
-    @FXML private TextField txtEditLDA;
-    @FXML private TextField txtEditRunwayStripWidth;
+    @FXML private TextField txtEditLeftStopwayLength;
+    @FXML private TextField txtEditRightStopwayLength;
+    @FXML private TextField txtEditLeftClearwayLength;
+    @FXML private TextField txtEditLeftClearwayWidth;
+    @FXML private TextField txtEditRightClearwayLength;
+    @FXML private TextField txtEditRightClearwayWidth;
 
-    @FXML private TextField txtEditThresholdStripLength;
-    @FXML private TextField txtEditThresholdStripWidth;
+    @FXML private TextField txtEditRunwayStripWidth;
+    @FXML private TextField txtEditRunwayStripLength;
+    @FXML private TextField txtEditDisplacedThresholdLength;
 
     @FXML private TextField txtEditStartToThresholdMarkingsLength;
     @FXML private TextField txtEditThresholdMarkingsStripLength;
     @FXML private TextField txtEditThresholdMarkingsStripWidth;
     @FXML private TextField txtEditThresholdMarkingsToLetterLength;
     @FXML private TextField txtEditLetterToNumberLength;
-    @FXML private TextField txtEditNumberToHorizontalStripeLength;
+    @FXML private TextField txtEditNumberToStripeLength;
     @FXML private TextField txtEditCharacterLength;
     @FXML private TextField txtEditCharacterWidth;
 
-    @FXML private TextField txtEditHorizontalStripesLength;
-    @FXML private TextField txtEditHorizontalStripesWidth;
-    @FXML private TextField txtEditHorizontalStripesDifference;
+    @FXML private TextField txtEditStripesLength;
+    @FXML private TextField txtEditStripesWidth;
+    @FXML private TextField txtEditStripesDifference;
     @FXML private TextField txtEditStripEnd;
-    @FXML private TextField txtEditVisualStrip;
-    @FXML private TextField txtEditCGA;
+    @FXML private TextField txtEditSmallVisualStripWidth;
+    @FXML private TextField txtEditLargeVisualStripWidth;
     @FXML private TextField txtEditInstrumentStrip;
     @FXML private TextField txtEditBlastProtection;
     @FXML private TextField txtEditRESA;
+    @FXML private TextField txtEditRunwayToSmallVisualStripLength;
+    @FXML private TextField txtEditRunwayToLargeVisualStripLength;
 
     @FXML private TextField txtEditSkyHeight;
     @FXML private TextField txtEditGroundHeight;
@@ -183,6 +192,8 @@ public class Controller {
         listViewRunwayList.itemsProperty().bind(runwayListProperty);
         colorScheme = ColorScheme.DEFAULT;
         cboColorScheme.setItems(FXCollections.observableArrayList(ColorScheme.values()));
+        imageNotFoundImage = SwingFXUtils.toFXImage(SwingFXUtils.fromFXImage(imageViewAirportImage.getImage(), null), null);
+        imageCurrentAirportImage = imageNotFoundImage;
 
         saveDefaultValues(gridAddRunway);
         setAllComponentsInGrid(gridEditAirport, false);
@@ -190,9 +201,6 @@ public class Controller {
         setAllComponentsInGrid(gridAddRunway, false);
         setAllComponentsInGrid(gridEditRunway, false);
         setAllComponentsInGrid(gridRemoveRunway, false);
-
-        //imageViewAirportImage.fitWidthProperty().bind(borderPaneAirportImage.widthProperty());
-        //imageViewAirportImage.fitHeightProperty().bind(borderPaneAirportImage.heightProperty());
 
         topViewRunway2DVisualization = new TopViewRunway2DVisualization();
         sideViewRunway2DVisualization = new SideViewRunway2DVisualization();
@@ -210,14 +218,18 @@ public class Controller {
     private void addHandlers() {
 
         btnAddAirport.setOnAction(event -> {
-            String name = txtNewAirportName.getText();
-            double xPosition = Double.parseDouble(txtNewAirportXPosition.getText());
-            double yPosition = Double.parseDouble(txtNewAirportYPosition.getText());
-            airportList.add(new Airport(name, new Point2D.Double(xPosition, yPosition), currentAirportImage));
-            ukMapAirportSelection2DVisualization.refresh();
-            txtNewAirportName.clear();
-            txtNewAirportXPosition.clear();
-            txtNewAirportYPosition.clear();
+            try {
+                String name = txtNewAirportName.getText();
+                double xPosition = Double.parseDouble(txtNewAirportXPosition.getText());
+                double yPosition = Double.parseDouble(txtNewAirportYPosition.getText());
+                airportList.add(new Airport(name, new Point2D.Double(xPosition, yPosition), imageCurrentAirportImage));
+                ukMapAirportSelection2DVisualization.refresh();
+                txtNewAirportName.clear();
+                txtNewAirportXPosition.clear();
+                txtNewAirportYPosition.clear();
+            }catch (Exception e){
+                incorrectInputMessage();
+            }
         });
 
         btnMarkAirportPositionForAdding.setOnAction(event -> {
@@ -284,6 +296,26 @@ public class Controller {
             }
         });
 
+        btnExportRunway.setOnAction(event -> {
+            File file = imageAirportChooser.showSaveDialog(null);
+            if (file != null) {
+                RunwayExporter runwayExporter = new RunwayExporter();
+                runwayExporter.exportRunway(selectedRunway, file.toPath());
+            }
+        });
+
+        btnImportRunway.setOnAction(event -> {
+            File file = imageAirportChooser.showOpenDialog(null);
+            if (file != null) {
+                RunwayExporter runwayExporter = new RunwayExporter();
+                runwayExporter.importRunway(file.toPath());
+                //selected = fileSerializer.deSerializeAirportList(file.toPath());
+                //ukMapAirportSelection2DVisualization.setAirportList(airportList);
+                //refreshAirportListComboBox();
+                //ukMapAirportSelection2DVisualization.refresh();
+            }
+        });
+
         cboRunwayList.setCellFactory(new Callback<ListView<Runway>, ListCell<Runway>>(){
             @Override
             public ListCell<Runway> call(ListView<Runway> p) {
@@ -321,7 +353,7 @@ public class Controller {
             if(selectedAirport != null) {
                 selectedAirport.setName(name);
                 selectedAirport.setUKMapPosition(new Point2D.Double(xPosition, yPosition));
-                selectedAirport.setImage(currentAirportImage);
+                selectedAirport.setImage(imageCurrentAirportImage);
                 refreshAirportListComboBox();
                 ukMapAirportSelection2DVisualization.refresh();
                 selectAirport(null);
@@ -331,10 +363,10 @@ public class Controller {
         btnRemoveSelectedAirport.setOnAction(event -> {
             airportList.remove(selectedAirport);
             selectedAirport = null;
-            imageViewAirportImage.setImage(null);
+            imageViewAirportImage.setImage(imageNotFoundImage);
             refreshAirportListComboBox();
             ukMapAirportSelection2DVisualization.refresh();
-            currentAirportImage = null;
+            imageCurrentAirportImage = imageNotFoundImage;
         });
 
         btnRemoveSelectedRunway.setOnAction(event -> {
@@ -349,8 +381,8 @@ public class Controller {
                 BufferedImage bufferedImage = null;
                 try {
                     bufferedImage = ImageIO.read(file);
-                    currentAirportImage = SwingFXUtils.toFXImage(bufferedImage, null);
-                    imageViewAirportImage.setImage(currentAirportImage);
+                    imageCurrentAirportImage = SwingFXUtils.toFXImage(bufferedImage, null);
+                    imageViewAirportImage.setImage(imageCurrentAirportImage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -391,35 +423,46 @@ public class Controller {
             borderPaneLeftWindow.setCenter(mainNodeContent);
         });
 
+        btnViewVisualizationAirport.setOnAction(event ->{
+            tabPaneMainTabs.getSelectionModel().select(tabMenu);
+        });
+
+        btnViewVisualizationRunway.setOnAction(event ->{
+            tabPaneMainTabs.getSelectionModel().select(tabMenu);
+        });
+        tabMenu.setOnSelectionChanged(event->{
+            topViewRunway2DVisualization.refresh();
+            sideViewRunway2DVisualization.refresh();
+        });
 
         btnAddRunway.setOnAction(event -> {
             Runway runway = new Runway();
             runway.setDirection(txtAddDirection.getText().charAt(0));
             runway.setDegree(Integer.parseInt(txtAddDegree.getText()));
-            runway.setStopwayLength(Double.parseDouble(txtAddStopwayLength.getText()));
-            runway.setClearwayLength(Double.parseDouble(txtAddClearwayLength.getText()));
-            runway.setClearwayWidth(Double.parseDouble(txtAddClearwayWidth.getText()));
+            runway.setLeftStopwayLength(Double.parseDouble(txtAddLeftStopwayLength.getText()));
+            runway.setRightStopwayLength(Double.parseDouble(txtAddRightStopwayLength.getText()));
+
+            runway.setLeftClearwayLength(Double.parseDouble(txtAddLeftClearwayLength.getText()));
+            runway.setLeftClearwayWidth(Double.parseDouble(txtAddLeftClearwayWidth.getText()));
+            runway.setRightClearwayLength(Double.parseDouble(txtAddRightClearwayLength.getText()));
+            runway.setRightClearwayWidth(Double.parseDouble(txtAddRightClearwayWidth.getText()));
 
             runway.setRunwayStripWidth(Double.parseDouble(txtAddRunwayStripWidth.getText()));
             runway.setRunwayStripLength(Double.parseDouble(txtAddRunwayStripLength.getText()));
             runway.setDisplacedThresholdLength(Double.parseDouble(txtAddDisplacedThresholdLength.getText()));
-
-            //runway.setThresholdStripLength(Double.parseDouble(txtAddThresholdStripLength.getText()));
-            //runway.setThresholdStripWidth(Double.parseDouble(txtAddThresholdStripWidth.getText()));
 
             runway.setStartToThresholdMarkingsLength(Double.parseDouble(txtAddStartToThresholdMarkingsLength.getText()));
             runway.setThresholdMarkingsStripLength(Double.parseDouble(txtAddThresholdMarkingsStripLength.getText()));
             runway.setThresholdMarkingsStripWidth(Double.parseDouble(txtAddThresholdMarkingsStripWidth.getText()));
             runway.setThresholdMarkingsToLetterLength(Double.parseDouble(txtAddThresholdMarkingsToLetterLength.getText()));
             runway.setLetterToNumberLength(Double.parseDouble(txtAddLetterToNumberLength.getText()));
-            runway.setNumberToHorizontalStripeLength(Double.parseDouble(txtAddNumberToHorizontalStripeLength.getText()));
+            runway.setNumberToStripeLength(Double.parseDouble(txtAddNumberToStripeLength.getText()));
             runway.setCharacterLength(Double.parseDouble(txtAddCharacterLength.getText()));
             runway.setCharacterWidth(Double.parseDouble(txtAddCharacterWidth.getText()));
 
-
-            runway.setHorizontalStripesLength(Double.parseDouble(txtAddHorizontalStripesLength.getText()));
-            runway.setHorizontalStripesWidth(Double.parseDouble(txtAddHorizontalStripesWidth.getText()));
-            runway.setHorizontalStripesDifference(Double.parseDouble(txtAddHorizontalStripesDifference.getText()));
+            runway.setStripesLength(Double.parseDouble(txtAddStripesLength.getText()));
+            runway.setStripesWidth(Double.parseDouble(txtAddStripesWidth.getText()));
+            runway.setStripesDifference(Double.parseDouble(txtAddStripesDifference.getText()));
             runway.setStripEnd(Double.parseDouble(txtAddStripEnd.getText()));
             runway.setSmallVisualStripWidth(Double.parseDouble(txtAddSmallVisualStripWidth.getText()));
             runway.setLargeVisualStripWidth(Double.parseDouble(txtAddLargeVisualStripWidth.getText()));
@@ -436,40 +479,44 @@ public class Controller {
             selectedAirport.getRunwayList().add(runway);
             selectAirport(selectedAirport);
             refreshRunwayListView();
-            refreshAirportListComboBox();
             refreshRunwayListComboBox();
         });
 
         btnEditRunway.setOnAction(event -> {
             selectedRunway.setDirection(txtEditDirection.getText().charAt(0));
             selectedRunway.setDegree(Integer.parseInt(txtEditDegree.getText()));
-            selectedRunway.setTORA(Double.parseDouble(txtEditTORA.getText()));
-            selectedRunway.setTODA(Double.parseDouble(txtEditTODA.getText()));
-            selectedRunway.setASDA(Double.parseDouble(txtEditASDA.getText()));
-            selectedRunway.setLDA(Double.parseDouble(txtEditLDA.getText()));
-            selectedRunway.setRunwayStripWidth(Double.parseDouble(txtEditRunwayStripWidth.getText()));
+            selectedRunway.setLeftStopwayLength(Double.parseDouble(txtEditLeftStopwayLength.getText()));
+            selectedRunway.setRightStopwayLength(Double.parseDouble(txtEditRightStopwayLength.getText()));
 
-            //selectedRunway.setThresholdStripLength(Double.parseDouble(txtEditThresholdStripLength.getText()));
-            //selectedRunway.setThresholdStripWidth(Double.parseDouble(txtEditThresholdStripWidth.getText()));
+            selectedRunway.setLeftClearwayLength(Double.parseDouble(txtEditLeftClearwayLength.getText()));
+            selectedRunway.setLeftClearwayWidth(Double.parseDouble(txtEditLeftClearwayWidth.getText()));
+            selectedRunway.setRightClearwayLength(Double.parseDouble(txtEditRightClearwayLength.getText()));
+            selectedRunway.setRightClearwayWidth(Double.parseDouble(txtEditRightClearwayWidth.getText()));
+
+            selectedRunway.setRunwayStripWidth(Double.parseDouble(txtEditRunwayStripWidth.getText()));
+            selectedRunway.setRunwayStripLength(Double.parseDouble(txtEditRunwayStripLength.getText()));
+            selectedRunway.setDisplacedThresholdLength(Double.parseDouble(txtEditDisplacedThresholdLength.getText()));
 
             selectedRunway.setStartToThresholdMarkingsLength(Double.parseDouble(txtEditStartToThresholdMarkingsLength.getText()));
             selectedRunway.setThresholdMarkingsStripLength(Double.parseDouble(txtEditThresholdMarkingsStripLength.getText()));
             selectedRunway.setThresholdMarkingsStripWidth(Double.parseDouble(txtEditThresholdMarkingsStripWidth.getText()));
             selectedRunway.setThresholdMarkingsToLetterLength(Double.parseDouble(txtEditThresholdMarkingsToLetterLength.getText()));
             selectedRunway.setLetterToNumberLength(Double.parseDouble(txtEditLetterToNumberLength.getText()));
-            selectedRunway.setNumberToHorizontalStripeLength(Double.parseDouble(txtEditNumberToHorizontalStripeLength.getText()));
+            selectedRunway.setNumberToStripeLength(Double.parseDouble(txtEditNumberToStripeLength.getText()));
             selectedRunway.setCharacterLength(Double.parseDouble(txtEditCharacterLength.getText()));
             selectedRunway.setCharacterWidth(Double.parseDouble(txtEditCharacterWidth.getText()));
 
-            selectedRunway.setHorizontalStripesLength(Double.parseDouble(txtEditHorizontalStripesLength.getText()));
-            selectedRunway.setHorizontalStripesWidth(Double.parseDouble(txtEditHorizontalStripesWidth.getText()));
-            selectedRunway.setHorizontalStripesDifference(Double.parseDouble(txtEditHorizontalStripesDifference.getText()));
+            selectedRunway.setStripesLength(Double.parseDouble(txtEditStripesLength.getText()));
+            selectedRunway.setStripesWidth(Double.parseDouble(txtEditStripesWidth.getText()));
+            selectedRunway.setStripesDifference(Double.parseDouble(txtEditStripesDifference.getText()));
             selectedRunway.setStripEnd(Double.parseDouble(txtEditStripEnd.getText()));
-            selectedRunway.setSmallVisualStripWidth(Double.parseDouble(txtEditVisualStrip.getText()));
-            selectedRunway.setLargeVisualStripWidth(Double.parseDouble(txtEditCGA.getText()));
+            selectedRunway.setSmallVisualStripWidth(Double.parseDouble(txtEditSmallVisualStripWidth.getText()));
+            selectedRunway.setLargeVisualStripWidth(Double.parseDouble(txtEditLargeVisualStripWidth.getText()));
             selectedRunway.setInstrumentStrip(Double.parseDouble(txtEditInstrumentStrip.getText()));
             selectedRunway.setBlastProtection(Double.parseDouble(txtEditBlastProtection.getText()));
-            selectedRunway.setBlastProtection(Double.parseDouble(txtEditRESA.getText()));
+            selectedRunway.setRESA(Double.parseDouble(txtEditRESA.getText()));
+            selectedRunway.setRunwayToSmallVisualStripLength(Double.parseDouble(txtEditRunwayToSmallVisualStripLength.getText()));
+            selectedRunway.setRunwayToLargeVisualStripLength(Double.parseDouble(txtEditRunwayToLargeVisualStripLength.getText()));
 
             selectedRunway.setSkyHeight(Double.parseDouble(txtEditSkyHeight.getText()));
             selectedRunway.setGroundHeight(Double.parseDouble(txtEditGroundHeight.getText()));
@@ -477,10 +524,17 @@ public class Controller {
 
             selectAirport(selectedAirport);
             refreshRunwayListView();
-            refreshAirportListComboBox();
             refreshRunwayListComboBox();
         });
 
+    }
+
+    private void incorrectInputMessage() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Incorrect Input");
+        alert.setHeaderText(null);
+        alert.setContentText("Provide correct input!");
+        alert.showAndWait();
     }
 
     private void setAllComponentsInGrid(Pane parent, boolean enabled){
@@ -549,9 +603,11 @@ public class Controller {
             runwayListProperty.set(FXCollections.observableArrayList(selectedAirport.getRunwayList()));
             txtSelectedAirport.setText(airport.getName());
             loadDefaultValues();
+            cboAirportList.getSelectionModel().select(airport);
         }else{
             cboAirportList.getSelectionModel().clearSelection();
-            imageViewAirportImage.setImage(null);
+            imageViewAirportImage.setImage(imageNotFoundImage);
+            imageCurrentAirportImage = imageNotFoundImage;
             txtSelectedAirport.clear();
             setAllComponentsInGrid(gridEditAirport, false);
             setAllComponentsInGrid(gridRemoveAirport, false);
@@ -571,33 +627,38 @@ public class Controller {
             setAllComponentsInGrid(gridRemoveRunway, true);
             txtEditDirection.setText(String.valueOf(runway.getDirection()));
             txtEditDegree.setText(String.valueOf(runway.getDegree()));
-            txtEditTORA.setText(String.valueOf(runway.getTORA()));
-            txtEditTODA.setText(String.valueOf(runway.getTODA()));
-            txtEditASDA.setText(String.valueOf(runway.getASDA()));
-            txtEditLDA.setText(String.valueOf(runway.getLDA()));
-            txtEditRunwayStripWidth.setText(String.valueOf(runway.getRunwayStripWidth()));
+            txtEditLeftStopwayLength.setText(String.valueOf(runway.getLeftStopwayLength()));
+            txtEditRightStopwayLength.setText(String.valueOf(runway.getRightStopwayLength()));
 
-            //txtEditThresholdStripLength.setText(String.valueOf(runway.getThresholdStripLength()));
-            //txtEditThresholdStripWidth.setText(String.valueOf(runway.getThresholdStripWidth()));
+            txtEditLeftClearwayLength.setText(String.valueOf(runway.getLeftClearwayLength()));
+            txtEditLeftClearwayWidth.setText(String.valueOf(runway.getLeftClearwayWidth()));
+            txtEditRightClearwayLength.setText(String.valueOf(runway.getRightClearwayLength()));
+            txtEditRightClearwayWidth.setText(String.valueOf(runway.getRightClearwayWidth()));
+
+            txtEditRunwayStripWidth.setText(String.valueOf(runway.getRunwayStripWidth()));
+            txtEditRunwayStripLength.setText(String.valueOf(runway.getRunwayStripLength()));
+            txtEditDisplacedThresholdLength.setText(String.valueOf(runway.getDisplacedThresholdLength()));
 
             txtEditStartToThresholdMarkingsLength.setText(String.valueOf(runway.getStartToThresholdMarkingsLength()));
             txtEditThresholdMarkingsStripLength.setText(String.valueOf(runway.getThresholdMarkingsStripLength()));
             txtEditThresholdMarkingsStripWidth.setText(String.valueOf(runway.getThresholdMarkingsStripWidth()));
             txtEditThresholdMarkingsToLetterLength.setText(String.valueOf(runway.getThresholdMarkingsToLetterLength()));
             txtEditLetterToNumberLength.setText(String.valueOf(runway.getLetterToNumberLength()));
-            txtEditNumberToHorizontalStripeLength.setText(String.valueOf(runway.getNumberToHorizontalStripeLength()));
+            txtEditNumberToStripeLength.setText(String.valueOf(runway.getNumberToStripeLength()));
             txtEditCharacterLength.setText(String.valueOf(runway.getCharacterLength()));
             txtEditCharacterWidth.setText(String.valueOf(runway.getCharacterWidth()));
 
-            txtEditHorizontalStripesLength.setText(String.valueOf(runway.getStripesLength()));
-            txtEditHorizontalStripesWidth.setText(String.valueOf(runway.getStripesWidth()));
-            txtEditHorizontalStripesDifference.setText(String.valueOf(runway.getStripesDifference()));
+            txtEditStripesLength.setText(String.valueOf(runway.getStripesLength()));
+            txtEditStripesWidth.setText(String.valueOf(runway.getStripesWidth()));
+            txtEditStripesDifference.setText(String.valueOf(runway.getStripesDifference()));
             txtEditStripEnd.setText(String.valueOf(runway.getStripEnd()));
-            txtEditVisualStrip.setText(String.valueOf(runway.getSmallVisualStripWidth()));
-            txtEditCGA.setText(String.valueOf(runway.getLargeVisualStripWidth()));
+            txtEditSmallVisualStripWidth.setText(String.valueOf(runway.getSmallVisualStripWidth()));
+            txtEditLargeVisualStripWidth.setText(String.valueOf(runway.getLargeVisualStripWidth()));
             txtEditInstrumentStrip.setText(String.valueOf(runway.getInstrumentStrip()));
             txtEditBlastProtection.setText(String.valueOf(runway.getBlastProtection()));
             txtEditRESA.setText(String.valueOf(runway.getRESA()));
+            txtEditRunwayToSmallVisualStripLength.setText(String.valueOf(runway.getRunwayToSmallVisualStripLength()));
+            txtEditRunwayToLargeVisualStripLength.setText(String.valueOf(runway.getRunwayToLargeVisualStripLength()));
 
             txtEditSkyHeight.setText(String.valueOf(runway.getSkyHeight()));
             txtEditGroundHeight.setText(String.valueOf(runway.getGroundHeight()));
@@ -608,6 +669,7 @@ public class Controller {
 
             topViewRunway2DVisualization.refresh();
             sideViewRunway2DVisualization.refresh();
+            cboRunwayList.getSelectionModel().select(runway);
         }else
         {
             setAllComponentsInGrid(gridEditRunway, false);

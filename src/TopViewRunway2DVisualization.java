@@ -2,6 +2,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Path;
 import javafx.scene.text.*;
 
@@ -29,6 +30,26 @@ public class TopViewRunway2DVisualization extends Pane {
     private double doubleSmallVisualStripY;
     private double doubleSmallVisualStripLength;
     private double doubleSmallVisualStripWidth;
+
+    private double doubleLeftClearwayX;
+    private double doubleLeftClearwayY;
+    private double doubleLeftClearwayLength;
+    private double doubleLeftClearwayWidth;
+
+    private double doubleRightClearwayX;
+    private double doubleRightClearwayY;
+    private double doubleRightClearwayLength;
+    private double doubleRightClearwayWidth;
+
+    private double doubleLeftStopwayX;
+    private double doubleLeftStopwayY;
+    private double doubleLeftStopwayLength;
+    private double doubleLeftStopwayWidth;
+
+    private double doubleRightStopwayX;
+    private double doubleRightStopwayY;
+    private double doubleRightStopwayLength;
+    private double doubleRightStopwayWidth;
 
     private double doubleLargeVisualStripX;
     private double doubleLargeVisualStripY;
@@ -124,7 +145,7 @@ public class TopViewRunway2DVisualization extends Pane {
             gc.clearRect(0, 0, getWidth(), getHeight());
 
             if(runway != null) {
-                doubleAirportLength = 2 * runway.getRESA() + 2* runway.getStripEnd() + runway.getRunwayStripLength();
+                doubleAirportLength = 2 * runway.getRESA() + 2* runway.getStripEnd() + runway.getRunwayStripLength()+runway.getLeftClearwayLength()+runway.getRightClearwayLength();
                 doubleAirportWidth = 2 * runway.getInstrumentStrip();
                 doubleRunwayStripWidth = runway.getRunwayStripWidth();
 
@@ -140,18 +161,14 @@ public class TopViewRunway2DVisualization extends Pane {
                 drawRunwayStrip(gc);
                 drawClearway(gc);
                 drawStopway(gc);
+                drawDisplacedThreshold(gc);
                 drawLeftThresholdsMarkings(gc);
                 drawRightThresholdsMarkings(gc);
                 drawLeftRunwayNumber(gc);
                 drawRightRunwayNumber(gc);
                 drawStripes(gc);
                 drawDirection(gc);
-
-                double doubleTextHeight = (new Text()).getLayoutBounds().getHeight();
-                drawLinedText(gc, "RESA " + runway.getRESA(), 0, doubleInstrumentStripY + doubleInstrumentStripWidth / 2 + doubleTextHeight / 2, runway.getRESA());
-                drawLinedText(gc, "TORA " + runway.getTORA(), doubleRunwayStripX, doubleRunwayStripY + doubleRunwayStripWidth / 2 + doubleTextHeight / 2, doubleRunwayStripLength);
-                drawLinedText(gc, "TODA " + runway.getTODA(), doubleRunwayStripX, doubleRunwayStripY + doubleRunwayStripWidth / 2 + 2 * doubleTextHeight / 2, doubleRunwayStripLength);
-                drawLinedText(gc, "ASDA " + runway.getASDA(), doubleRunwayStripX, doubleRunwayStripY + doubleRunwayStripWidth / 2 + 3 * doubleTextHeight / 2, doubleRunwayStripLength);
+                drawText(gc);
             }
         }
 
@@ -167,7 +184,7 @@ public class TopViewRunway2DVisualization extends Pane {
             gc.setFill(colorScheme.RunwayStripColor);
             doubleInstrumentStripX = runway.getRESA();
             doubleInstrumentStripY = 0;
-            doubleInstrumentStripLength = 2*runway.getStripEnd() + runway.getRunwayStripLength();
+            doubleInstrumentStripLength = 2*runway.getStripEnd() + runway.getRunwayStripLength()+runway.getLeftClearwayLength()+runway.getRightClearwayLength();
             doubleInstrumentStripWidth = 2*runway.getInstrumentStrip();
 
             gc.fillRect(normalize(doubleInstrumentStripX, doubleAirportLength, doubleCanvasWidth),
@@ -182,12 +199,12 @@ public class TopViewRunway2DVisualization extends Pane {
             gc.setFill(colorScheme.CAAColor);
             doubleSmallVisualStripX = doubleInstrumentStripX;
             doubleSmallVisualStripY = doubleInstrumentStripY+runway.getInstrumentStrip()-runway.getSmallVisualStripWidth();
-            doubleSmallVisualStripLength = 2*runway.getStripEnd() + runway.getRunwayStripLength();
+            doubleSmallVisualStripLength = 2*runway.getStripEnd() + runway.getRunwayStripLength()+runway.getLeftClearwayLength()+runway.getRightClearwayLength();
             doubleSmallVisualStripWidth = 2*runway.getSmallVisualStripWidth();
 
-            doubleLargeVisualStripX = doubleSmallVisualStripX + runway.getStripEnd() + runway.getRunwayToILargeVisualStripLength();
+            doubleLargeVisualStripX = doubleSmallVisualStripX + runway.getStripEnd() + runway.getRunwayToLargeVisualStripLength()+runway.getLeftClearwayLength();
             doubleLargeVisualStripY = doubleInstrumentStripY+runway.getInstrumentStrip()-runway.getLargeVisualStripWidth();
-            doubleLargeVisualStripLength = runway.getRunwayStripLength() - 2*runway.getRunwayToILargeVisualStripLength();
+            doubleLargeVisualStripLength = runway.getRunwayStripLength() - 2*runway.getRunwayToLargeVisualStripLength();
             doubleLargeVisualStripWidth = 2*runway.getLargeVisualStripWidth();
 
             gc.setFill(colorScheme.CAAColor);
@@ -202,30 +219,30 @@ public class TopViewRunway2DVisualization extends Pane {
                     normalize(doubleLargeVisualStripLength, doubleAirportLength, doubleCanvasWidth),
                     normalize(doubleLargeVisualStripWidth, doubleAirportWidth, doubleCanvasHeight));
 
-            gc.fillPolygon(new double[]{normalize(doubleSmallVisualStripX + runway.getStripEnd() + runway.getRunwayToSmallVisualStripLength(), doubleAirportLength, doubleCanvasWidth),
+            gc.fillPolygon(new double[]{normalize(doubleSmallVisualStripX + runway.getStripEnd() + runway.getRunwayToSmallVisualStripLength() +runway.getLeftClearwayLength(), doubleAirportLength, doubleCanvasWidth),
                             normalize(doubleLargeVisualStripX, doubleAirportLength, doubleCanvasWidth),
                             normalize(doubleLargeVisualStripX, doubleAirportLength, doubleCanvasWidth)},
                     new double[]{normalize(doubleSmallVisualStripY, doubleAirportWidth, doubleCanvasHeight),
                             normalize(doubleSmallVisualStripY, doubleAirportWidth, doubleCanvasHeight),
                             normalize(doubleLargeVisualStripY, doubleAirportWidth, doubleCanvasHeight)}, 3);
 
-            gc.fillPolygon(new double[]{normalize(doubleSmallVisualStripX + runway.getStripEnd() + runway.getRunwayToSmallVisualStripLength(), doubleAirportLength, doubleCanvasWidth),
+            gc.fillPolygon(new double[]{normalize(doubleSmallVisualStripX + runway.getStripEnd() + runway.getRunwayToSmallVisualStripLength() +runway.getLeftClearwayLength(), doubleAirportLength, doubleCanvasWidth),
                             normalize(doubleLargeVisualStripX, doubleAirportLength, doubleCanvasWidth),
                             normalize(doubleLargeVisualStripX, doubleAirportLength, doubleCanvasWidth)},
                     new double[]{normalize(doubleSmallVisualStripY + doubleSmallVisualStripWidth, doubleAirportWidth, doubleCanvasHeight),
                             normalize(doubleSmallVisualStripY + doubleSmallVisualStripWidth, doubleAirportWidth, doubleCanvasHeight),
                             normalize(doubleLargeVisualStripY + doubleLargeVisualStripWidth, doubleAirportWidth, doubleCanvasHeight)}, 3);
 
-            gc.fillPolygon(new double[]{normalize(doubleSmallVisualStripX + doubleSmallVisualStripLength - runway.getStripEnd() - runway.getRunwayToSmallVisualStripLength(), doubleAirportLength, doubleCanvasWidth),
-                            normalize(doubleSmallVisualStripX + doubleSmallVisualStripLength - runway.getStripEnd() - runway.getRunwayToILargeVisualStripLength(), doubleAirportLength, doubleCanvasWidth),
-                            normalize(doubleSmallVisualStripX + doubleSmallVisualStripLength - runway.getStripEnd() - runway.getRunwayToILargeVisualStripLength(), doubleAirportLength, doubleCanvasWidth)},
+            gc.fillPolygon(new double[]{normalize(doubleSmallVisualStripX + doubleSmallVisualStripLength - runway.getStripEnd() - runway.getRunwayToSmallVisualStripLength()-runway.getRightClearwayLength(), doubleAirportLength, doubleCanvasWidth),
+                            normalize(doubleSmallVisualStripX + doubleSmallVisualStripLength - runway.getStripEnd() - runway.getRunwayToLargeVisualStripLength()-runway.getRightClearwayLength(), doubleAirportLength, doubleCanvasWidth),
+                            normalize(doubleSmallVisualStripX + doubleSmallVisualStripLength - runway.getStripEnd() - runway.getRunwayToLargeVisualStripLength()-runway.getRightClearwayLength(), doubleAirportLength, doubleCanvasWidth)},
                     new double[]{normalize(doubleSmallVisualStripY, doubleAirportWidth, doubleCanvasHeight),
                             normalize(doubleSmallVisualStripY, doubleAirportWidth, doubleCanvasHeight),
                             normalize(doubleLargeVisualStripY, doubleAirportWidth, doubleCanvasHeight)}, 3);
 
-            gc.fillPolygon(new double[]{normalize(doubleSmallVisualStripX + doubleSmallVisualStripLength - runway.getStripEnd() - runway.getRunwayToSmallVisualStripLength(), doubleAirportLength, doubleCanvasWidth),
-                            normalize(doubleSmallVisualStripX + doubleSmallVisualStripLength - runway.getStripEnd() - runway.getRunwayToILargeVisualStripLength(), doubleAirportLength, doubleCanvasWidth),
-                            normalize(doubleSmallVisualStripX + doubleSmallVisualStripLength - runway.getStripEnd() - runway.getRunwayToILargeVisualStripLength(), doubleAirportLength, doubleCanvasWidth)},
+            gc.fillPolygon(new double[]{normalize(doubleSmallVisualStripX + doubleSmallVisualStripLength - runway.getStripEnd() - runway.getRunwayToSmallVisualStripLength()-runway.getRightClearwayLength(), doubleAirportLength, doubleCanvasWidth),
+                            normalize(doubleSmallVisualStripX + doubleSmallVisualStripLength - runway.getStripEnd() - runway.getRunwayToLargeVisualStripLength()-runway.getRightClearwayLength(), doubleAirportLength, doubleCanvasWidth),
+                            normalize(doubleSmallVisualStripX + doubleSmallVisualStripLength - runway.getStripEnd() - runway.getRunwayToLargeVisualStripLength()-runway.getRightClearwayLength(), doubleAirportLength, doubleCanvasWidth)},
                     new double[]{normalize(doubleSmallVisualStripY + doubleSmallVisualStripWidth, doubleAirportWidth, doubleCanvasHeight),
                             normalize(doubleSmallVisualStripY + doubleSmallVisualStripWidth, doubleAirportWidth, doubleCanvasHeight),
                             normalize(doubleLargeVisualStripY + doubleLargeVisualStripWidth, doubleAirportWidth, doubleCanvasHeight)}, 3);
@@ -236,7 +253,7 @@ public class TopViewRunway2DVisualization extends Pane {
             gc.save();
             Text text = new Text("Runway 100m");
             gc.setFill(colorScheme.RunwayStripColor);
-            doubleRunwayStripX = doubleInstrumentStripX + runway.getStripEnd();
+            doubleRunwayStripX = doubleInstrumentStripX + runway.getStripEnd() + runway.getLeftClearwayLength();
             doubleRunwayStripY = doubleInstrumentStripY + runway.getInstrumentStrip();
             doubleRunwayStripLength = runway.getRunwayStripLength();
             doubleRunwayStripWidth = runway.getRunwayStripWidth();
@@ -249,9 +266,61 @@ public class TopViewRunway2DVisualization extends Pane {
         }
 
         private void drawClearway(GraphicsContext gc) {
+            gc.save();
+            gc.setFill(Color.rgb(120,120,120,0.5));
+            doubleLeftClearwayX = doubleInstrumentStripX + runway.getStripEnd();
+            doubleLeftClearwayY = doubleInstrumentStripY + runway.getInstrumentStrip();
+            doubleLeftClearwayLength = runway.getLeftClearwayLength();
+            doubleLeftClearwayWidth = runway.getLeftClearwayWidth();
+
+            doubleRightClearwayX = doubleLeftClearwayX + doubleLeftClearwayLength + runway.getRunwayStripLength();
+            doubleRightClearwayY = doubleInstrumentStripY + runway.getInstrumentStrip();
+            doubleRightClearwayLength = runway.getRightClearwayLength();
+            doubleRightClearwayWidth = runway.getRightClearwayWidth();
+
+            gc.fillRect(normalize(doubleLeftClearwayX, doubleAirportLength, doubleCanvasWidth),
+                    normalize(doubleLeftClearwayY - doubleLeftClearwayWidth/2, doubleAirportWidth, doubleCanvasHeight),
+                    normalize(doubleLeftClearwayLength, doubleAirportLength, doubleCanvasWidth),
+                    normalize(doubleLeftClearwayWidth, doubleAirportWidth, doubleCanvasHeight));
+
+            gc.fillRect(normalize(doubleRightClearwayX, doubleAirportLength, doubleCanvasWidth),
+                    normalize(doubleRightClearwayY - doubleRightClearwayWidth/2, doubleAirportWidth, doubleCanvasHeight),
+                    normalize(doubleRightClearwayLength, doubleAirportLength, doubleCanvasWidth),
+                    normalize(doubleRightClearwayWidth, doubleAirportWidth, doubleCanvasHeight));
+            gc.restore();
         }
 
         private void drawStopway(GraphicsContext gc) {
+            gc.save();
+            gc.setFill(colorScheme.RunwayStripColor);
+            doubleLeftStopwayX = doubleInstrumentStripX + runway.getStripEnd() + runway.getLeftClearwayLength()-runway.getLeftStopwayLength();
+            doubleLeftStopwayY = doubleInstrumentStripY + runway.getInstrumentStrip();
+            doubleLeftStopwayLength = runway.getLeftStopwayLength();
+            doubleLeftStopwayWidth = runway.getRunwayStripWidth();
+
+            doubleRightStopwayX = doubleLeftStopwayX + doubleLeftStopwayLength + runway.getRunwayStripLength();
+            doubleRightStopwayY = doubleInstrumentStripY + runway.getInstrumentStrip();
+            doubleRightStopwayLength = runway.getRightStopwayLength();
+            doubleRightStopwayWidth = runway.getRunwayStripWidth();
+
+            double doubleLeftStopwayStripesNumber = 4;
+            gc.fillRect(normalize(doubleLeftStopwayX, doubleAirportLength, doubleCanvasWidth),
+                    normalize(doubleLeftStopwayY - doubleLeftStopwayWidth/2, doubleAirportWidth, doubleCanvasHeight),
+                    normalize(doubleLeftStopwayLength, doubleAirportLength, doubleCanvasWidth),
+                    normalize(doubleLeftStopwayWidth, doubleAirportWidth, doubleCanvasHeight));
+
+            gc.fillRect(normalize(doubleRightStopwayX, doubleAirportLength, doubleCanvasWidth),
+                    normalize(doubleRightStopwayY - doubleRightStopwayWidth/2, doubleAirportWidth, doubleCanvasHeight),
+                    normalize(doubleRightStopwayLength, doubleAirportLength, doubleCanvasWidth),
+                    normalize(doubleRightStopwayWidth, doubleAirportWidth, doubleCanvasHeight));
+
+            gc.restore();
+        }
+
+        private void drawDisplacedThreshold(GraphicsContext gc) {
+            gc.save();
+            //for second increment
+            gc.restore();
         }
 
         private void drawLeftThresholdsMarkings(GraphicsContext gc) {
@@ -356,7 +425,7 @@ public class TopViewRunway2DVisualization extends Pane {
         private void drawStripes(GraphicsContext gc) {
             gc.save();
             gc.setFill(colorScheme.StripesColor);
-            doubleStripesX = doubleLeftRunwayNumberX +  doubleLeftRunwayNumberLength + runway.getNumberToHorizontalStripeLength();
+            doubleStripesX = doubleLeftRunwayNumberX +  doubleLeftRunwayNumberLength + runway.getNumberToStripeLength();
             doubleStripesY = doubleRunwayStripY - runway.getStripesWidth()/2;
             doubleStripesLength = runway.getStripesLength();
             doubleStripesWidth = runway.getStripesWidth();
@@ -371,28 +440,39 @@ public class TopViewRunway2DVisualization extends Pane {
                         normalize(doubleStripesLength, doubleAirportLength, doubleCanvasWidth),
                         normalize(doubleStripesWidth, doubleAirportWidth, doubleCanvasHeight));
                 i++;
-            }while(doubleStripesX + (i)*runway.getStripesDifference() + (i+1)*runway.getStripesLength() + runway.getNumberToHorizontalStripeLength() < doubleRightRunwayNumberX);
+            }while(doubleStripesX + (i)*runway.getStripesDifference() + (i+1)*runway.getStripesLength() + runway.getNumberToStripeLength() < doubleRightRunwayNumberX);
             gc.restore();
         }
 
         private void drawDirection(GraphicsContext gc) {
             gc.save();
             gc.setFill(colorScheme.CharactersColor);
+            Text txt = new Text("DIRECTION");
+            Double newFontSizeDouble = Math.hypot(this.getWidth(), this.getHeight())/100;
+            gc.setFont(new javafx.scene.text.Font(newFontSizeDouble.intValue()));
+            txt.setFont(new javafx.scene.text.Font(newFontSizeDouble.intValue()));
+            double doubleTextLength = txt.getLayoutBounds().getWidth();
+            double doubleTextHeight = txt.getLayoutBounds().getHeight();
+
             double doubleDirectionX = doubleRunwayStripX;
             double doubleDirectionY = doubleRunwayStripY - (doubleRunwayStripY - doubleSmallVisualStripY)/2;
-            double doubleDirectionWidth = runway.getRunwayStripLength()/4;
+            double doubleDirectionLength = runway.getRunwayStripLength()/4;
 
-            double doubleDirectionTriangleLength = runway.getRunwayStripLength()/30;
+            double doubleDirectionTriangleLength = runway.getRunwayStripLength()/60;
             double doubleDirectionTriangleWidth = runway.getRunwayStripWidth()/10;
+
+            gc.fillText(txt.getText(),
+                    normalize(doubleDirectionX+doubleDirectionLength/2, doubleAirportLength, doubleCanvasWidth) - doubleTextLength/2,
+                    normalize(doubleDirectionY, doubleAirportWidth, doubleCanvasHeight) - doubleTextHeight/4);
 
             gc.strokeLine(normalize(doubleDirectionX, doubleAirportLength, doubleCanvasWidth),
                     normalize(doubleDirectionY, doubleAirportWidth, doubleCanvasHeight),
-                    normalize(doubleDirectionX + doubleDirectionWidth, doubleAirportLength, doubleCanvasWidth),
+                    normalize(doubleDirectionX + doubleDirectionLength, doubleAirportLength, doubleCanvasWidth),
                     normalize(doubleDirectionY, doubleAirportWidth, doubleCanvasHeight));
 
-            gc.fillPolygon(new double[]{normalize(doubleDirectionX + doubleDirectionWidth, doubleAirportLength, doubleCanvasWidth),
-                            normalize(doubleDirectionX + doubleDirectionWidth, doubleAirportLength, doubleCanvasWidth),
-                            normalize(doubleDirectionX + doubleDirectionWidth + doubleDirectionTriangleLength, doubleAirportLength, doubleCanvasWidth)},
+            gc.fillPolygon(new double[]{normalize(doubleDirectionX + doubleDirectionLength, doubleAirportLength, doubleCanvasWidth),
+                            normalize(doubleDirectionX + doubleDirectionLength, doubleAirportLength, doubleCanvasWidth),
+                            normalize(doubleDirectionX + doubleDirectionLength + doubleDirectionTriangleLength, doubleAirportLength, doubleCanvasWidth)},
                     new double[]{normalize(doubleDirectionY - doubleDirectionTriangleWidth, doubleAirportWidth, doubleCanvasHeight),
                             normalize(doubleDirectionY + doubleDirectionTriangleWidth, doubleAirportWidth, doubleCanvasHeight),
                             normalize(doubleDirectionY, doubleAirportWidth, doubleCanvasHeight)}, 3);
@@ -400,18 +480,43 @@ public class TopViewRunway2DVisualization extends Pane {
             gc.restore();
         }
 
+        private void drawText(GraphicsContext gc){
+            gc.save();
+            Text txt = new Text("DIRECTION");
+            Double newFontSizeDouble = Math.hypot(this.getWidth(), this.getHeight())/100;
+            gc.setFont(new javafx.scene.text.Font(newFontSizeDouble.intValue()));
+            txt.setFont(new javafx.scene.text.Font(newFontSizeDouble.intValue()));
+            double doubleTextHeight = txt.getLayoutBounds().getHeight();
+
+            drawLinedText(gc, "" + (int)doubleSmallVisualStripLength, doubleInstrumentStripX, doubleSmallVisualStripY+doubleTextHeight/3, doubleInstrumentStripLength);
+            drawLinedText(gc, "" + (int)doubleLargeVisualStripLength, doubleLargeVisualStripX, doubleLargeVisualStripY+doubleTextHeight/3, doubleLargeVisualStripLength);
+
+            drawLinedText(gc, "" + (int)runway.getLeftClearwayLength(), doubleLeftClearwayX, doubleLeftClearwayY-doubleLeftClearwayWidth/2, doubleLeftClearwayLength);
+            drawLinedText(gc, "" + (int)runway.getRightClearwayLength(), doubleRightClearwayX, doubleRightClearwayY-doubleRightClearwayWidth/2, doubleRightClearwayLength);
+            drawLinedText(gc, "" + (int)runway.getLeftStopwayLength(), doubleLeftStopwayX, doubleLeftStopwayY - doubleLeftStopwayWidth / 2, doubleLeftStopwayLength);
+            drawLinedText(gc, "" + (int)runway.getRightStopwayLength(), doubleRightStopwayX, doubleRightStopwayY - doubleRightStopwayWidth / 2, doubleRightStopwayLength);
+
+            drawLinedText(gc, "TORA " + (int)runway.getTORA(), doubleRunwayStripX, doubleRunwayStripY + doubleRunwayStripWidth / 2 + doubleTextHeight / 2, runway.getTORA());
+            drawLinedText(gc, "TODA " + (int)runway.getTODA(), doubleRunwayStripX, doubleRunwayStripY + doubleRunwayStripWidth / 2 + 2 * doubleTextHeight / 2, runway.getTODA());
+            drawLinedText(gc, "ASDA " + (int)runway.getASDA(), doubleRunwayStripX, doubleRunwayStripY + doubleRunwayStripWidth / 2 + 3 * doubleTextHeight / 2, runway.getASDA());
+            gc.restore();
+        }
+
         private void drawLinedText(GraphicsContext gc, String text, double x1, double y1, double length) {
             gc.save();
             gc.setFill(colorScheme.CharactersColor);
             Text txt = new Text(text);
+            Double newFontSizeDouble = Math.hypot(this.getWidth(), this.getHeight())/100;
+            gc.setFont(new javafx.scene.text.Font(newFontSizeDouble.intValue()));
+            txt.setFont(new javafx.scene.text.Font(newFontSizeDouble.intValue()));
             double doubleTextLength = txt.getLayoutBounds().getWidth();
             double doubleTextHeight = txt.getLayoutBounds().getHeight();
             gc.setLineWidth(1);
 
             gc.strokeLine(normalize(x1, doubleAirportLength, doubleCanvasWidth),
-                    normalize(y1, doubleAirportWidth, doubleCanvasHeight)-doubleTextHeight/2,
+                    normalize(y1, doubleAirportWidth, doubleCanvasHeight)-doubleTextHeight/4,
                     normalize(x1, doubleAirportLength, doubleCanvasWidth),
-                    normalize(y1, doubleAirportWidth, doubleCanvasHeight)+doubleTextHeight/2);
+                    normalize(y1, doubleAirportWidth, doubleCanvasHeight)+doubleTextHeight/4);
 
             gc.strokeLine(normalize(x1, doubleAirportLength, doubleCanvasWidth),
                     normalize(y1, doubleAirportWidth, doubleCanvasHeight),
@@ -427,11 +532,13 @@ public class TopViewRunway2DVisualization extends Pane {
                     normalize(y1, doubleAirportWidth, doubleCanvasHeight));
 
             gc.strokeLine(normalize(x1+length, doubleAirportLength, doubleCanvasWidth),
-                    normalize(y1, doubleAirportWidth, doubleCanvasHeight)-doubleTextHeight/2,
+                    normalize(y1, doubleAirportWidth, doubleCanvasHeight)-doubleTextHeight/4,
                     normalize(x1+length, doubleAirportLength, doubleCanvasWidth),
-                    normalize(y1, doubleAirportWidth, doubleCanvasHeight)+doubleTextHeight/2);
+                    normalize(y1, doubleAirportWidth, doubleCanvasHeight)+doubleTextHeight/4);
             gc.restore();
         }
+
+
 
         private double normalize(double value,double from, double to){
             return value*to/from;

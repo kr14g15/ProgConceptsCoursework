@@ -90,9 +90,9 @@ public class SideViewRunway2DVisualization extends Pane {
             drawRunwayStrip(gc);
 
             double doubleTextHeight = (new Text()).getLayoutBounds().getHeight();
-            drawLinedText(gc, "TORA " + runway.getTORA(), doubleRunwayX, doubleRunwayY + doubleRunwayHeight + doubleTextHeight, doubleRunwayLength);
-            drawLinedText(gc, "TODA " + runway.getTODA(), doubleRunwayX, doubleRunwayY + doubleRunwayHeight + 3 * doubleTextHeight, doubleRunwayLength);
-            drawLinedText(gc, "ASDA " + runway.getASDA(), doubleRunwayX, doubleRunwayY + doubleRunwayHeight + 5 * doubleTextHeight, doubleRunwayLength);
+            drawLinedText(gc, "TORA " + (int)runway.getTORA(), doubleRunwayX, doubleRunwayY + doubleRunwayHeight + doubleTextHeight, doubleRunwayLength);
+            drawLinedText(gc, "TODA " + (int)runway.getTODA(), doubleRunwayX, doubleRunwayY + doubleRunwayHeight + 3 * doubleTextHeight, doubleRunwayLength);
+            drawLinedText(gc, "ASDA " + (int)runway.getASDA(), doubleRunwayX, doubleRunwayY + doubleRunwayHeight + 5 * doubleTextHeight, doubleRunwayLength);
         }
     }
 
@@ -125,6 +125,10 @@ public class SideViewRunway2DVisualization extends Pane {
     private void drawLinedText(GraphicsContext gc, String text, double x1, double y1, double length) {
         gc.setFill(Color.BLACK);
         Text txt = new Text(text);
+        Double newFontSizeDouble = Math.hypot(this.getWidth(), this.getHeight())/100;
+        int newFontSizeInt = newFontSizeDouble.intValue();
+        gc.setFont(new javafx.scene.text.Font(newFontSizeInt));
+        txt.setFont(new javafx.scene.text.Font(newFontSizeInt));
         double doubleTextLength = txt.getLayoutBounds().getWidth();
         double doubleTextHeight = txt.getLayoutBounds().getHeight();
         gc.setLineWidth(1);
