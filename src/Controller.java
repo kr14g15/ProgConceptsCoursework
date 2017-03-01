@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -17,6 +18,20 @@ import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.w3c.*;
+
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -76,6 +91,8 @@ public class Controller {
     @FXML private Button btnViewVisualizationRunway;
     protected ListProperty<Runway> runwayListProperty = new SimpleListProperty<>();
     private Runway selectedRunway;
+    @FXML private Button btnImportRunway;
+    @FXML private Button btnExportRunway;
 
     //endregion
 
@@ -421,6 +438,241 @@ public class Controller {
             Node leftNodeContent = borderPaneLeftWindow.getCenter();
             borderPaneMainWindow.setCenter(leftNodeContent);
             borderPaneLeftWindow.setCenter(mainNodeContent);
+        });
+        
+        btnExportRunway.setOnAction(event -> {
+        	try {
+        		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        		Document doc = dBuilder.newDocument();
+        		
+        		// root element
+        		Element airport = doc.createElement("airport");
+        		doc.appendChild(airport);
+        		
+        		Element runway = doc.createElement("runway");
+        		airport.appendChild(runway);
+        		
+        		// Runway strip
+        		Element direction = doc.createElement("direction");
+        		direction.appendChild(doc.createTextNode(String.valueOf(txtAddDirection.getText().charAt(0))));
+        		runway.appendChild(direction);
+        		
+        		Element degree = doc.createElement("degree");
+        		degree.appendChild(doc.createTextNode(txtAddDegree.getText()));
+        		runway.appendChild(degree);
+        		
+        		Element stopway = doc.createElement("stopway");
+        		stopway.appendChild(doc.createTextNode(txtAddStopwayLength.getText()));
+        		runway.appendChild(stopway);
+        		
+        		Element clearwaylength = doc.createElement("clearwaylength");
+        		clearwaylength.appendChild(doc.createTextNode(txtAddClearwayLength.getText()));
+        		runway.appendChild(clearwaylength);
+        		
+        		Element clearwaywidth = doc.createElement("clearwaywidth");
+        		clearwaywidth.appendChild(doc.createTextNode(txtAddClearwayWidth.getText()));
+        		runway.appendChild(clearwaywidth);
+        		
+        		Element stripwidth = doc.createElement("stripwidth");
+        		stripwidth.appendChild(doc.createTextNode(txtAddRunwayStripWidth.getText()));
+        		runway.appendChild(stripwidth);
+        		
+        		Element striplength = doc.createElement("striplength");
+        		striplength.appendChild(doc.createTextNode(txtAddRunwayStripLength.getText()));
+        		runway.appendChild(striplength);
+        		
+        		
+        		//Threshold
+        		Element starttothreshold = doc.createElement("starttothreshold");
+        		starttothreshold.appendChild(doc.createTextNode(txtAddStartToThresholdMarkingsLength.getText()));
+        		runway.appendChild(starttothreshold);
+        		
+        		Element thresholdstriplength = doc.createElement("thresholdstriplength");
+        		thresholdstriplength.appendChild(doc.createTextNode(txtAddThresholdMarkingsStripLength.getText()));
+        		runway.appendChild(thresholdstriplength);
+        		
+        		Element thresholdstripwidth = doc.createElement("thresholdstripwidth");
+        		thresholdstripwidth.appendChild(doc.createTextNode(txtAddThresholdMarkingsStripWidth.getText()));
+        		runway.appendChild(thresholdstripwidth);
+        		
+        		Element displacedthreshold = doc.createElement("displacedthreshold");
+        		displacedthreshold.appendChild(doc.createTextNode(txtAddDisplacedThresholdLength.getText()));
+        		runway.appendChild(displacedthreshold);
+        		
+        		
+        		//Letters and Numbers
+        		Element thresholdtoletter = doc.createElement("thresholdtoletter");
+        		thresholdtoletter.appendChild(doc.createTextNode(txtAddThresholdMarkingsToLetterLength.getText()));
+        		runway.appendChild(thresholdtoletter);
+        		
+        		Element lettertonumber = doc.createElement("lettertonumber");
+        		lettertonumber.appendChild(doc.createTextNode(txtAddLetterToNumberLength.getText()));
+        		runway.appendChild(lettertonumber);
+        		
+        		Element numbertostripe = doc.createElement("numbertostripe");
+        		numbertostripe.appendChild(doc.createTextNode(txtAddLetterToNumberLength.getText()));
+        		runway.appendChild(numbertostripe);
+        		
+        		Element characterlength = doc.createElement("characterlength");
+        		characterlength.appendChild(doc.createTextNode(txtAddCharacterLength.getText()));
+        		runway.appendChild(characterlength);
+        		
+        		Element characterwidth = doc.createElement("characterwidth");
+        		characterwidth.appendChild(doc.createTextNode(txtAddCharacterWidth.getText()));
+        		runway.appendChild(characterwidth);
+        		
+        		
+        		//Horizontal Stripes
+        		Element horizontallength = doc.createElement("horizontallength");
+        		horizontallength.appendChild(doc.createTextNode(txtAddHorizontalStripesLength.getText()));
+        		runway.appendChild(horizontallength);
+        		
+        		Element horizontalwidth = doc.createElement("horizontalwidth");
+        		horizontalwidth.appendChild(doc.createTextNode(txtAddHorizontalStripesWidth.getText()));
+        		runway.appendChild(horizontalwidth);
+        		
+        		Element horizontalstripedifference = doc.createElement("horizontalstripedifference");
+        		horizontalstripedifference.appendChild(doc.createTextNode(txtAddHorizontalStripesDifference.getText()));
+        		runway.appendChild(horizontalstripedifference);
+        		
+        		
+        		//Outside Runway Strip
+        		Element stripend = doc.createElement("stripend");
+        		stripend.appendChild(doc.createTextNode(txtAddStripEnd.getText()));
+        		runway.appendChild(stripend);
+        		
+        		Element smallvisualstrip = doc.createElement("smallvisualstrip");
+        		smallvisualstrip.appendChild(doc.createTextNode(txtAddSmallVisualStripWidth.getText()));
+        		runway.appendChild(smallvisualstrip);
+        		
+        		Element largevisualstrip = doc.createElement("largevisualstrip");
+        		largevisualstrip.appendChild(doc.createTextNode(txtAddLargeVisualStripWidth.getText()));
+        		runway.appendChild(largevisualstrip);
+        		
+        		Element instrumentstrip = doc.createElement("instrumentstrip");
+        		instrumentstrip.appendChild(doc.createTextNode(txtAddInstrumentStrip.getText()));
+        		runway.appendChild(instrumentstrip);
+        		
+        		Element blastprotection = doc.createElement("blastprotection");
+        		blastprotection.appendChild(doc.createTextNode(txtAddBlastProtection.getText()));
+        		runway.appendChild(blastprotection);
+        		
+        		Element resa = doc.createElement("resa");
+        		resa.appendChild(doc.createTextNode(txtAddRESA.getText()));
+        		runway.appendChild(resa);
+        		
+        		Element runwaytosmallvisualstriplength = doc.createElement("runwaytosmallvisualstriplength");
+        		runwaytosmallvisualstriplength.appendChild(doc.createTextNode(txtAddRunwayToSmallVisualStripLength.getText()));
+        		runway.appendChild(runwaytosmallvisualstriplength);
+        		
+        		Element runwaytolargevisualstriplength = doc.createElement("runwaytolargevisualstriplength");
+        		runwaytolargevisualstriplength.appendChild(doc.createTextNode(txtAddRunwayToLargeVisualStripLength.getText()));
+        		runway.appendChild(runwaytolargevisualstriplength);
+        		
+        		
+        		//Optional
+        		Element skyheight = doc.createElement("skyheight");
+        		skyheight.appendChild(doc.createTextNode(txtAddSkyHeight.getText()));
+        		runway.appendChild(skyheight);
+        		
+        		Element groundheight = doc.createElement("groundheight");
+        		groundheight.appendChild(doc.createTextNode(txtAddGroundHeight.getText()));
+        		runway.appendChild(groundheight);
+        		
+        		Element airportheight = doc.createElement("direction");
+        		airportheight.appendChild(doc.createTextNode(txtAddAirportHeight.getText()));
+        		runway.appendChild(airportheight);
+        		
+        		//write content into xml file
+        		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        		Transformer transformer = transformerFactory.newTransformer();
+        		DOMSource source = new DOMSource(doc);
+        		StreamResult result = new StreamResult(new File("runway" + String.valueOf(txtAddDirection.getText().charAt(0)) + txtAddDegree.getText() + ".xml"));
+        		transformer.transform(source, result);
+        		
+        		Alert alert = new Alert(AlertType.INFORMATION);
+        		alert.setTitle("File saved");
+        		alert.setHeaderText("File " + "runway" + String.valueOf(txtAddDirection.getText().charAt(0)) + txtAddDegree.getText() + ".xml has been saved.");
+        		alert.showAndWait();
+        		
+        		
+        	} catch (Exception e){
+        		e.printStackTrace();
+        	}
+        	
+        });
+        
+        btnImportRunway.setOnAction(event -> {
+        	try {
+        		
+    			FileChooser fileChooser = new FileChooser();
+    			fileChooser.setTitle("Select runway");
+    			FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("XML files(*.xml)", "*.xml");
+    			fileChooser.getExtensionFilters().add(filter);
+    			File fXmlFile = fileChooser.showOpenDialog(null);
+    			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+    			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+    			Document doc = dBuilder.parse(fXmlFile);
+    			
+    			doc.getDocumentElement().normalize();
+    			
+    			NodeList nList = doc.getElementsByTagName("runway");
+    			
+    			for(int i = 0; i < nList.getLength(); i++){
+    				org.w3c.dom.Node nNode = nList.item(i);
+    				if(nNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE){
+    					Element eElement = (Element) nNode;
+    					
+    					Runway runway = new Runway();
+    					runway.setDirection(eElement.getElementsByTagName("direction").item(0).getTextContent().charAt(i));
+    		            runway.setDegree(Integer.parseInt(eElement.getElementsByTagName("degree").item(i).getTextContent()));
+    		            runway.setStopwayLength(Double.parseDouble(eElement.getElementsByTagName("stopway").item(i).getTextContent()));
+    		            runway.setClearwayLength(Double.parseDouble(eElement.getElementsByTagName("clearwaylength").item(i).getTextContent()));
+    		            runway.setClearwayWidth(Double.parseDouble(eElement.getElementsByTagName("clearwaywidth").item(i).getTextContent()));
+
+    		            runway.setRunwayStripWidth(Double.parseDouble(eElement.getElementsByTagName("stripwidth").item(i).getTextContent()));
+    		            runway.setRunwayStripLength(Double.parseDouble(eElement.getElementsByTagName("striplength").item(i).getTextContent()));
+    		            runway.setDisplacedThresholdLength(Double.parseDouble(eElement.getElementsByTagName("displacedthreshold").item(i).getTextContent()));
+
+    		            runway.setStartToThresholdMarkingsLength(Double.parseDouble(eElement.getElementsByTagName("starttothreshold").item(i).getTextContent()));
+    		            runway.setThresholdMarkingsStripLength(Double.parseDouble(eElement.getElementsByTagName("thresholdstriplength").item(i).getTextContent()));
+    		            runway.setThresholdMarkingsStripWidth(Double.parseDouble(eElement.getElementsByTagName("thresholdstripwidth").item(i).getTextContent()));
+    		            runway.setThresholdMarkingsToLetterLength(Double.parseDouble(eElement.getElementsByTagName("thresholdtoletter").item(i).getTextContent()));
+    		            runway.setLetterToNumberLength(Double.parseDouble(eElement.getElementsByTagName("lettertonumber").item(i).getTextContent()));
+    		            runway.setNumberToHorizontalStripeLength(Double.parseDouble(eElement.getElementsByTagName("numbertostripe").item(i).getTextContent()));
+    		            runway.setCharacterLength(Double.parseDouble(eElement.getElementsByTagName("characterlength").item(i).getTextContent()));
+    		            runway.setCharacterWidth(Double.parseDouble(eElement.getElementsByTagName("characterwidth").item(i).getTextContent()));
+
+
+    		            runway.setHorizontalStripesLength(Double.parseDouble(eElement.getElementsByTagName("horizontallength").item(i).getTextContent()));
+    		            runway.setHorizontalStripesWidth(Double.parseDouble(eElement.getElementsByTagName("horizontalwidth").item(i).getTextContent()));
+    		            runway.setHorizontalStripesDifference(Double.parseDouble(eElement.getElementsByTagName("horizontalstripedifference").item(i).getTextContent()));
+    		            runway.setStripEnd(Double.parseDouble(eElement.getElementsByTagName("stripend").item(i).getTextContent()));
+    		            runway.setSmallVisualStripWidth(Double.parseDouble(eElement.getElementsByTagName("smallvisualstrip").item(i).getTextContent()));
+    		            runway.setLargeVisualStripWidth(Double.parseDouble(eElement.getElementsByTagName("largevisualstrip").item(i).getTextContent()));
+    		            runway.setInstrumentStrip(Double.parseDouble(eElement.getElementsByTagName("instrumentstrip").item(i).getTextContent()));
+    		            runway.setBlastProtection(Double.parseDouble(eElement.getElementsByTagName("blastprotection").item(i).getTextContent()));
+    		            runway.setRESA(Double.parseDouble(eElement.getElementsByTagName("resa").item(i).getTextContent()));
+    		            runway.setRunwayToSmallVisualStripLength(Double.parseDouble(eElement.getElementsByTagName("runwaytosmallvisualstriplength").item(i).getTextContent()));
+    		            runway.setRunwayToLargeVisualStripLength(Double.parseDouble(eElement.getElementsByTagName("runwaytolargevisualstriplength").item(i).getTextContent()));
+
+    		            runway.setSkyHeight(Double.parseDouble(eElement.getElementsByTagName("skyheight").item(i).getTextContent()));
+    		            runway.setGroundHeight(Double.parseDouble(eElement.getElementsByTagName("groundheight").item(i).getTextContent()));
+    		            runway.setAirportHeight(Double.parseDouble(eElement.getElementsByTagName("airportheight").item(i ).getTextContent()));
+
+    		            selectedAirport.getRunwayList().add(runway);
+    		            selectAirport(selectedAirport);
+    		            refreshRunwayListView();
+    		            refreshAirportListComboBox();
+    		            refreshRunwayListComboBox();
+    				}
+    					 
+    			}
+    			
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
         });
 
         btnViewVisualizationAirport.setOnAction(event ->{
